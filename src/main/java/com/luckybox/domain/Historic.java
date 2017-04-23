@@ -2,8 +2,11 @@ package com.luckybox.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -37,5 +40,7 @@ public class Historic {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "historic", cascade = CascadeType.ALL)
+	private HistoricDataset dataset;
 	
 }
