@@ -14,7 +14,7 @@ public interface HistoricRepository extends JpaRepository<Historic, Long> {
 
 	public static final String DOZENS_NE_CONCURSE = "FROM Historic r WHERE r.dozen1 = ?1 and r.dozen2 = ?2 and r.dozen3 = ?3 and r.dozen4 = ?4 and r.dozen5 = ?5 and r.dozen6 = ?6 and r.dozen7 = ?7 and r.dozen8 = ?8 and r.dozen9 = ?9 and r.dozen10 = ?10 and r.dozen11 = ?11 and r.dozen12 = ?12 and r.dozen13 = ?13 and r.dozen14 = ?14 and r.dozen15 = ?15 and r.concurse <> ?16";
 
-	boolean exists(Integer primaryKey);
+	boolean exists(Long concurse);
 
 	Historic findByConcurse(Long concurse);
 

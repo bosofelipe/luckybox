@@ -115,8 +115,8 @@ public class HistoricDatasetCreator {
 	}
 
 	public Boolean checkAlreadyDrawn() {
-		return historicRepository.findHistoricWithDozens(numbers.get(0), numbers.get(1), numbers.get(2), numbers.get(3),
+		return !(historicRepository.findHistoricWithDozens(numbers.get(0), numbers.get(1), numbers.get(2), numbers.get(3),
 				numbers.get(4), numbers.get(5), numbers.get(6), numbers.get(7), numbers.get(8), numbers.get(9),
-				numbers.get(10), numbers.get(11), numbers.get(12), numbers.get(13), numbers.get(14)).size() != 0;
+				numbers.get(10), numbers.get(11), numbers.get(12), numbers.get(13), numbers.get(14)).isEmpty());
 	}
 }

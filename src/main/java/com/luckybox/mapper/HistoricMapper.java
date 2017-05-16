@@ -28,7 +28,7 @@ public class HistoricMapper {
 
 	public static List<Integer> toList(HistoricDTO dto) {
 		return Lists.newArrayList(dto.getDozen1(), dto.getDozen2(), dto.getDozen3(), dto.getDozen4(), dto.getDozen5(),
-				dto.getDozen6(), dto.getDozen7(), dto.getDozen8(), dto.getDozen10(), dto.getDozen11(),
+				dto.getDozen6(), dto.getDozen7(), dto.getDozen8(), dto.getDozen9(), dto.getDozen10(), dto.getDozen11(),
 				dto.getDozen12(), dto.getDozen13(), dto.getDozen14(), dto.getDozen15());
 	}
 	

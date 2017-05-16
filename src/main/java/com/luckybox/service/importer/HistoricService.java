@@ -55,7 +55,7 @@ public class HistoricService {
 
 	private void fillDatasetFields(HistoricDTO dto) {
 		Historic historic = repository.findOne(dto.getConcurse());
-		if (historic == null) {
+		if (historic != null) {
 			HistoricDataset dataset = datasetCreator.create(dto);
 			dataset.setConcurse(dto.getConcurse());
 			datasetRepository.save(dataset);
