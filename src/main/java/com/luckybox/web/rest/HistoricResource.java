@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.historic.dto.HistoricDTO;
-import com.luckybox.service.importer.HistoricService;
+import com.luckybox.service.importer.HistoricImporterService;
 
 import net.lingala.zip4j.exception.ZipException;
 
@@ -21,7 +21,7 @@ import net.lingala.zip4j.exception.ZipException;
 public class HistoricResource {
 
 	@Inject
-	private HistoricService historicService;
+	private HistoricImporterService historicService;
 
 	@GetMapping(path = "/import", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<HistoricDTO> importHistoric() throws IOException, ZipException {

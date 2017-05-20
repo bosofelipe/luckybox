@@ -15,31 +15,27 @@ public class HistoricDatasetCreatorTest {
 
 	@Test
 	public void createHistoricDataset() {
-		HistoricDatasetCreator datasetCreator = new HistoricDatasetCreator();
-		HistoricDataset dataSet = datasetCreator.create(createHistoricDTO());
+		HistoricDataset dataSet = new HistoricDatasetCreator().create(createHistoricDTO());
 		MatcherAssert.assertThat(dataSet.getConcurse(), CoreMatchers.equalTo(1L));
-		MatcherAssert.assertThat(dataSet.getSum(), equalTo(168));
-		MatcherAssert.assertThat(dataSet.getAverage(), equalTo(11));
+		MatcherAssert.assertThat(dataSet.getSum(), equalTo(180));
+		MatcherAssert.assertThat(dataSet.getAverage(), equalTo(12));
 		MatcherAssert.assertThat(dataSet.getFibonacci(), equalTo(6));
 		MatcherAssert.assertThat(dataSet.getPrime(), equalTo(6));
-		MatcherAssert.assertThat(dataSet.getPair(), equalTo(6));
+		MatcherAssert.assertThat(dataSet.getPair(), equalTo(7));
 		MatcherAssert.assertThat(dataSet.getGreatherSequence(), equalTo(4));
 		MatcherAssert.assertThat(dataSet.getQtdSequences(), equalTo(5));
-		MatcherAssert.assertThat(dataSet.getVariationSum(), CoreMatchers.nullValue());
-		MatcherAssert.assertThat(dataSet.getAlreadyDrawn(), CoreMatchers.nullValue());
-		MatcherAssert.assertThat(dataSet.getDozensLastRaffle(), CoreMatchers.nullValue());
 		
-		MatcherAssert.assertThat(dataSet.getFirstColumn(), equalTo(2));
-		MatcherAssert.assertThat(dataSet.getSecondColumn(), equalTo(2));
-		MatcherAssert.assertThat(dataSet.getThirdColumn(), equalTo(3));
-		MatcherAssert.assertThat(dataSet.getFourthColumn(), equalTo(2));
+		MatcherAssert.assertThat(dataSet.getFirstColumn(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getSecondColumn(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getThirdColumn(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getFourthColumn(), equalTo(5));
 		MatcherAssert.assertThat(dataSet.getFivethColumn(), equalTo(5));
 		
-		MatcherAssert.assertThat(dataSet.getFirstLine(), equalTo(4));
-		MatcherAssert.assertThat(dataSet.getSecondLine(), equalTo(3));
-		MatcherAssert.assertThat(dataSet.getThirdLine(), equalTo(3));
-		MatcherAssert.assertThat(dataSet.getFourthLine(), equalTo(1));
-		MatcherAssert.assertThat(dataSet.getFivethLine(), equalTo(3));
+		MatcherAssert.assertThat(dataSet.getFirstLine(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getSecondLine(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getThirdLine(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getFourthLine(), equalTo(5));
+		MatcherAssert.assertThat(dataSet.getFivethLine(), equalTo(5));
 	}
 
 	private HistoricDTO createHistoricDTO() {

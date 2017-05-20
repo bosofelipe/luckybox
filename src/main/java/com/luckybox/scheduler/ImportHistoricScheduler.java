@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.luckybox.service.importer.HistoricService;
+import com.luckybox.service.importer.HistoricImporterService;
 
 import net.lingala.zip4j.exception.ZipException;
 
@@ -15,7 +15,7 @@ import net.lingala.zip4j.exception.ZipException;
 public class ImportHistoricScheduler {
 
 	@Inject
-	private HistoricService historicService;
+	private HistoricImporterService historicService;
 
 	@Scheduled(cron = "0/30 * * * * ?")
 	public void updateAlreadyDrawn() throws IOException, ZipException {
