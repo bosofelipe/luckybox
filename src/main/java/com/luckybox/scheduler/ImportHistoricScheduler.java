@@ -17,7 +17,7 @@ public class ImportHistoricScheduler {
 	@Inject
 	private HistoricImporterService historicService;
 
-	@Scheduled(cron = "0/30 * * * * ?")
+	@Scheduled(cron = "* */30 * * * ?")
 	public void updateAlreadyDrawn() throws IOException, ZipException {
 		historicService.importConcurses();
 	}

@@ -7,49 +7,68 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Combination;
+import com.luckybox.domain.CombinationDTO;
+import com.luckybox.domain.CombinationDataset;
+import com.luckybox.mapper.CombinationMapper;
+import com.luckybox.repository.CombinationDatasetRepository;
 import com.luckybox.repository.CombinationRepository;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Service
 public class CombinationService {
-	private static final String SEPARATOR = "|";
-	
+	private static final String SEPARATOR = "-";
+
 	@Inject
 	private CombinationRepository combinationRepository;
+	
+	@Inject
+	private CombinationDatasetRepository combinationDatasetRepository;
 
 	public void generateCombination(int maxNumber, int quantityOfNumbers) throws InterruptedException {
 		int[][] m = geraCombinacao(25, 15);
-		String combinationGroup="";
 		Long combinationId = 1L;
 		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m[i].length; j++) {
-				System.out.print((m[i][j] + 1) + SEPARATOR);
-			}
-			System.out.println();
-			String[] values = combinationGroup.split(SEPARATOR);
-			Combination combination = createCombination(values, combinationId);
-			combinationRepository.save(combination);
-			Thread.sleep(1000L);
+			persistCombination(m, combinationId, i);
+			combinationId++;
 		}
-		combinationId ++;
 	}
-	
-	private Combination createCombination(String values[], Long id) {
-		return Combination.builder().combinationId(id)
-			.dozen1(Integer.valueOf(values[0]))
-			.dozen2(Integer.valueOf(values[1]))
-			.dozen3(Integer.valueOf(values[2]))
-			.dozen4(Integer.valueOf(values[3]))
-			.dozen5(Integer.valueOf(values[4]))
-			.dozen6(Integer.valueOf(values[5]))
-			.dozen7(Integer.valueOf(values[6]))
-			.dozen8(Integer.valueOf(values[7]))
-			.dozen9(Integer.valueOf(values[8]))
-			.dozen10(Integer.valueOf(values[9]))
-			.dozen11(Integer.valueOf(values[10]))
-			.dozen12(Integer.valueOf(values[11]))
-			.dozen13(Integer.valueOf(values[12]))
-			.dozen14(Integer.valueOf(values[13]))
-			.dozen15(Integer.valueOf(values[14])).build();
+
+	private void persistCombination(int[][] m, Long combinationId, int i)
+			throws InterruptedException {
+		StringBuilder combinationGroup = new StringBuilder();
+		for (int j = 0; j < m[i].length; j++) {
+			String value = (m[i][j] + 1) + SEPARATOR;
+			combinationGroup.append(value);
+			System.out.print(value);
+		}
+		System.out.println();
+		String[] values = combinationGroup.toString().split(SEPARATOR);
+		CombinationDTO combinationDTO = createCombination(values, combinationId);
+		Combination combinationPersisted = combinationRepository.findOne(combinationId);
+		if (combinationPersisted == null) {
+			log.info("Create new Combination -> " + combinationGroup);
+			saveData(combinationDTO);
+			//Thread.sleep(100L);
+		}
+	}
+
+	private void saveData(CombinationDTO combinationDTO) {
+		combinationRepository.save(CombinationMapper.toEntity(combinationDTO));
+		CombinationDataset dataset = new DatasetCreator().create(combinationDTO);
+		combinationDatasetRepository.save(dataset);
+	}
+
+	private CombinationDTO createCombination(String values[], Long id) {
+		return CombinationDTO.builder().combinationId(id).dozen1(Integer.valueOf(values[0]))
+				.dozen2(Integer.valueOf(values[1])).dozen3(Integer.valueOf(values[2]))
+				.dozen4(Integer.valueOf(values[3])).dozen5(Integer.valueOf(values[4]))
+				.dozen6(Integer.valueOf(values[5])).dozen7(Integer.valueOf(values[6]))
+				.dozen8(Integer.valueOf(values[7])).dozen9(Integer.valueOf(values[8]))
+				.dozen10(Integer.valueOf(values[9])).dozen11(Integer.valueOf(values[10]))
+				.dozen12(Integer.valueOf(values[11])).dozen13(Integer.valueOf(values[12]))
+				.dozen14(Integer.valueOf(values[13])).dozen15(Integer.valueOf(values[14])).build();
 	}
 
 	private int possibities(int n, int p) {

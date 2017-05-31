@@ -41,7 +41,7 @@ public class HistoricImporterService {
 	private HistoricDatasetRepository datasetRepository;
 
 	@Inject
-	private HistoricDatasetCreator datasetCreator;
+	private DatasetCreator datasetCreator;
 
 	public List<HistoricDTO> importConcurses() throws IOException, ZipException {
 		log.info("Start importation");
