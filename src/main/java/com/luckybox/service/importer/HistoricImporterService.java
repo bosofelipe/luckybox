@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
-import com.luckybox.historic.dto.HistoricDTO;
+import com.luckybox.dto.HistoricDTO;
 import com.luckybox.mapper.HistoricMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;

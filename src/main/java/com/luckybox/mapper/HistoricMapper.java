@@ -3,7 +3,7 @@ package com.luckybox.mapper;
 import java.util.List;
 
 import com.luckybox.domain.Historic;
-import com.luckybox.historic.dto.HistoricDTO;
+import com.luckybox.dto.HistoricDTO;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 

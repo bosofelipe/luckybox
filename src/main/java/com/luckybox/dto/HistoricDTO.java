@@ -1,4 +1,4 @@
-package com.luckybox.historic.dto;
+package com.luckybox.dto;
 
 import java.util.Date;
 

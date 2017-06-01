@@ -8,7 +8,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
-import com.luckybox.historic.dto.HistoricDTO;
+import com.luckybox.dto.HistoricDTO;
 
 public class HistoricFileReaderServiceTest {
 

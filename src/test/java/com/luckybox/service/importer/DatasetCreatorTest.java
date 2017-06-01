@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.luckybox.domain.CombinationDTO;
 import com.luckybox.domain.CombinationDataset;
 import com.luckybox.domain.HistoricDataset;
-import com.luckybox.historic.dto.HistoricDTO;
+import com.luckybox.dto.HistoricDTO;
 
 public class DatasetCreatorTest {
 
