@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.service.HistoricDatasetFiller;
+import com.luckybox.service.HistoricService;
 
 public class HistoricDatasetFillerTest {
 

@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.repository.HistoricDatasetRepository;
-import com.luckybox.service.importer.HistoricDatasetFiller;
-import com.luckybox.service.importer.HistoricService;
+import com.luckybox.service.HistoricDatasetFiller;
+import com.luckybox.service.HistoricService;
 
 import net.lingala.zip4j.exception.ZipException;
 

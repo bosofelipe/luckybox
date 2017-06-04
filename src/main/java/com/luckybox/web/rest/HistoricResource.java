@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.dto.HistoricDTO;
-import com.luckybox.service.importer.HistoricImporterService;
+import com.luckybox.service.HistoricImporterService;
 
 import net.lingala.zip4j.exception.ZipException;
 

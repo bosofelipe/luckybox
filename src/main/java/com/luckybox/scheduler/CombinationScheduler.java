@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import com.luckybox.service.importer.CombinationService;
+import com.luckybox.service.CombinationService;
 
 import lombok.extern.log4j.Log4j;
 

@@ -1,4 +1,4 @@
-package com.luckybox.service.importer;
+package com.luckybox.service;
 
 import static com.luckybox.constants.ConstantsLoto.FIBONACCI_SEQUENCE;
 import static com.luckybox.constants.ConstantsLoto.PRIME;

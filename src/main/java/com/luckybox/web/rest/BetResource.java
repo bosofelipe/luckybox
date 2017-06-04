@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.dto.BetDTO;
-import com.luckybox.service.importer.BetService;
+import com.luckybox.service.BetService;
 
 @RestController
 @RequestMapping("/bet")

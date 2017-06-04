@@ -1,4 +1,4 @@
-package com.luckybox.service.importer;
+package com.luckybox.service;
 
 import static com.luckybox.mapper.HistoricMapper.toList;
 import static java.util.stream.Collectors.toList;

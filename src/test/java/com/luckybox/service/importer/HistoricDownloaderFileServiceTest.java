@@ -7,6 +7,8 @@ import java.net.UnknownHostException;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
+import com.luckybox.service.HistoricDownloaderFileService;
+
 import net.lingala.zip4j.core.ZipFile;
 
 public class HistoricDownloaderFileServiceTest {

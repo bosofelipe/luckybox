@@ -1,0 +1,13 @@
+select count(sum) as co, sum from historic_dataset group by sum order by co desc limit 50
+
+
+select count(pair) as co, pair from historic_dataset group by pair order by co desc limit 5
+
+
+select count(prime) as co, prime from historic_dataset group by prime order by co desc limit 5
+
+
+select count(fibonacci) as co, fibonacci from historic_dataset group by fibonacci order by co desc limit 4
+
+
+select count(qtd_sequences) as co, qtd_sequences from historic_dataset group by qtd_sequences order by co desc limit 3

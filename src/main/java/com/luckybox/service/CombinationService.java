@@ -1,4 +1,4 @@
-package com.luckybox.service.importer;
+package com.luckybox.service;
 
 import java.math.BigInteger;
 

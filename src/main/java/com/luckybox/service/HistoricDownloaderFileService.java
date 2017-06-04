@@ -1,4 +1,4 @@
-package com.luckybox.service.importer;
+package com.luckybox.service;
 
 import static java.net.CookiePolicy.ACCEPT_ALL;
 
