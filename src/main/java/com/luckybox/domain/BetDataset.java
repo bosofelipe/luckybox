@@ -25,7 +25,7 @@ public class BetDataset {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
-	private Bet combination;
+	private Bet bet;
 	
 	private Integer sum;
 
