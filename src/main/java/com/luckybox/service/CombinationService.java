@@ -1,6 +1,7 @@
 package com.luckybox.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.luckybox.domain.Combination;
 import com.luckybox.domain.CombinationDTO;
 import com.luckybox.domain.CombinationDataset;
+import com.luckybox.domain.Historic;
 import com.luckybox.mapper.CombinationMapper;
 import com.luckybox.repository.CombinationDatasetRepository;
 import com.luckybox.repository.CombinationRepository;
+import com.luckybox.repository.HistoricRepository;
 
 import lombok.extern.log4j.Log4j;
 
@@ -25,6 +28,9 @@ public class CombinationService {
 	
 	@Inject
 	private CombinationDatasetRepository combinationDatasetRepository;
+	
+	@Inject
+	private HistoricRepository historicRepository;
 
 	public void generateCombination(int maxNumber, int quantityOfNumbers) throws InterruptedException {
 		int[][] m = geraCombinacao(25, 15);
@@ -50,7 +56,6 @@ public class CombinationService {
 		if (combinationPersisted == null) {
 			log.info("Create new Combination -> " + combinationGroup);
 			saveData(combinationDTO);
-			//Thread.sleep(100L);
 		}
 	}
 
@@ -110,4 +115,18 @@ public class CombinationService {
 				}
 		return m;
 	}
+
+	public void checkCombinationDrawn() {
+		List<Historic> historicDataset = historicRepository.findAll();
+		historicDataset.stream().forEach(h-> findCombination(h));
+	}
+
+	private void findCombination(Historic h) {
+		combinationDatasetRepository.markDrawnByDozen(h.getDozen1(),
+				h.getDozen2(),h.getDozen3(),h.getDozen4(),h.getDozen5(),h.getDozen6()
+				,h.getDozen7(),h.getDozen8(),h.getDozen9(),h.getDozen10()
+				,h.getDozen11(),h.getDozen12(),h.getDozen13(),h.getDozen14(),h.getDozen15());
+	}
+	
+	
 }

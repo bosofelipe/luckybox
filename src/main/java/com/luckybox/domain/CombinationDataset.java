@@ -30,6 +30,8 @@ public class CombinationDataset {
 	private Boolean alreadyDrawn;
 
 	private Integer sum;
+	
+	private Integer dozenSum;
 
 	private Integer variationSum;
 

@@ -20,7 +20,7 @@ public class DatasetCreatorTest {
 	public void createHistoricDataset() {
 		HistoricDataset dataSet = new DatasetCreator().create(createHistoricDTO());
 		MatcherAssert.assertThat(dataSet.getConcurse(), CoreMatchers.equalTo(1L));
-		MatcherAssert.assertThat(dataSet.getSum(), equalTo(180));
+		MatcherAssert.assertThat(dataSet.getDozenSum(), equalTo(180));
 		MatcherAssert.assertThat(dataSet.getAverage(), equalTo(12));
 		MatcherAssert.assertThat(dataSet.getFibonacci(), equalTo(6));
 		MatcherAssert.assertThat(dataSet.getPrime(), equalTo(6));
@@ -45,7 +45,7 @@ public class DatasetCreatorTest {
 	public void createCombinationDataset() {
 		CombinationDataset dataSet = new DatasetCreator().create(createCombinationDTO());
 		MatcherAssert.assertThat(dataSet.getCombinationId(), CoreMatchers.equalTo(1L));
-		MatcherAssert.assertThat(dataSet.getSum(), equalTo(180));
+		MatcherAssert.assertThat(dataSet.getDozenSum(), equalTo(180));
 		MatcherAssert.assertThat(dataSet.getAverage(), equalTo(12));
 		MatcherAssert.assertThat(dataSet.getFibonacci(), equalTo(6));
 		MatcherAssert.assertThat(dataSet.getPrime(), equalTo(6));

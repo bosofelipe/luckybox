@@ -33,6 +33,8 @@ public class HistoricDataset {
 
 	private Integer sum;
 
+	private Integer dozenSum;
+
 	private Integer variationSum;
 
 	private Integer average;

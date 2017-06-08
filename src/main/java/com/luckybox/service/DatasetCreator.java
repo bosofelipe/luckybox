@@ -26,7 +26,7 @@ public class DatasetCreator {
 		dozens = HistoricMapper.toList(historicDTO);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
-		return HistoricDataset.builder().sum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
+		return HistoricDataset.builder().dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
 				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
 				.concurse(historicDTO.getConcurse()).firstColumn(countDozens(ConstantsLoto.FIRST_COLUMN))
@@ -42,7 +42,7 @@ public class DatasetCreator {
 		dozens = CombinationMapper.toList(combination);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
-		return CombinationDataset.builder().sum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
+		return CombinationDataset.builder().dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
 				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
 				.combinationId(combination.getCombinationId()).firstColumn(countDozens(ConstantsLoto.FIRST_COLUMN))

@@ -1,4 +1,4 @@
-select count(sum) as co, sum from historic_dataset group by sum order by co desc limit 50
+select count(dozen_sum) as co, dozen_sum from historic_dataset group by dozen_sum order by co desc limit 50
 
 
 select count(pair) as co, pair from historic_dataset group by pair order by co desc limit 5
@@ -11,3 +11,75 @@ select count(fibonacci) as co, fibonacci from historic_dataset group by fibonacc
 
 
 select count(qtd_sequences) as co, qtd_sequences from historic_dataset group by qtd_sequences order by co desc limit 3
+
+// View
+
+select
+count(*)
+from combination_dataset
+where dozen_sum in
+(
+   select
+   dozen_sum
+   from
+   (
+      select
+      count(dozen_sum) as co,dozen_sum
+      from historic_dataset h2
+      group by dozen_sum
+      order by co desc limit 50
+   )
+   as t
+)
+and pair in
+(
+   select
+   pair
+   from
+   (
+      select
+      count(pair) as co,pair
+      from historic_dataset h2 
+      group by pair
+      order by co desc limit 5
+   ) as t2
+)
+and prime in
+(
+   select
+   prime
+   from
+   (
+      select
+      count(prime) as co,prime
+      from historic_dataset h2 
+      group by prime
+      order by co desc limit 5
+   ) as t2
+)
+and fibonacci in
+(
+   select
+   fibonacci
+   from
+   (
+      select
+      count(fibonacci) as co,fibonacci
+      from historic_dataset h2 
+      group by fibonacci
+      order by co desc limit 4
+   ) as t2
+)
+and qtd_sequences in
+(
+   select
+   qtd_sequences
+   from
+   (
+      select
+      count(qtd_sequences) as co,qtd_sequences
+      from historic_dataset h2 
+      group by qtd_sequences
+      order by co desc limit 3
+   ) as t2
+)

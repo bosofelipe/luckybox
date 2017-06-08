@@ -28,6 +28,8 @@ public class BetDataset {
 	private Bet bet;
 	
 	private Integer sum;
+	
+	private Integer dozenSum;
 
 	private Integer variationSum;
 
