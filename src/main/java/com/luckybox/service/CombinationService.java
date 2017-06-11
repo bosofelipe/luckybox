@@ -14,6 +14,7 @@ import com.luckybox.domain.Historic;
 import com.luckybox.mapper.CombinationMapper;
 import com.luckybox.repository.CombinationDatasetRepository;
 import com.luckybox.repository.CombinationRepository;
+import com.luckybox.repository.CombinationRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 
 import lombok.extern.log4j.Log4j;
@@ -25,6 +26,9 @@ public class CombinationService {
 
 	@Inject
 	private CombinationRepository combinationRepository;
+	
+	@Inject
+	private CombinationRepositoryImpl combinationRepositoryImpl;
 	
 	@Inject
 	private CombinationDatasetRepository combinationDatasetRepository;
@@ -121,11 +125,10 @@ public class CombinationService {
 		historicDataset.stream().forEach(h-> findCombination(h));
 	}
 
-	private void findCombination(Historic h) {
-		combinationDatasetRepository.markDrawnByDozen(h.getDozen1(),
-				h.getDozen2(),h.getDozen3(),h.getDozen4(),h.getDozen5(),h.getDozen6()
-				,h.getDozen7(),h.getDozen8(),h.getDozen9(),h.getDozen10()
-				,h.getDozen11(),h.getDozen12(),h.getDozen13(),h.getDozen14(),h.getDozen15());
+	private void findCombination(Historic historic) {
+		Combination combination = combinationRepositoryImpl.findCombinationWithHistoric(historic);
+		if(combination != null)
+			combinationRepositoryImpl.markWithDrawn(combination.getCombinationId());
 	}
 	
 	

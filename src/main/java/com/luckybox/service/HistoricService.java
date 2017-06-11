@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.repository.HistoricRepository;
+import com.luckybox.repository.HistoricRepositoryImpl;
 
 @Service
 public class HistoricService {
 
 	@Inject
 	private HistoricRepository repository;
+	
+	@Inject
+	private HistoricRepositoryImpl repositoryImpl;
 
 	public Historic findByConcurse(Long concurse) {
 		return repository.findByConcurse(concurse - 1);
@@ -27,5 +31,17 @@ public class HistoricService {
 	
 	public List<Historic> findAll() {
 		return repository.findAll();
+	}
+	
+	public Long findByNumber(int number) {
+		return repositoryImpl.findByNumber(number);
+	}
+
+	public Long countNumberDraw(int number) {
+		return repositoryImpl.countNumberDraw(number);
+	}
+
+	public Long getLastIndexRaffle() {
+		return repositoryImpl.getLastIndexRaffle();
 	}
 }
