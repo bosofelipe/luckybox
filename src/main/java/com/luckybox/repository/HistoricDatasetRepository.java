@@ -10,10 +10,9 @@ import com.luckybox.filter.ObjectFilter;
 
 public interface HistoricDatasetRepository extends JpaRepository<HistoricDataset, Long>{
 	
-	HistoricDataset findByConcurse(Long concurse);
+	public HistoricDataset findByConcurse(Long concurse);
 
-	//select count(sum) as co, sum from historic_dataset group by sum order by co desc limit 50
-	@Query(value = "select new com.luckybox.filter.ObjectFilter(h.sum, count(h.sum)) from HistoricDataset h group by h.sum order by count(h.sum)")
+	@Query(value = "select new com.luckybox.filter.ObjectFilter(h.dozenSum, count(h.dozenSum)) from HistoricDataset h group by h.dozenSum order by count(h.dozenSum)")
 	public List<ObjectFilter> filterSum();
 
 }

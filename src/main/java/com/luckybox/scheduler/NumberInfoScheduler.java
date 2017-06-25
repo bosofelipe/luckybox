@@ -16,10 +16,11 @@ public class NumberInfoScheduler {
 	@Inject
 	private NumberInfoService numberInfoService;
 
-	@Scheduled(fixedRate = 1000)
+	@Scheduled(fixedRate=360000)
 	public void updateAlreadyDrawn() {
-		log.info("Generate number info");
+		log.info("Generate number info...");
 		numberInfoService.generateNumberInfo();
+		log.info("Finished generate number info...");
 	}
 	
 }

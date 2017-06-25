@@ -16,14 +16,11 @@ public class CombinationScheduler {
 	@Inject
 	private CombinationService combinationService;
 
-	public void generateCombinations() throws InterruptedException {
-		log.info("Start combination scheduler");
-		combinationService.generateCombination(25, 15);
-	}
-	
 	@Scheduled(fixedRate=360000)
-	public void isCombinationDrawn(){
+	public void checkCombinationAlreadyDrawn(){
+		log.info("Checking combinations drawn");
 		combinationService.checkCombinationDrawn();
+		log.info("Checking Combinations drawn finished...");
 	}
 	
 }

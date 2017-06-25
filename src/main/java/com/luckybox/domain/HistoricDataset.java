@@ -29,10 +29,6 @@ public class HistoricDataset {
 	
 	private Integer dozensLastRaffle;
 	
-	private Boolean alreadyDrawn;
-
-	private Integer sum;
-
 	private Integer dozenSum;
 
 	private Integer variationSum;

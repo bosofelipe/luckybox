@@ -34,5 +34,6 @@ public class Combination {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	private Boolean alreadyDrawn;
 
 }

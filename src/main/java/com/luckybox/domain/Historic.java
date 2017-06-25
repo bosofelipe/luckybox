@@ -40,6 +40,7 @@ public class Historic {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	private Boolean alreadyDrawn;
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "historic", cascade = CascadeType.ALL)
 	private HistoricDataset dataset;
 	

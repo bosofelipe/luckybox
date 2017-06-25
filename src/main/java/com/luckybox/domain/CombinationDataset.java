@@ -27,8 +27,6 @@ public class CombinationDataset {
 	@PrimaryKeyJoinColumn
 	private Combination combination;
 	
-	private Boolean alreadyDrawn;
-
 	private Integer sum;
 	
 	private Integer dozenSum;
