@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "numberinfo")
-public class NumberInfo {
+@Table(name = "dozeninfo")
+public class DozenInfo {
 
 	@Id
 	private Integer number;
@@ -26,5 +26,7 @@ public class NumberInfo {
 	private Long countDrawNumber;
 	
 	private Long maxSequenceDrawn;
+	
+	private Long qtSequenceDrawn;
 
 }

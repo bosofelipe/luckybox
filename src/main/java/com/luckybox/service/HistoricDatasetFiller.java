@@ -70,7 +70,7 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
-		if(historicService.findHistoricWithDozensNEConcurse(historic));
+		if(!historicService.findHistoricWithDozensNEConcurse(historic).isEmpty());
 			historicService.updateAlreadyDrawn(historic.getConcurse());
 	}
 	

@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.luckybox.domain.NumberInfo;
-import com.luckybox.service.NumberInfoService;
+import com.luckybox.domain.DozenInfo;
+import com.luckybox.service.DozenInfoService;
 
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
-@RequestMapping("/numberinfo")
-public class NumberInfoResource {
+@RequestMapping("/dozeninfo")
+public class DozenInfoResource {
 
 	
 	@Inject
-	private NumberInfoService numberInfoService;
+	private DozenInfoService dozenInfoService;
 
 	@GetMapping(path = "/generate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<NumberInfo> generate() throws IOException, ZipException {
-		return numberInfoService.generateNumberInfo();
+	public List<DozenInfo> generate() throws IOException, ZipException {
+		return dozenInfoService.generateDozenInfo();
 	}
 }

@@ -27,11 +27,7 @@ public class CombinationDataset {
 	@PrimaryKeyJoinColumn
 	private Combination combination;
 	
-	private Integer sum;
-	
 	private Integer dozenSum;
-
-	private Integer variationSum;
 
 	private Integer average;
 
