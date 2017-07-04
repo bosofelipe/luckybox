@@ -9,12 +9,13 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.repository.DozenInfoRepository;
+import com.luckybox.repository.HistoricRepositoryImpl;
 
 @Component
 public class DozenInfoService {
 
 	@Inject
-	private HistoricService historicService;
+	private HistoricRepositoryImpl historicService;
 	
 	@Inject
 	private DozenInfoRepository DozenInfoRepository;

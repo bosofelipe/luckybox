@@ -1,5 +1,7 @@
 package com.luckybox.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -34,12 +36,35 @@ public class CombinationRepositoryImpl extends QueryDslRepositorySupport {
 				qCombination.dozen14.eq(historic.getDozen14()), qCombination.dozen15.eq(historic.getDozen15()))
 				.fetchFirst();
 	}
+	
+	public List<Combination> listCombinations(Long limit){
+		long maxConcurseDrawn = getMaxConcurseDrawn();
+		long minConcurseDrawn = getMinConcurseDrawn();
+		return from(qCombination)
+				.where(qCombination.combinationId
+						.between(minConcurseDrawn, maxConcurseDrawn)
+						, qCombination.alreadyDrawn.isFalse())
+				.limit(limit)
+				.fetch();
+	}
 
 	@Transactional
 	public void markWithDrawn(Long combinationId) {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 		queryFactory.update(qCombination).where(qCombination.combinationId.eq(combinationId))
 				.set(qCombination.alreadyDrawn, true).execute();
+	}
+	
+	private long getMaxConcurseDrawn(){
+		return from(qCombination)
+				.select(qCombination.combinationId.max())
+				.where(qCombination.alreadyDrawn.isTrue()).fetchOne();
+	}
+	
+	private long getMinConcurseDrawn(){
+		return from(qCombination)
+				.select(qCombination.combinationId.min())
+				.where(qCombination.alreadyDrawn.isTrue()).fetchOne();
 	}
 
 }

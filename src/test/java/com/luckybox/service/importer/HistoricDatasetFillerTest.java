@@ -10,8 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricDatasetFiller;
-import com.luckybox.service.HistoricService;
 
 public class HistoricDatasetFillerTest {
 
@@ -19,7 +19,7 @@ public class HistoricDatasetFillerTest {
 	private HistoricDatasetFiller datasetFiller;
 	
 	@Mock
-	private HistoricService historicService;
+	private HistoricRepository historicRepository;
 	
 	
 	@Before
@@ -35,8 +35,8 @@ public class HistoricDatasetFillerTest {
 	
 	@Test
 	public void dozensLastConcurse() throws Exception {
-		Mockito.doReturn(createHistoricConcurse2()).when(historicService).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse1()).when(historicService).findByConcurse(1L);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(2L);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(1L);
 		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(2L);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(12));
 	}
@@ -49,16 +49,16 @@ public class HistoricDatasetFillerTest {
 	
 	@Test
 	public void calculateVariationSum() throws Exception {
-		Mockito.doReturn(createHistoricConcurse2()).when(historicService).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse1()).when(historicService).findByConcurse(1L);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(2L);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(1L);
 		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(30));
 	}
 	
 	@Test
 	public void calculateVariationSumWhenNegative() throws Exception {
-		Mockito.doReturn(createHistoricConcurse1()).when(historicService).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse2()).when(historicService).findByConcurse(1L);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(2L);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(1L);
 		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(30));
 	}

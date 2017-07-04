@@ -17,7 +17,6 @@ public class BetService {
 	
 	public Bet save(BetDTO betDTO) {
 		Bet bet = BetMapper.toEntity(betDTO);
-		//filter bet
 		return betRepository.save(bet);
 	}
 	

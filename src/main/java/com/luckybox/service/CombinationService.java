@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 

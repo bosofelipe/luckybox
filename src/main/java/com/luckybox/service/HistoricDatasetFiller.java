@@ -14,10 +14,18 @@ import com.luckybox.domain.HistoricDataset;
 import com.luckybox.mapper.HistoricMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricDatasetRepositoryImpl;
+import com.luckybox.repository.HistoricRepository;
+import com.luckybox.repository.HistoricRepositoryImpl;
 
 @Service
 public class HistoricDatasetFiller {
 
+	@Inject
+	private HistoricRepository historicRepository;
+	
+	@Inject
+	private HistoricRepositoryImpl historicRepositoryImpl;
+	
 	@Inject
 	private HistoricService historicService;
 	
@@ -28,12 +36,12 @@ public class HistoricDatasetFiller {
 	private HistoricDatasetRepositoryImpl historicDatasetRepoImpl;
 	
 	public void fillDataSet() {
-		List<Historic> allConcurses = historicService.findAll();
+		List<Historic> allConcurses = historicRepository.findAll();
 		allConcurses.stream().forEach(c-> fillFields(c));
 	}
 	
 	public void fillAlreadyDrawnField() {
-		List<Historic> allConcurses = historicService.findAll();
+		List<Historic> allConcurses = historicRepository.findAll();
 		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c));
 	}
 	
@@ -41,8 +49,8 @@ public class HistoricDatasetFiller {
 		if (concurse == 1)
 			return 0;
 		else{
-			Historic previousConcurse = historicService.findByConcurse(concurse-1);
-			Historic currentConcurse = historicService.findByConcurse(concurse);
+			Historic previousConcurse = historicRepository.findByConcurse(concurse-1);
+			Historic currentConcurse = historicRepository.findByConcurse(concurse);
 			return getDozensAtHistoric(toList(previousConcurse), toList(currentConcurse)).size();
 		}
 	}
@@ -70,13 +78,13 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
-		if(!historicService.findHistoricWithDozensNEConcurse(historic).isEmpty());
-			historicService.updateAlreadyDrawn(historic.getConcurse());
+		if(historicService.findHistoricWithDozensNEConcurse(historic).isEmpty());
+			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse());
 	}
 	
 	private Integer calculateVariationWhenNotFirstConcurse(Long concurse) {
-		Historic previousConcurse = historicService.findByConcurse(concurse -1);
-		Historic currentConcurse = historicService.findByConcurse(concurse);
+		Historic previousConcurse = historicRepository.findByConcurse(concurse -1);
+		Historic currentConcurse = historicRepository.findByConcurse(concurse);
 		List<Integer> listOfNumbersPreviousConcurse = HistoricMapper.toList(previousConcurse);
 		List<Integer> listOfNumbersCurrentConcurse = HistoricMapper.toList(currentConcurse);
 		int variation = sumDozens(listOfNumbersCurrentConcurse) - sumDozens(listOfNumbersPreviousConcurse);
