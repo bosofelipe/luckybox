@@ -51,9 +51,7 @@ public class CombinationService {
 		for (int j = 0; j < m[i].length; j++) {
 			String value = (m[i][j] + 1) + SEPARATOR;
 			combinationGroup.append(value);
-			System.out.print(value);
 		}
-		System.out.println();
 		String[] values = combinationGroup.toString().split(SEPARATOR);
 		CombinationDTO combinationDTO = createCombination(values, combinationId);
 		Combination combinationPersisted = combinationRepository.findOne(combinationId);

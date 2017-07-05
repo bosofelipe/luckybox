@@ -55,8 +55,8 @@ public class DatasetCreator {
 	}
 	
 
-	private Integer countDozens(List<Integer> dozens) {
-		return (int) dozens.stream().filter(c -> dozens.contains(c)).count();
+	private Integer countDozens(List<Integer> values) {
+		return (int) dozens.stream().filter(c -> values.contains(c)).count();
 	}
 	
 	private Integer sumDozens() {
