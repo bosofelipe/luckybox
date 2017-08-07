@@ -1,5 +1,6 @@
 package com.luckybox.service;
 
+import static com.luckybox.mapper.HistoricMapper.toDTO;
 import static com.luckybox.mapper.HistoricMapper.toList;
 import static java.util.stream.Collectors.toList;
 
@@ -78,7 +79,7 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
-		if(historicService.findHistoricWithDozensNEConcurse(historic).isEmpty());
+		if(historicService.findHistoricWithDozensNEConcurse(toDTO(historic)).isEmpty());
 			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse());
 	}
 	

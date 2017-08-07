@@ -59,6 +59,7 @@ public class CombinationService {
 			log.info("Create new Combination -> " + combinationGroup);
 			saveData(combinationDTO);
 		}
+		log.info("Combination already saved -> " + combinationGroup);
 	}
 
 	private void saveData(CombinationDTO combinationDTO) {

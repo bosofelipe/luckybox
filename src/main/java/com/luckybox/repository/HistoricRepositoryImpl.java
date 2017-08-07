@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.QHistoric;
+import com.luckybox.dto.HistoricDTO;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Component
@@ -25,14 +27,12 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 	}
 
 	public Long findByNumber(int dozen) {
-		return from(qHistoric)
-				.where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen)).or(qHistoric.dozen3.eq(dozen))
-						.or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen)).or(qHistoric.dozen6.eq(dozen))
-						.or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen)).or(qHistoric.dozen9.eq(dozen))
-						.or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
-						.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen))
-						.or(qHistoric.dozen14.eq(dozen)).or(qHistoric.dozen15.eq(dozen)))
-				.select(qHistoric.concurse.max()).fetchFirst();
+		return from(qHistoric).where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen))
+				.or(qHistoric.dozen3.eq(dozen)).or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen))
+				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
+				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
+				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
+				.or(qHistoric.dozen15.eq(dozen))).select(qHistoric.concurse.max()).fetchFirst();
 	}
 
 	public Long countNumberDraw(int dozen) {
@@ -43,14 +43,36 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
 				.or(qHistoric.dozen15.eq(dozen))).fetchCount();
 	}
-	
+
 	public List<Integer> listConcursesWithDozen(int dozen) {
-		return from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class)).where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen))
-				.or(qHistoric.dozen3.eq(dozen)).or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen))
-				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
-				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
-				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-				.or(qHistoric.dozen15.eq(dozen))).orderBy(qHistoric.concurse.asc()).fetch();
+		return from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class))
+				.where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen)).or(qHistoric.dozen3.eq(dozen))
+						.or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen)).or(qHistoric.dozen6.eq(dozen))
+						.or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen)).or(qHistoric.dozen9.eq(dozen))
+						.or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen)).or(qHistoric.dozen12.eq(dozen))
+						.or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
+						.or(qHistoric.dozen15.eq(dozen)))
+				.orderBy(qHistoric.concurse.asc()).fetch();
+	}
+
+	public List<Historic> findHistoricByDozens(HistoricDTO historicDTO) {
+		return from(qHistoric)
+				.where(whereDozens(historicDTO))//
+						.orderBy(qHistoric.concurse.asc()).fetch();
+	}
+
+	public List<Historic> findHistoricByDozensEQConcurse(HistoricDTO historicDTO) {
+		return from(qHistoric)
+				.where(whereDozens(historicDTO)
+						.and(qHistoric.concurse.eq(historicDTO.getConcurse())))
+						.orderBy(qHistoric.concurse.asc()).fetch();
+	}
+	
+	public List<Historic> findHistoricByDozensNEConcurse(HistoricDTO historicDTO) {
+		return from(qHistoric)
+				.where(whereDozens(historicDTO)
+						.and(qHistoric.concurse.ne(historicDTO.getConcurse())))
+						.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
 	public List<Historic> getLastRaffles(Integer range) {
@@ -65,8 +87,26 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 	@Transactional
 	public void updateAlreadyDrawn(Long concurse) {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse))
-				.set(qHistoric.alreadyDrawn, true).execute();
+		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse)).set(qHistoric.alreadyDrawn, true)
+				.execute();
+	}
+	
+	private BooleanExpression whereDozens(HistoricDTO historicDTO) {
+		return qHistoric.dozen1.eq(historicDTO.getDozen1())//
+				.and(qHistoric.dozen2.eq(historicDTO.getDozen2()))//
+				.and(qHistoric.dozen3.eq(historicDTO.getDozen3()))//
+				.and(qHistoric.dozen4.eq(historicDTO.getDozen4()))//
+				.and(qHistoric.dozen5.eq(historicDTO.getDozen5()))//
+				.and(qHistoric.dozen6.eq(historicDTO.getDozen6()))//
+				.and(qHistoric.dozen7.eq(historicDTO.getDozen7()))//
+				.and(qHistoric.dozen8.eq(historicDTO.getDozen8()))//
+				.and(qHistoric.dozen9.eq(historicDTO.getDozen9()))//
+				.and(qHistoric.dozen10.eq(historicDTO.getDozen10()))//
+				.and(qHistoric.dozen11.eq(historicDTO.getDozen11()))//
+				.and(qHistoric.dozen12.eq(historicDTO.getDozen12()))//
+				.and(qHistoric.dozen13.eq(historicDTO.getDozen13()))//
+				.and(qHistoric.dozen14.eq(historicDTO.getDozen14()))//
+				.and(qHistoric.dozen15.eq(historicDTO.getDozen15()));
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -24,7 +26,9 @@ import lombok.NoArgsConstructor;
 public class Bet {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long betId;
+	
 	private Long concurse;
 	private Integer dozen1;
 	private Integer dozen2;

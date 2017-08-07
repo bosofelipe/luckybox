@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.luckybox.dto.BetDTO;
+import com.luckybox.dto.HistoricDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -27,8 +28,40 @@ public class BetResourceIT {
 		MatcherAssert.assertThat(entity.getBody().getConcurse(), CoreMatchers.notNullValue());
 	}
 	
+	@Test
+	public void betNotDrawn() throws Exception {
+		ResponseEntity<Boolean> entity = rest.postForEntity("/bet/validate", createHistoricDTO(), Boolean.class);
+		MatcherAssert.assertThat(entity.getBody().booleanValue(), CoreMatchers.equalTo(false));
+	}
+	
+	@Test
+	public void betAlreadyDrawn() throws Exception {
+		rest.postForEntity("/historic/save", createHistoricDTO(), HistoricDTO.class);
+		ResponseEntity<Boolean> entity = rest.postForEntity("/bet/validate", createHistoricDTO(), Boolean.class);
+		MatcherAssert.assertThat(entity.getBody().booleanValue(), CoreMatchers.equalTo(true));
+	}
+	
 	private BetDTO createBetDTO() {
 		return BetDTO.builder().concurse(1522L)
+		.dozen1(2)
+		.dozen2(3)
+		.dozen3(4)
+		.dozen4(5)
+		.dozen5(7)
+		.dozen6(8)
+		.dozen7(10)
+		.dozen8(11)
+		.dozen9(12)
+		.dozen10(13)
+		.dozen11(15)
+		.dozen12(20)
+		.dozen13(21)
+		.dozen14(24)
+		.dozen15(25).build();
+	}
+	
+	private HistoricDTO createHistoricDTO() {
+		return HistoricDTO.builder().concurse(1522L)
 		.dozen1(2)
 		.dozen2(3)
 		.dozen3(4)

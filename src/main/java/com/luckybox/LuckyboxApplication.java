@@ -12,3 +12,4 @@ public class LuckyboxApplication {
 		SpringApplication.run(LuckyboxApplication.class, args);
 	}
 }
+ 	

@@ -6,12 +6,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luckybox.domain.Historic;
 import com.luckybox.dto.HistoricDTO;
+import com.luckybox.mapper.HistoricMapper;
+import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
 
 import net.lingala.zip4j.exception.ZipException;
@@ -22,6 +29,9 @@ public class HistoricResource {
 
 	@Inject
 	private HistoricImporterService historicService;
+	
+	@Inject
+	private HistoricRepository historicRepository;
 
 	@GetMapping(path = "/import", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<HistoricDTO> importHistoric() throws IOException, ZipException {
@@ -31,5 +41,10 @@ public class HistoricResource {
 	@GetMapping(path = "/findAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<HistoricDTO> findAll(Pageable pageable) throws IOException, ZipException {
 		return historicService.findAll(pageable);
+	}
+	
+	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<Historic> saveHistoric(@RequestBody HistoricDTO historicDTO) throws IOException, ZipException {
+		return new ResponseEntity<Historic>(historicRepository.save(HistoricMapper.toEntity(historicDTO)), HttpStatus.ACCEPTED);
 	}
 }
