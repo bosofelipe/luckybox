@@ -1,6 +1,10 @@
 package com.luckybox.dto;
 
+import java.util.Date;
+
+import com.luckybox.domain.Bet;
 import com.luckybox.domain.Combination;
+import com.luckybox.domain.Historic;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +15,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CombinationDTO {
+public class DozenDTO {
 
-	private Long combinationId;
+	private Long id;
+	private Long concurse;
 	private Integer dozen1;
 	private Integer dozen2;
 	private Integer dozen3;
@@ -29,13 +34,20 @@ public class CombinationDTO {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
-
-	public CombinationDTO(Combination combination) {
-		this(combination.getCombinationId(), combination.getDozen1(), combination.getDozen2(),
-				combination.getDozen3(), combination.getDozen4(), combination.getDozen5(), combination.getDozen6(),
-				combination.getDozen7(), combination.getDozen8(), combination.getDozen9(), combination.getDozen10(),
-				combination.getDozen11(), combination.getDozen12(), combination.getDozen13(), combination.getDozen14(),
-				combination.getDozen15());
+	private Date date;
+	private Date concurseDate;
+	private Boolean alreadyDrawn;
+	
+	public DozenDTO(Historic dozen) {
+		this();
+	}
+	
+	public DozenDTO(Bet bet) {
+		this();
+	}
+	
+	public DozenDTO(Combination combination) {
+		this();
 	}
 
 }

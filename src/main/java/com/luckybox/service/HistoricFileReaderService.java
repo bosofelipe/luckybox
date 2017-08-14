@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.luckybox.dto.HistoricDTO;
+import com.luckybox.dto.DozenDTO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -34,16 +34,16 @@ public class HistoricFileReaderService {
 	private static final String DATE_FORMAT = "dd/MM/yyyy";
 	private static final Date EMPTY_DATE = null;
 
-	private List<HistoricDTO> historicData = new ArrayList<>();
+	private List<DozenDTO> historicData = new ArrayList<>();
 
-	public List<HistoricDTO> readHTML(String htmlPath) throws IOException {
+	public List<DozenDTO> readHTML(String htmlPath) throws IOException {
 		File input = new File(htmlPath);
 		Document doc = Jsoup.parse(input, UTF_8);
 		Elements allLines = doc.select(TABLE_LINES);
 		return readDocumentBody(allLines);
 	}
 
-	private List<HistoricDTO> readDocumentBody(Elements allLines) {
+	private List<DozenDTO> readDocumentBody(Elements allLines) {
 		List<String> columnValues = new ArrayList<>();
 		allLines.stream().forEach(element -> catchElement(columnValues, element));
 		return historicData;
@@ -58,15 +58,15 @@ public class HistoricFileReaderService {
 		}
 	}
 
-	private HistoricDTO createHistoricDTO(String[] values) {
+	private DozenDTO createHistoricDTO(String[] values) {
 		return buildHistoricDTO(values);
 	}
 
-	private HistoricDTO buildHistoricDTO(String[] values) {
+	private DozenDTO buildHistoricDTO(String[] values) {
 		Long concurse = Long.valueOf(values[0]);
 		Date dateOfConcurse = convertStringToDate(values[1]);
 		List<Integer> dozens = createOrdenedListOfIntegers(values);
-		return HistoricDTO.builder().concurse(concurse).concurseDate(dateOfConcurse)
+		return DozenDTO.builder().concurse(concurse).concurseDate(dateOfConcurse)
 				.dozen1(dozens.get(0)).dozen2(dozens.get(1))
 				.dozen3(dozens.get(2)).dozen4(dozens.get(3))
 				.dozen5(dozens.get(4)).dozen6(dozens.get(5))

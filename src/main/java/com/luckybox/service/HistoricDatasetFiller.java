@@ -1,7 +1,5 @@
 package com.luckybox.service;
 
-import static com.luckybox.mapper.HistoricMapper.toDTO;
-import static com.luckybox.mapper.HistoricMapper.toList;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
-import com.luckybox.mapper.HistoricMapper;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
@@ -52,7 +50,7 @@ public class HistoricDatasetFiller {
 		else{
 			Historic previousConcurse = historicRepository.findByConcurse(concurse-1);
 			Historic currentConcurse = historicRepository.findByConcurse(concurse);
-			return getDozensAtHistoric(toList(previousConcurse), toList(currentConcurse)).size();
+			return getDozensAtHistoric(DozenMapper.toList(previousConcurse), DozenMapper.toList(currentConcurse)).size();
 		}
 	}
 
@@ -79,15 +77,15 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
-		if(historicService.findHistoricWithDozensNEConcurse(toDTO(historic)).isEmpty());
+		if(historicService.findHistoricWithDozensNEConcurse(DozenMapper.toDTO(historic)).isEmpty());
 			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse());
 	}
 	
 	private Integer calculateVariationWhenNotFirstConcurse(Long concurse) {
 		Historic previousConcurse = historicRepository.findByConcurse(concurse -1);
 		Historic currentConcurse = historicRepository.findByConcurse(concurse);
-		List<Integer> listOfNumbersPreviousConcurse = HistoricMapper.toList(previousConcurse);
-		List<Integer> listOfNumbersCurrentConcurse = HistoricMapper.toList(currentConcurse);
+		List<Integer> listOfNumbersPreviousConcurse = DozenMapper.toList(previousConcurse);
+		List<Integer> listOfNumbersCurrentConcurse = DozenMapper.toList(currentConcurse);
 		int variation = sumDozens(listOfNumbersCurrentConcurse) - sumDozens(listOfNumbersPreviousConcurse);
 		return variation < 0 ? variation * -1 : variation;
 	}

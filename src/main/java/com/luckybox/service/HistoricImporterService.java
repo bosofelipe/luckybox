@@ -7,14 +7,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
-import com.luckybox.dto.HistoricDTO;
-import com.luckybox.mapper.HistoricMapper;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
 
@@ -43,34 +42,33 @@ public class HistoricImporterService {
 	@Inject
 	private DatasetCreator datasetCreator;
 
-	public List<HistoricDTO> importConcurses() throws IOException, ZipException {
+	public List<DozenDTO> importConcurses() throws IOException, ZipException {
 		log.info("Start importation");
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(CAIXA_URL);
-		List<HistoricDTO> historicDTO = historicFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTFAC.HTM");
+		List<DozenDTO> historicDTO = historicFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTFAC.HTM");
 		historicDTO.stream().forEach(dto -> persist(dto));
 		historicDTO.stream().forEach(dto -> fillDatasetFields(dto));
 		log.info("Finish importation");
 		return historicDTO;
 	}
 
-	private void fillDatasetFields(HistoricDTO dto) {
+	private void fillDatasetFields(DozenDTO dto) {
 		Historic historic = repository.findOne(dto.getConcurse());
 		if (historic != null) {
-			HistoricDataset dataset = datasetCreator.create(dto);
+			HistoricDataset dataset = datasetCreator.createHistoricDataSet(dto);
 			dataset.setConcurse(dto.getConcurse());
 			datasetRepository.save(dataset);
 		}
 	}
 
-	public List<HistoricDTO> findAll(Pageable pageable) {
-		Page<HistoricDTO> historic = repository.findAll(pageable).map(HistoricDTO::new);
-		return historic.getContent();
+	public List<DozenDTO> findAll(Pageable pageable) {
+		return repository.findAll(pageable).map(DozenDTO::new).getContent();
 	}
 
-	private void persist(HistoricDTO dto) {
+	private void persist(DozenDTO dto) {
 		Historic historic = repository.findOne(dto.getConcurse());
 		if (historic == null) {
-			Historic historicEntity = HistoricMapper.toEntity(dto);
+			Historic historicEntity = DozenMapper.toHistoric(dto);
 			repository.save(historicEntity);
 		}
 	}

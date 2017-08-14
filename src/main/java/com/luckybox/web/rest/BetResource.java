@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.domain.Bet;
-import com.luckybox.dto.BetDTO;
-import com.luckybox.dto.HistoricDTO;
+import com.luckybox.dto.DozenDTO;
 import com.luckybox.service.BetService;
 
 @RestController
@@ -23,12 +22,12 @@ public class BetResource {
 	private BetService betService;
 	
 	@PostMapping(path = "/toBet", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Bet> toBet(@RequestBody BetDTO betDTO){
-		return new ResponseEntity<Bet>(betService.save(betDTO), HttpStatus.OK);
+	public ResponseEntity<Bet> toBet(@RequestBody DozenDTO dozenDTO){
+		return new ResponseEntity<Bet>(betService.save(dozenDTO), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/validate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Boolean> validateBet(@RequestBody HistoricDTO historicDTO){
-		return  new ResponseEntity<Boolean>(betService.isAlreadyDrawn(historicDTO), HttpStatus.OK);
+	public ResponseEntity<Boolean> validateBet(@RequestBody DozenDTO dozenDTO){
+		return  new ResponseEntity<Boolean>(betService.isAlreadyDrawn(dozenDTO), HttpStatus.OK);
 	}
 }

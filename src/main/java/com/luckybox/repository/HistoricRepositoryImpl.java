@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.QHistoric;
-import com.luckybox.dto.HistoricDTO;
+import com.luckybox.dto.DozenDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -55,23 +55,23 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
-	public List<Historic> findHistoricByDozens(HistoricDTO historicDTO) {
+	public List<Historic> findHistoricByDozens(DozenDTO dozenDTO) {
 		return from(qHistoric)
-				.where(whereDozens(historicDTO))//
+				.where(whereDozens(dozenDTO))//
 						.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
-	public List<Historic> findHistoricByDozensEQConcurse(HistoricDTO historicDTO) {
+	public List<Historic> findHistoricByDozensEQConcurse(DozenDTO dozenDTO) {
 		return from(qHistoric)
-				.where(whereDozens(historicDTO)
-						.and(qHistoric.concurse.eq(historicDTO.getConcurse())))
+				.where(whereDozens(dozenDTO)
+						.and(qHistoric.concurse.eq(dozenDTO.getConcurse())))
 						.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 	
-	public List<Historic> findHistoricByDozensNEConcurse(HistoricDTO historicDTO) {
+	public List<Historic> findHistoricByDozensNEConcurse(DozenDTO dozenDTO) {
 		return from(qHistoric)
-				.where(whereDozens(historicDTO)
-						.and(qHistoric.concurse.ne(historicDTO.getConcurse())))
+				.where(whereDozens(dozenDTO)
+						.and(qHistoric.concurse.ne(dozenDTO.getConcurse())))
 						.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
@@ -91,22 +91,22 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.execute();
 	}
 	
-	private BooleanExpression whereDozens(HistoricDTO historicDTO) {
-		return qHistoric.dozen1.eq(historicDTO.getDozen1())//
-				.and(qHistoric.dozen2.eq(historicDTO.getDozen2()))//
-				.and(qHistoric.dozen3.eq(historicDTO.getDozen3()))//
-				.and(qHistoric.dozen4.eq(historicDTO.getDozen4()))//
-				.and(qHistoric.dozen5.eq(historicDTO.getDozen5()))//
-				.and(qHistoric.dozen6.eq(historicDTO.getDozen6()))//
-				.and(qHistoric.dozen7.eq(historicDTO.getDozen7()))//
-				.and(qHistoric.dozen8.eq(historicDTO.getDozen8()))//
-				.and(qHistoric.dozen9.eq(historicDTO.getDozen9()))//
-				.and(qHistoric.dozen10.eq(historicDTO.getDozen10()))//
-				.and(qHistoric.dozen11.eq(historicDTO.getDozen11()))//
-				.and(qHistoric.dozen12.eq(historicDTO.getDozen12()))//
-				.and(qHistoric.dozen13.eq(historicDTO.getDozen13()))//
-				.and(qHistoric.dozen14.eq(historicDTO.getDozen14()))//
-				.and(qHistoric.dozen15.eq(historicDTO.getDozen15()));
+	private BooleanExpression whereDozens(DozenDTO dozenDTO) {
+		return qHistoric.dozen1.eq(dozenDTO.getDozen1())//
+				.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
+				.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
+				.and(qHistoric.dozen4.eq(dozenDTO.getDozen4()))//
+				.and(qHistoric.dozen5.eq(dozenDTO.getDozen5()))//
+				.and(qHistoric.dozen6.eq(dozenDTO.getDozen6()))//
+				.and(qHistoric.dozen7.eq(dozenDTO.getDozen7()))//
+				.and(qHistoric.dozen8.eq(dozenDTO.getDozen8()))//
+				.and(qHistoric.dozen9.eq(dozenDTO.getDozen9()))//
+				.and(qHistoric.dozen10.eq(dozenDTO.getDozen10()))//
+				.and(qHistoric.dozen11.eq(dozenDTO.getDozen11()))//
+				.and(qHistoric.dozen12.eq(dozenDTO.getDozen12()))//
+				.and(qHistoric.dozen13.eq(dozenDTO.getDozen13()))//
+				.and(qHistoric.dozen14.eq(dozenDTO.getDozen14()))//
+				.and(qHistoric.dozen15.eq(dozenDTO.getDozen15()));
 	}
 
 }

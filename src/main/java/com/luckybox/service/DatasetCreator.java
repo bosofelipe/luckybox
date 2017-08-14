@@ -10,20 +10,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.constants.ConstantsLoto;
-import com.luckybox.domain.CombinationDTO;
 import com.luckybox.domain.CombinationDataset;
 import com.luckybox.domain.HistoricDataset;
-import com.luckybox.dto.HistoricDTO;
-import com.luckybox.mapper.CombinationMapper;
-import com.luckybox.mapper.HistoricMapper;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 
 @Service
 public class DatasetCreator {
 	private static final int QUANTITY_OF_DOZENS = 15;
 	private List<Integer> dozens = new ArrayList<>();
 
-	public HistoricDataset create(HistoricDTO historicDTO) {
-		dozens = HistoricMapper.toList(historicDTO);
+	public HistoricDataset createHistoricDataSet(DozenDTO historicDTO) {
+		dozens = DozenMapper.toList(historicDTO);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
 		return HistoricDataset.builder().dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
@@ -38,14 +36,14 @@ public class DatasetCreator {
 				.fourthLine(countDozens(ConstantsLoto.FOURTH_LINE)).fivethLine(countDozens(ConstantsLoto.FIVETH_LINE)).build();
 	}
 	
-	public CombinationDataset create(CombinationDTO combination) {
-		dozens = CombinationMapper.toList(combination);
+	public CombinationDataset createCombinationDataset(DozenDTO dozenDTO) {
+		dozens = DozenMapper.toList(dozenDTO);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
 		return CombinationDataset.builder().dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
 				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
-				.combinationId(combination.getCombinationId()).firstColumn(countDozens(ConstantsLoto.FIRST_COLUMN))
+				.combinationId(dozenDTO.getId()).firstColumn(countDozens(ConstantsLoto.FIRST_COLUMN))
 				.secondColumn(countDozens(ConstantsLoto.SECOND_COLUMN))
 				.thirdColumn(countDozens(ConstantsLoto.THIRD_COLUMN))
 				.fourthColumn(countDozens(ConstantsLoto.FOURTH_COLUMN))

@@ -15,7 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.luckybox.dto.HistoricDTO;
+import com.luckybox.dto.DozenDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -27,8 +27,8 @@ public class HistoricResourceIT {
 	
 	@Test
 	public void importConcurses() throws Exception {
-		ParameterizedTypeReference<List<HistoricDTO>> historic = new ParameterizedTypeReference<List<HistoricDTO>>() {};
-		ResponseEntity<List<HistoricDTO>> response = rest.exchange("/historic/import", HttpMethod.GET, null, historic);
+		ParameterizedTypeReference<List<DozenDTO>> historic = new ParameterizedTypeReference<List<DozenDTO>>() {};
+		ResponseEntity<List<DozenDTO>> response = rest.exchange("/historic/import", HttpMethod.GET, null, historic);
 		MatcherAssert.assertThat(response.getBody().get(0), CoreMatchers.notNullValue());
 	}
 

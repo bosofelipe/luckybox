@@ -8,10 +8,10 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.Combination;
-import com.luckybox.domain.CombinationDTO;
 import com.luckybox.domain.CombinationDataset;
 import com.luckybox.domain.Historic;
-import com.luckybox.mapper.CombinationMapper;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.CombinationDatasetRepository;
 import com.luckybox.repository.CombinationRepository;
 import com.luckybox.repository.CombinationRepositoryImpl;
@@ -53,7 +53,7 @@ public class CombinationService {
 			combinationGroup.append(value);
 		}
 		String[] values = combinationGroup.toString().split(SEPARATOR);
-		CombinationDTO combinationDTO = createCombination(values, combinationId);
+		DozenDTO combinationDTO = createCombination(values, combinationId);
 		Combination combinationPersisted = combinationRepository.findOne(combinationId);
 		if (combinationPersisted == null) {
 			log.info("Create new Combination -> " + combinationGroup);
@@ -62,14 +62,14 @@ public class CombinationService {
 		log.info("Combination already saved -> " + combinationGroup);
 	}
 
-	private void saveData(CombinationDTO combinationDTO) {
-		combinationRepository.save(CombinationMapper.toEntity(combinationDTO));
-		CombinationDataset dataset = new DatasetCreator().create(combinationDTO);
+	private void saveData(DozenDTO dozenDTO) {
+		combinationRepository.save(DozenMapper.toCombination(dozenDTO));
+		CombinationDataset dataset = new DatasetCreator().createCombinationDataset(dozenDTO);
 		combinationDatasetRepository.save(dataset);
 	}
 
-	private CombinationDTO createCombination(String values[], Long id) {
-		return CombinationDTO.builder().combinationId(id).dozen1(Integer.valueOf(values[0]))
+	private DozenDTO createCombination(String values[], Long id) {
+		return DozenDTO.builder().id(id).dozen1(Integer.valueOf(values[0]))
 				.dozen2(Integer.valueOf(values[1])).dozen3(Integer.valueOf(values[2]))
 				.dozen4(Integer.valueOf(values[3])).dozen5(Integer.valueOf(values[4]))
 				.dozen6(Integer.valueOf(values[5])).dozen7(Integer.valueOf(values[6]))

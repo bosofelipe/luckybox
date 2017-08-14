@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.domain.Historic;
-import com.luckybox.dto.HistoricDTO;
-import com.luckybox.mapper.HistoricMapper;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
 
@@ -34,17 +34,17 @@ public class HistoricResource {
 	private HistoricRepository historicRepository;
 
 	@GetMapping(path = "/import", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<HistoricDTO> importHistoric() throws IOException, ZipException {
+	public List<DozenDTO> importHistoric() throws IOException, ZipException {
 		return historicService.importConcurses();
 	}
 	
 	@GetMapping(path = "/findAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<HistoricDTO> findAll(Pageable pageable) throws IOException, ZipException {
+	public List<DozenDTO> findAll(Pageable pageable) throws IOException, ZipException {
 		return historicService.findAll(pageable);
 	}
 	
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Historic> saveHistoric(@RequestBody HistoricDTO historicDTO) throws IOException, ZipException {
-		return new ResponseEntity<Historic>(historicRepository.save(HistoricMapper.toEntity(historicDTO)), HttpStatus.ACCEPTED);
+	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
+		return new ResponseEntity<Historic>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
 	}
 }
