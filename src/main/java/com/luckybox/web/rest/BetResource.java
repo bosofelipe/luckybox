@@ -1,5 +1,7 @@
 package com.luckybox.web.rest;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luckybox.bet.rule.RuleType;
 import com.luckybox.domain.Bet;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.service.BetService;
@@ -29,5 +32,10 @@ public class BetResource {
 	@PostMapping(path = "/validate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<Boolean> validateBet(@RequestBody DozenDTO dozenDTO){
 		return  new ResponseEntity<Boolean>(betService.isAlreadyDrawn(dozenDTO), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<List<RuleType>> checkRules(@RequestBody DozenDTO dozenDTO){
+		return  new ResponseEntity<List<RuleType>>(betService.checkRules(dozenDTO), HttpStatus.OK);
 	}
 }

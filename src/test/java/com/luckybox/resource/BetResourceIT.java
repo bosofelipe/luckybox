@@ -1,5 +1,7 @@
 package com.luckybox.resource;
 
+import java.util.List;
+
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -8,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.luckybox.bet.rule.RuleType;
 import com.luckybox.dto.DozenDTO;
 
 @RunWith(SpringRunner.class)
@@ -38,6 +42,12 @@ public class BetResourceIT {
 		rest.postForEntity("/historic/save", createHistoricDTO(), DozenDTO.class);
 		ResponseEntity<Boolean> entity = rest.postForEntity("/bet/validate", createHistoricDTO(), Boolean.class);
 		MatcherAssert.assertThat(entity.getBody().booleanValue(), CoreMatchers.equalTo(true));
+	}
+	
+	@Test
+	public void checkRulesEmpty() throws Exception {
+		ResponseEntity<List<RuleType>> entity = rest.postForEntity("/bet/checkRules", createHistoricDTO(),null, new ParameterizedTypeReference<List<RuleType>>(){});
+		MatcherAssert.assertThat(entity.getBody().size(), CoreMatchers.equalTo(0));
 	}
 	
 	private DozenDTO createDozenDTO() {
