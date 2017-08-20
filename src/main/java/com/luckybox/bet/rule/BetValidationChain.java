@@ -25,9 +25,13 @@ public class BetValidationChain {
 		RuleChain rule = new PrimeRule();
 		RuleChain pair = new PairRule();
 		RuleChain firstLine = new FirstLineRule();
+		RuleChain sum = new SumRule();
+		RuleChain lastRaffle = new LastRaffleRule();
 
 		rule.setNextChain(pair);
-		pair.setNextChain(firstLine);
+		pair.setNextChain(sum);
+		sum.setNextChain(lastRaffle);
+		lastRaffle.setNextChain(firstLine);
 		return rule;
 	}
 

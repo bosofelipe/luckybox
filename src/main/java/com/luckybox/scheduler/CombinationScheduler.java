@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.service.CombinationService;
@@ -31,7 +32,7 @@ public class CombinationScheduler {
 	private HistoricImporterService historicService;
 	
 
-	//@Scheduled(fixedRate=360000)
+	@Scheduled(fixedRate=360000)
 	public void schedules() throws IOException, ZipException{
 		importHistoric();
 		checkHistoricAlreadyDrawn();

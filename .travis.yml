@@ -1,0 +1,18 @@
+addons:
+  sonarqube: true
+
+language: java
+
+branches:
+  only:
+  - master
+
+jdk:
+  - oraclejdk8
+
+script: mvn clean install
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
