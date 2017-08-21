@@ -13,6 +13,13 @@ public class LastRaffleRule implements RuleChain {
 	private RuleChain chain;
 
 	private HistoricRepositoryImpl historicRepositoryImpl;
+	
+	public LastRaffleRule() {
+	}
+	
+	public LastRaffleRule(HistoricRepositoryImpl historicRepositoryImpl) {
+		this.historicRepositoryImpl = historicRepositoryImpl;
+	}
 
 	@Override
 	public void setNextChain(RuleChain nextChain) {

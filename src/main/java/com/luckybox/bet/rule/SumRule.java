@@ -14,8 +14,8 @@ public class SumRule implements RuleChain{
 
 	@Override
 	public void checkRule(List<Integer> numbers, List<RuleType> types) {
-		if(numbers.stream().mapToInt(Number::intValue).sum()< 141 && 
-				numbers.stream().mapToInt(Number::intValue).sum()>247)
+		int sum = numbers.stream().mapToInt(Number::intValue).sum();
+		if(sum < 141 || sum >247)
 			types.add(RuleType.SUM);
 		this.chain.checkRule(numbers, types);
 	}
