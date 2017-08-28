@@ -77,7 +77,7 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 
 	public List<Historic> getLastRaffles(Integer range) {
 		Long lastIndexRaffle = getLastIndexRaffle();
-		return from(qHistoric).where(qHistoric.concurse.goe(lastIndexRaffle - range)).fetch();
+		return from(qHistoric).where(qHistoric.concurse.goe(lastIndexRaffle - range)).orderBy(qHistoric.concurse.desc()).fetch();
 	}
 
 	public Long getLastIndexRaffle() {

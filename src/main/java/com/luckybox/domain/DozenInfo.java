@@ -28,5 +28,7 @@ public class DozenInfo {
 	private Long maxSequenceDrawn;
 	
 	private Long qtSequenceDrawn;
+	
+	private Long currentSequenceDrawn;
 
 }

@@ -27,7 +27,7 @@ public class BetValidationChain {
 	private RuleChain getRules() {
 		RuleChain rule = new PrimeRule();
 		RuleChain pair = new PairRule();
-		RuleChain firstLine = new FirstLineRule();
+		RuleChain columnLine = new ColumnLineRule();
 		RuleChain sum = new SumRule();
 		RuleChain fibonacci = new FibonacciRule();
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl);
@@ -35,7 +35,8 @@ public class BetValidationChain {
 		rule.setNextChain(pair);
 		pair.setNextChain(sum);
 		sum.setNextChain(lastRaffle);
-		lastRaffle.setNextChain(firstLine);
+		lastRaffle.setNextChain(fibonacci);
+		fibonacci.setNextChain(columnLine);
 		return rule;
 	}
 

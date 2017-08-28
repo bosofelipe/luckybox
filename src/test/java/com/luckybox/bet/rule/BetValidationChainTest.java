@@ -75,20 +75,6 @@ public class BetValidationChainTest {
 		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithExceedPairs());
 		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.PAIR));
 	}
-
-	@Test
-	public void catchRuleFirstColumn() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithFirstLineDozensWhenLow());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.FIRST_LINE));
-	}
-
-	@Test
-	public void catchRuleFirstColumnExceed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithFirstLineDozensWhenExceed());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.FIRST_LINE));
-	}
 	
 	@Test
 	public void catchRuleLastRaffle() throws Exception {
