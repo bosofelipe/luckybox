@@ -29,14 +29,16 @@ public class BetValidationChain {
 		RuleChain pair = new PairRule();
 		RuleChain columnLine = new ColumnLineRule();
 		RuleChain sum = new SumRule();
+		RuleChain dozenInfo = new DozenInfoRule();
 		RuleChain fibonacci = new FibonacciRule();
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl);
 
 		rule.setNextChain(pair);
 		pair.setNextChain(sum);
 		sum.setNextChain(lastRaffle);
-		lastRaffle.setNextChain(fibonacci);
-		fibonacci.setNextChain(columnLine);
+		lastRaffle.setNextChain(dozenInfo);
+		dozenInfo.setNextChain(columnLine);
+		columnLine.setNextChain(fibonacci);
 		return rule;
 	}
 

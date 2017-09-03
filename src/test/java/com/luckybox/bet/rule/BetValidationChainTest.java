@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.assertj.core.util.Lists;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -15,8 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.luckybox.domain.DozenInfo;
 import com.luckybox.domain.Historic;
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
 public class BetValidationChainTest {
@@ -26,6 +29,9 @@ public class BetValidationChainTest {
 	
 	@Mock
 	private HistoricRepositoryImpl historicDatasetRepositoryImpl;
+	
+	@Mock
+	private DozenInfoRepository dozenInfoRepository;
 	
 	@Before
 	public void start(){
@@ -104,6 +110,44 @@ public class BetValidationChainTest {
 		assertThat(validationChain, CoreMatchers.hasItem(RuleType.SUM));
 	}
 	
+	@Test
+	public void catchRuleCurrentSequenceByDozenInfo() throws Exception {
+		when(dozenInfoRepository.findAll()).thenReturn(createDozenInfo());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		List<RuleType> validationChain = chainValidation.validationChain(createDozensWithHighSum());
+		assertThat(validationChain, CoreMatchers.hasItem(RuleType.CURRENT_SEQUENCE));
+	}
+	
+	private Iterable<DozenInfo> createDozenInfo() {
+		Lists.newArrayList(DozenInfo.builder().number(1).currentSequenceDrawn(7L),
+				DozenInfo.builder().number(2).currentSequenceDrawn(7L),
+				DozenInfo.builder().number(3).currentSequenceDrawn(3L),
+				DozenInfo.builder().number(4).currentSequenceDrawn(3L),
+				DozenInfo.builder().number(5).currentSequenceDrawn(2L),
+				DozenInfo.builder().number(6).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(7).currentSequenceDrawn(2L),
+				DozenInfo.builder().number(8).currentSequenceDrawn(3L),
+				DozenInfo.builder().number(9).currentSequenceDrawn(3L),
+				DozenInfo.builder().number(10).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(11).currentSequenceDrawn(1L),
+				DozenInfo.builder().number(12).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(13).currentSequenceDrawn(4L),
+				DozenInfo.builder().number(14).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(15).currentSequenceDrawn(2L),
+				DozenInfo.builder().number(16).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(17).currentSequenceDrawn(1L),
+				DozenInfo.builder().number(18).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(19).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(20).currentSequenceDrawn(1L),
+				DozenInfo.builder().number(21).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(22).currentSequenceDrawn(1L),
+				DozenInfo.builder().number(23).currentSequenceDrawn(0L),
+				DozenInfo.builder().number(24).currentSequenceDrawn(1L),
+				DozenInfo.builder().number(25).currentSequenceDrawn(0L)
+				);
+		return null;
+	}
+
 	private Historic createHistoricManyDozens() {
 		return Historic.builder()
 				.dozen1(1)//
@@ -244,27 +288,6 @@ public class BetValidationChainTest {
 		.dozen15(25)//
 		.build();
 	}
-	
-	private DozenDTO createDozenDTOWithFirstLineDozensWhenLow() {
-		return DozenDTO.builder()
-		.dozen1(5)//
-		.dozen2(6)//
-		.dozen3(7)//
-		.dozen4(8)//
-		.dozen5(9)//
-		.dozen6(10)//
-		.dozen7(11)//
-		.dozen8(12)//
-		.dozen9(13)//
-		.dozen10(14)//
-		.dozen11(15)//
-		.dozen12(17)//
-		.dozen13(21)//
-		.dozen14(24)//
-		.dozen15(25)//
-		.build();
-	}
-	
 	
 	private DozenDTO createDozenDTOWithDozenLastRaffle() {
 		return DozenDTO.builder()

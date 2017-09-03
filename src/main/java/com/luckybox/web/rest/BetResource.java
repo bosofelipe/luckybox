@@ -1,8 +1,14 @@
 package com.luckybox.web.rest;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,32 +16,63 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.luckybox.bet.rule.RuleType;
 import com.luckybox.domain.Bet;
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.dto.GroupBetMessageDTO;
 import com.luckybox.service.BetService;
 
 @RestController
 @RequestMapping("/bet")
+@Produces(value=javax.ws.rs.core.MediaType.APPLICATION_JSON)
+@Consumes(value=javax.ws.rs.core.MediaType.APPLICATION_JSON)
 public class BetResource {
 
 	@Inject
 	private BetService betService;
-	
+
 	@PostMapping(path = "/toBet", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Bet> toBet(@RequestBody DozenDTO dozenDTO){
+	public ResponseEntity<Bet> toBet(@RequestBody DozenDTO dozenDTO) {
 		return new ResponseEntity<Bet>(betService.save(dozenDTO), HttpStatus.OK);
 	}
-	
+
 	@PostMapping(path = "/validate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Boolean> validateBet(@RequestBody DozenDTO dozenDTO){
-		return  new ResponseEntity<Boolean>(betService.isAlreadyDrawn(dozenDTO), HttpStatus.OK);
+	public ResponseEntity<Boolean> validateBet(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<Boolean>(betService.isAlreadyDrawn(dozenDTO), HttpStatus.OK);
 	}
-	
+
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<RuleType>> checkRules(@RequestBody DozenDTO dozenDTO){
-		return  new ResponseEntity<List<RuleType>>(betService.checkRules(dozenDTO), HttpStatus.OK);
+	public ResponseEntity<List<RuleType>> checkRules(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<List<RuleType>>(betService.checkRules(dozenDTO), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
+		String name = "file";
+		if (!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(new File(name + "-uploaded")));
+				stream.write(bytes);
+				stream.close();
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (Exception e) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping(value = "/saveByPath", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<GroupBetMessageDTO> saveBetsByPath(@RequestParam("file") String path) throws IOException {
+		return new ResponseEntity<GroupBetMessageDTO>(betService.saveBetsByPath(path), HttpStatus.OK);
 	}
 }

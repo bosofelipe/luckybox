@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.luckybox.bet.rule.RuleType;
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.dto.GroupBetMessageDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -52,6 +53,12 @@ public class BetResourceIT {
 	public void checkRulesEmpty() throws Exception {
 		ResponseEntity<List<RuleType>> responseEntity = rest.exchange("/bet/rules", HttpMethod.POST, new HttpEntity<>(createDozenDTO()), new ParameterizedTypeReference<List<RuleType>>() {});
 		MatcherAssert.assertThat(responseEntity.getBody().size(), CoreMatchers.equalTo(0));
+	}
+	
+	@Test
+	public void saveBetByPath() throws Exception {
+		ResponseEntity<GroupBetMessageDTO> entity = rest.exchange("/bet/saveByPath", HttpMethod.POST, new HttpEntity<>("C:/bets.txt"), GroupBetMessageDTO.class);
+		MatcherAssert.assertThat(entity.getBody().getMessage().size(), CoreMatchers.equalTo(0));
 	}
 	
 	private DozenDTO createDozenDTO() {
