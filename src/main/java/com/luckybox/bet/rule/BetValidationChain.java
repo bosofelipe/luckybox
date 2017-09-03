@@ -4,16 +4,24 @@ import static com.luckybox.mapper.DozenMapper.toList;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Component;
 
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
 import jersey.repackaged.com.google.common.collect.Lists;
+
 @Component
 public class BetValidationChain {
 
+	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
+	
+	@Inject
+	private DozenInfoRepository dozenInfoRepo;
 	
 	public List<RuleType> validationChain(DozenDTO dozenDTO) {
 		
@@ -29,7 +37,7 @@ public class BetValidationChain {
 		RuleChain pair = new PairRule();
 		RuleChain columnLine = new ColumnLineRule();
 		RuleChain sum = new SumRule();
-		RuleChain dozenInfo = new DozenInfoRule();
+		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
 		RuleChain fibonacci = new FibonacciRule();
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl);
 

@@ -5,11 +5,13 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
+import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.domain.QHistoricDataset;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+@Component
 public class HistoricDatasetRepositoryImpl extends QueryDslRepositorySupport {
 	QHistoricDataset qHistoricDataset = QHistoricDataset.historicDataset;
 

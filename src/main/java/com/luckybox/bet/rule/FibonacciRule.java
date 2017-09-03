@@ -4,8 +4,11 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.luckybox.constants.ConstantsLoto;
 
+@Component
 public class FibonacciRule implements RuleChain {
 
 	@SuppressWarnings("unused")

@@ -4,14 +4,20 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Component;
+
 import com.luckybox.domain.Historic;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
+@Component
 public class LastRaffleRule implements RuleChain {
 
 	private RuleChain chain;
 
+	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
 	
 	public LastRaffleRule() {

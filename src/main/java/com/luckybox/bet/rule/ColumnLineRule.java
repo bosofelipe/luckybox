@@ -15,6 +15,9 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ColumnLineRule implements RuleChain {
 
 	private RuleChain chain;

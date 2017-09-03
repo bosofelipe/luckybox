@@ -72,7 +72,7 @@ public class BetResource {
 	}
 
 	@RequestMapping(value = "/saveByPath", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<GroupBetMessageDTO> saveBetsByPath(@RequestParam("file") String path) throws IOException {
-		return new ResponseEntity<GroupBetMessageDTO>(betService.saveBetsByPath(path), HttpStatus.OK);
+	public GroupBetMessageDTO saveBetsByPath(@RequestParam("file") String path) throws IOException {
+		return betService.saveBetsByPath(path);
 	}
 }

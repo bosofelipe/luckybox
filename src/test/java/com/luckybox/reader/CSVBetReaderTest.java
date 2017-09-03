@@ -1,5 +1,6 @@
 package com.luckybox.reader;
 
+import java.io.File;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
@@ -17,7 +18,7 @@ public class CSVBetReaderTest {
 	@Test
 	public void checkBets() throws Exception {
 		String fileBets = getClass().getResource("/bets/bets.txt").getFile();
-		List<DozenDTO> bets = reader.read(fileBets);
+		List<DozenDTO> bets = reader.read(new File(fileBets));
 		MatcherAssert.assertThat(bets.size(), CoreMatchers.equalTo(3));
 		checkBet(0, bets,  Lists.newArrayList(1556, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
 		checkBet(1, bets,  Lists.newArrayList(1556, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,16));
@@ -27,13 +28,13 @@ public class CSVBetReaderTest {
 	@Test(expected= FileReaderException.class)
 	public void throwErrorWhenFileEmpty() throws Exception {
 		String fileBets = getClass().getResource("/bets/errorFile.txt").getFile();
-		reader.read(fileBets);
+		reader.read(new File(fileBets));
 	}
 	
 	@Test(expected= FileReaderException.class)
 	public void invalidBet() throws Exception {
 		String fileBets = getClass().getResource("/bets/invalidBets.txt").getFile();
-		reader.read(fileBets);
+		reader.read(new File(fileBets));
 	}
 
 	private void checkBet(int index, List<DozenDTO> bets, List<Integer> values) {

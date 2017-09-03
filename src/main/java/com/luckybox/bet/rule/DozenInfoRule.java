@@ -6,15 +6,25 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Component;
+
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.repository.DozenInfoRepository;
 
+@Component
 public class DozenInfoRule implements RuleChain {
 
 	private RuleChain chain;
 	
 	@Inject
 	private DozenInfoRepository dozenInfoRepository;
+	
+	public DozenInfoRule(){
+	}
+	
+	public DozenInfoRule(DozenInfoRepository dozenInfoRepository) {
+		this.dozenInfoRepository = dozenInfoRepository;
+	}
 
 	@Override
 	public void setNextChain(RuleChain nextChain) {

@@ -55,6 +55,7 @@ public class BetResourceIT {
 		MatcherAssert.assertThat(responseEntity.getBody().size(), CoreMatchers.equalTo(0));
 	}
 	
+	@Ignore
 	@Test
 	public void saveBetByPath() throws Exception {
 		ResponseEntity<GroupBetMessageDTO> entity = rest.exchange("/bet/saveByPath", HttpMethod.POST, new HttpEntity<>("C:/bets.txt"), GroupBetMessageDTO.class);

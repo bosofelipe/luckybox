@@ -2,6 +2,7 @@ package com.luckybox.reader;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ import com.luckybox.exception.FileReaderException;
 public class CSVBetReader {
 	private static final String CSV_DIVISOR = ";";
 
-	public List<DozenDTO> read(String path) throws IOException {
+	public List<DozenDTO> read(File file) throws IOException {
+		return readFile(file);
+	}
+	
+	private List<DozenDTO> readFile(File file) throws IOException, FileNotFoundException {
 		List<DozenDTO> bets = new ArrayList<>();
-		File file = new File(path);
 		String line = "";
-
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			while ((line = br.readLine()) != null)
 				try {

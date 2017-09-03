@@ -1,13 +1,14 @@
 package com.luckybox.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.luckybox.bet.rule.BetValidationChain;
 import com.luckybox.bet.rule.RuleType;
 import com.luckybox.domain.Bet;
@@ -49,10 +50,19 @@ public class BetService {
 		return chainOfRules.validationChain(dozenDTO);
 	}
 
+	public GroupBetMessageDTO saveBetsByFile(File file) throws IOException {
+		GroupBetMessageDTO groupMessage = new GroupBetMessageDTO();
+		List<BetMessageDTO> message = Lists.newArrayList();
+		List<DozenDTO> bets = reader.read(file);
+		bets.stream().forEach(dozenDTO -> checkRulesAndSave(message, dozenDTO));
+		groupMessage.setMessage(message);
+		return groupMessage;
+	}
+	
 	public GroupBetMessageDTO saveBetsByPath(String path) throws IOException {
 		GroupBetMessageDTO groupMessage = new GroupBetMessageDTO();
 		List<BetMessageDTO> message = Lists.newArrayList();
-		List<DozenDTO> bets = reader.read(path);
+		List<DozenDTO> bets = reader.read(new File(path));
 		bets.stream().forEach(dozenDTO -> checkRulesAndSave(message, dozenDTO));
 		groupMessage.setMessage(message);
 		return groupMessage;
