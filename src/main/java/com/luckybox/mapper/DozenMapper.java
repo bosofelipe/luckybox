@@ -44,6 +44,14 @@ public class DozenMapper {
 				.dozen13(bet.getDozen13()).dozen14(bet.getDozen14()).dozen15(bet.getDozen15()).build();
 	}
 	
+	public static DozenDTO toDTO(List<Integer> values) {
+		return DozenDTO.builder().concurse(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
+				.dozen4(values.get(3)).dozen5(values.get(4)).dozen6(values.get(5))
+				.dozen7(values.get(6)).dozen8(values.get(7)).dozen9(values.get(8))
+				.dozen10(values.get(9)).dozen11(values.get(10)).dozen12(values.get(11))
+				.dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14)).build();
+	}
+	
 	public static DozenDTO toDTO(Combination combination) {
 		return DozenDTO.builder().id(combination.getCombinationId())
 				.dozen1(combination.getDozen1()).dozen2(combination.getDozen2()).dozen3(combination.getDozen3())

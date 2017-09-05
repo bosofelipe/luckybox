@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
+import com.luckybox.service.HistoricService;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 
@@ -22,6 +23,9 @@ public class BetValidationChain {
 	
 	@Inject
 	private DozenInfoRepository dozenInfoRepo;
+	
+	@Inject
+	private HistoricService historicService;
 	
 	public List<RuleType> validationChain(DozenDTO dozenDTO) {
 		
@@ -39,6 +43,7 @@ public class BetValidationChain {
 		RuleChain sum = new SumRule();
 		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
 		RuleChain fibonacci = new FibonacciRule();
+		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicService);
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl);
 
 		rule.setNextChain(pair);
@@ -46,7 +51,8 @@ public class BetValidationChain {
 		sum.setNextChain(lastRaffle);
 		lastRaffle.setNextChain(dozenInfo);
 		dozenInfo.setNextChain(columnLine);
-		columnLine.setNextChain(fibonacci);
+		columnLine.setNextChain(alreadyDrawn);
+		alreadyDrawn.setNextChain(fibonacci);
 		return rule;
 	}
 
