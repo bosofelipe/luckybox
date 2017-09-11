@@ -18,10 +18,12 @@ public class PairRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleType> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
 		int dozensMatch = dozens.stream().filter(el -> PAIR_NUMBERS.stream().anyMatch(el::equals)).collect(toList()).size();
-		if (dozensMatch < 6 || dozensMatch > 8 )
-			rules.add(RuleType.PAIR);
+		if (dozensMatch < 6)
+			rules.add(buildRule(dozensMatch, RuleType.PAIR_LOW));
+		if(dozensMatch > 8)
+			rules.add(buildRule(dozensMatch, RuleType.PAIR_HIGH));
 		this.chain.checkRule(dozens, rules);
 	}
 

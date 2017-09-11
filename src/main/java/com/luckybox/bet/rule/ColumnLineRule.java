@@ -28,7 +28,7 @@ public class ColumnLineRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleType> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
 		int firstLine = dozens.stream().filter(el -> FIRST_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
 		int secondLine = dozens.stream().filter(el -> SECOND_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
 		int thirdLine = dozens.stream().filter(el -> THIRD_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
@@ -43,7 +43,7 @@ public class ColumnLineRule implements RuleChain {
 
 		if (asList(firstLine, firstColumn, secondLine, secondColumn, thirdLine, thirdColumn, fourthLine,
 				fourthColumn, fivethLine, fivethColumn).contains(0))
-			rules.add(RuleType.FIRST_LINE);
+			rules.add(buildRule(0, RuleType.FIRST_LINE));
 		
 		this.chain.checkRule(dozens, rules);
 	}

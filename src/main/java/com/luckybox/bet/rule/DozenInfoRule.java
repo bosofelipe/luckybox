@@ -32,15 +32,15 @@ public class DozenInfoRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> numbers, List<RuleType> rules) {
+	public void checkRule(List<Integer> numbers, List<RuleDTO> rules) {
 		List<DozenInfo> dozenInfos = (List<DozenInfo>) dozenInfoRepository.findAll();
-		if (dozenInfos.isEmpty())
+		if (dozenInfos == null)
 			return;
 		else {
 			List<DozenInfo> withCurrent = dozenInfos.stream().filter(dozen -> dozen.getCurrentSequenceDrawn() > 3).collect(toList());
 			int dozensMatch = withCurrent.stream().filter(el -> numbers.stream().anyMatch(el.getNumber()::equals)).collect(toList()).size();
 			if(dozensMatch == 0)
-				rules.add(RuleType.CURRENT_SEQUENCE);
+				rules.add(buildRule(dozensMatch, RuleType.CURRENT_SEQUENCE) );
 		}
 		this.chain.checkRule(numbers, rules);
 	}

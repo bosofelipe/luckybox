@@ -18,10 +18,12 @@ public class PrimeRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleType> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
 		int dozensMatch = dozens.stream().filter(el -> PRIME.stream().anyMatch(el::equals)).collect(toList()).size();
-		if (dozensMatch < 4 || dozensMatch > 6 )
-			rules.add(RuleType.PRIME);
+		if (dozensMatch < 4)
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW));
+		if(dozensMatch > 6 )
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH));
 		this.chain.checkRule(dozens, rules);
 	}
 }

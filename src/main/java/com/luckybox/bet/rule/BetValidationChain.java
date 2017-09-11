@@ -27,9 +27,9 @@ public class BetValidationChain {
 	@Inject
 	private HistoricService historicService;
 	
-	public List<RuleType> validationChain(DozenDTO dozenDTO) {
+	public List<RuleDTO> validationChain(DozenDTO dozenDTO) {
 		
-		List<RuleType> rules = Lists.newArrayList();
+		List<RuleDTO> rules = Lists.newArrayList();
 		
 		getRules().checkRule(toList(dozenDTO), rules);
 		

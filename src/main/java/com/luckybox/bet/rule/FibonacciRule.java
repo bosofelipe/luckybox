@@ -20,10 +20,12 @@ public class FibonacciRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleType> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
 		int dozensMatch = dozens.stream().filter(el -> ConstantsLoto.FIBONACCI_SEQUENCE.stream().anyMatch(el::equals))
 				.collect(toList()).size();
-		if (dozensMatch < 3 || dozensMatch > 6)
-			rules.add(RuleType.FIBONACCI);
+		if (dozensMatch < 3)
+			rules.add(buildRule(dozensMatch, RuleType.FIBONACCI_LOW));
+		if(dozensMatch > 6)
+			rules.add(buildRule(dozensMatch,RuleType.FIBONACCI_HIGH));
 	}
 }

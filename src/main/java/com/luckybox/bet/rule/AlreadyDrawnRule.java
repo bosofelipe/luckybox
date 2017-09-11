@@ -30,9 +30,12 @@ public class AlreadyDrawnRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> numbers, List<RuleType> rules) {
+	public void checkRule(List<Integer> numbers, List<RuleDTO> rules) {
 		if(!historicService.findHistoricWithDozensNEConcurse(DozenMapper.toDTO(numbers)).isEmpty())
-			rules.add(RuleType.ALREADY_DRAWN);
+			rules.add(
+					RuleDTO.builder()//
+						    .type(RuleType.ALREADY_DRAWN)//
+							.build());
 		this.chain.checkRule(numbers, rules);
 	}
 

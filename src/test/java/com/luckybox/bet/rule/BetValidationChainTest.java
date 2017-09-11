@@ -21,6 +21,7 @@ import com.luckybox.domain.Historic;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
+import com.luckybox.service.HistoricService;
 
 public class BetValidationChainTest {
 
@@ -33,6 +34,9 @@ public class BetValidationChainTest {
 	@Mock
 	private DozenInfoRepository dozenInfoRepository;
 	
+	@Mock
+	private HistoricService historicService;
+	
 	@Before
 	public void start(){
 		MockitoAnnotations.initMocks(this);
@@ -41,81 +45,81 @@ public class BetValidationChainTest {
 	@Test
 	public void catchRulePrime() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTO());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.PRIME));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTO());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
 	
 	@Test
 	public void catchRulePrimeExceed() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozensWithAllPrimes());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.PRIME));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithAllPrimes());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
 	
 	@Ignore
 	@Test
 	public void catchRuleFibonacci() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenFibonacci());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.FIBONACCI));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenFibonacci());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_LOW));
 	}
 	
 	@Ignore
 	@Test
 	public void catchRuleFibonacciExceeed() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenFibonacci());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.FIBONACCI));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenFibonacci());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_HIGH));
 	}
 	
 	@Test
 	public void catchRulePair() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithUnpairs());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.PAIR));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithUnpairs());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_LOW));
 	}
 	
 	@Test
 	public void catchRulePairWhenExceed() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithExceedPairs());
-		assertThat(validationChain.get(0), CoreMatchers.equalTo(RuleType.PAIR));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithExceedPairs());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_HIGH));
 	}
 	
 	@Test
 	public void catchRuleLastRaffle() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList(createHistoricManyDozens()));
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithFirstLineDozensWhenExceed());
-		assertThat(validationChain, CoreMatchers.hasItem(RuleType.LAST_RAFFLE));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithFirstLineDozensWhenExceed());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
 	
 	@Test
 	public void catchRuleLastRaffleWhenLessDozens() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList(createHistoricLessDozens()));
-		List<RuleType> validationChain = chainValidation.validationChain(createDozenDTOWithDozenLastRaffle());
-		assertThat(validationChain, CoreMatchers.hasItem(RuleType.LAST_RAFFLE));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithDozenLastRaffle());
+		assertThat(validationChain.get(2).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
 	
 	@Test
 	public void catchRuleSumWithLowSum() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozensWithLowSum());
-		assertThat(validationChain, CoreMatchers.hasItem(RuleType.SUM));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithLowSum());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_LOW));
 	}
 	
 	@Test
 	public void catchRuleSumWithHighSum() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozensWithHighSum());
-		assertThat(validationChain, CoreMatchers.hasItem(RuleType.SUM));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithHighSum());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}
 	
 	@Test
 	public void catchRuleCurrentSequenceByDozenInfo() throws Exception {
 		when(dozenInfoRepository.findAll()).thenReturn(createDozenInfo());
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
-		List<RuleType> validationChain = chainValidation.validationChain(createDozensWithHighSum());
-		assertThat(validationChain, CoreMatchers.hasItem(RuleType.CURRENT_SEQUENCE));
+		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithHighSum());
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}
 	
 	private Iterable<DozenInfo> createDozenInfo() {

@@ -33,20 +33,22 @@ public class LastRaffleRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleType> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
 		List<Historic> lastRaffles = historicRepositoryImpl.getLastRaffles(1);
 		if (!lastRaffles.isEmpty())
 			checkLastDozens(dozens, rules, lastRaffles);
 		chain.checkRule(dozens, rules);
 	}
 
-	private void checkLastDozens(List<Integer> dozens, List<RuleType> rules, List<Historic> lastRaffles) {
+	private void checkLastDozens(List<Integer> dozens, List<RuleDTO> rules, List<Historic> lastRaffles) {
 		Historic historic = lastRaffles.get(0);
 		List<Integer> lastDozens = DozenMapper.toList(historic);
 		int dozensMatch = dozens.stream().filter(el -> lastDozens.stream().anyMatch(el::equals)).collect(toList())
 				.size();
-		if (dozensMatch < 7 || dozensMatch > 11)
-			rules.add(RuleType.LAST_RAFFLE);
+		if (dozensMatch < 7)
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW));
+		if(dozensMatch > 11)
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW));
 	}
 
 }
