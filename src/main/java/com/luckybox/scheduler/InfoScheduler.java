@@ -17,7 +17,7 @@ import net.lingala.zip4j.exception.ZipException;
 
 @Log4j
 @Component
-public class CombinationScheduler {
+public class InfoScheduler {
 
 	@Inject
 	private CombinationService combinationService;
@@ -37,8 +37,14 @@ public class CombinationScheduler {
 		importHistoric();
 		checkHistoricAlreadyDrawn();
 		checkCombinationAlreadyDrawn();
-		updateAlreadyDrawn();
+		generateDozenInfo();
 		fillDatasetFields();
+	}
+	
+	private void importHistoric() throws IOException, ZipException {
+		log.info("Importing historic concurses...");
+		historicService.importConcurses();
+		log.info("Finished historic concurses...");
 	}
 	
 	private void checkCombinationAlreadyDrawn(){
@@ -47,7 +53,7 @@ public class CombinationScheduler {
 		log.info("Checking Combinations drawn finished...");
 	}
 	
-	private void updateAlreadyDrawn() {
+	private void generateDozenInfo() {
 		log.info("Generate number info...");
 		dozenInfoService.generateDozenInfo();
 		log.info("Finished generate number info...");
@@ -64,11 +70,4 @@ public class CombinationScheduler {
 		historicDatasetFiller.fillAlreadyDrawnField();
 		log.info("Finished check historic already drawn...");
 	}
-	
-	private void importHistoric() throws IOException, ZipException {
-		log.info("Importing historic concurses...");
-		historicService.importConcurses();
-		log.info("Finished historic concurses...");
-	}
-	
 }

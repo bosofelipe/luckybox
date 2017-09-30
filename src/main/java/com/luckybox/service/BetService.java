@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.luckybox.bet.rule.BetValidationChain;
-import com.luckybox.bet.rule.RuleType;
+import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
 import com.luckybox.dto.BetMessageDTO;
@@ -46,7 +46,7 @@ public class BetService {
 		return historic.isEmpty() ? false : true;
 	}
 
-	public List<RuleType> checkRules(DozenDTO dozenDTO) {
+	public List<RuleDTO> checkRules(DozenDTO dozenDTO) {
 		return chainOfRules.validationChain(dozenDTO);
 	}
 
@@ -69,7 +69,7 @@ public class BetService {
 	}
 
 	private void checkRulesAndSave(List<BetMessageDTO> message, DozenDTO dozenDTO) {
-		List<RuleType> validationChain = checkRules(dozenDTO);
+		List<RuleDTO> validationChain = checkRules(dozenDTO);
 		Bet bet = DozenMapper.toBet(dozenDTO);
 		if (validationChain.isEmpty())
 			betRepository.save(bet);

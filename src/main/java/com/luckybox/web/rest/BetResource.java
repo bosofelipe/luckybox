@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luckybox.bet.rule.RuleType;
+import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
@@ -48,8 +48,8 @@ public class BetResource {
 	}
 
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<RuleType>> checkRules(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<List<RuleType>>(betService.checkRules(dozenDTO), HttpStatus.OK);
+	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozenDTO), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)

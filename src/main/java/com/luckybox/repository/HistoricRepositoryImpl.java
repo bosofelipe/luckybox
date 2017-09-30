@@ -87,7 +87,7 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 	@Transactional
 	public void updateAlreadyDrawn(Long concurse) {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse)).set(qHistoric.alreadyDrawn, true)
+		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse)).set(qHistoric.alreadyDrawn, false)
 				.execute();
 	}
 	
