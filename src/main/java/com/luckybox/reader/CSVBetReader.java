@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -71,7 +73,15 @@ public class CSVBetReader {
 			values.add(Integer.parseInt(info[i]));
 		}
 		Collections.sort(values);
+		checkRepeatedDozens(values);
 		return values;
+	}
+	
+	private void checkRepeatedDozens(List<Integer> values){
+		Set<Integer> duplicated = values.stream().filter(n -> values.stream().filter(x -> x == n).count() > 1).collect(Collectors.toSet());
+		if(!duplicated.isEmpty()){
+			throw new IllegalArgumentException("Duplicated dozens in bet");
+		}
 	}
 
 }

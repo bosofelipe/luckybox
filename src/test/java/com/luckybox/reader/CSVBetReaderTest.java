@@ -36,6 +36,12 @@ public class CSVBetReaderTest {
 		String fileBets = getClass().getResource("/bets/invalidBets.txt").getFile();
 		reader.read(new File(fileBets));
 	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void repeadtedDozens() throws Exception {
+		String fileBets = getClass().getResource("/bets/repeatedDozens.txt").getFile();
+		reader.read(new File(fileBets));
+	}
 
 	private void checkBet(int index, List<DozenDTO> bets, List<Integer> values) {
 		DozenDTO bet = bets.get(index);
