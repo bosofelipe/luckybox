@@ -3,7 +3,7 @@ package com.luckybox.dto;
 import java.util.Date;
 
 import com.luckybox.domain.Bet;
-import com.luckybox.domain.Combination;
+import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class DozenDTO {
 
 	private Long id;
+	private String combinationId;
 	private Long concurse;
 	private Integer dozen1;
 	private Integer dozen2;
@@ -46,7 +47,7 @@ public class DozenDTO {
 		this();
 	}
 	
-	public DozenDTO(Combination combination) {
+	public DozenDTO(CombinationDozens combination) {
 		this();
 	}
 

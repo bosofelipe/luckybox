@@ -4,12 +4,12 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -49,7 +49,8 @@ public class Bet {
 	private Integer dozen17;
 	private Integer dozen18;
 	private Date creationDate;
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "bet", cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
 	private BetDataset dataset;
 	
 	@PrePersist

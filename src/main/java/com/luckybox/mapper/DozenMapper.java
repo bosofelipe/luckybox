@@ -3,7 +3,7 @@ package com.luckybox.mapper;
 import java.util.List;
 
 import com.luckybox.domain.Bet;
-import com.luckybox.domain.Combination;
+import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
 import com.luckybox.dto.DozenDTO;
 
@@ -19,8 +19,8 @@ public class DozenMapper {
 				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).build();
 	}
 	
-	public static Combination toCombination(DozenDTO dto) {
-		return Combination.builder().combinationId(dto.getId())
+	public static CombinationDozens toCombinationDozens(DozenDTO dto) {
+		return CombinationDozens.builder().id(dto.getId())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())
 				.dozen5(dto.getDozen5()).dozen6(dto.getDozen6()).dozen7(dto.getDozen7()).dozen8(dto.getDozen8())
 				.dozen9(dto.getDozen9()).dozen10(dto.getDozen10()).dozen11(dto.getDozen11()).dozen12(dto.getDozen12())
@@ -36,7 +36,7 @@ public class DozenMapper {
 	}
 	
 	public static DozenDTO toDTO(Bet bet) {
-		return DozenDTO.builder().concurse(bet.getConcurse()).date(bet.getCreationDate()).id(bet.getBetId())
+		return DozenDTO.builder().concurse(bet.getConcurse()).id(bet.getBetId()).date(bet.getCreationDate()).id(bet.getBetId())
 				.dozen1(bet.getDozen1()).dozen2(bet.getDozen2()).dozen3(bet.getDozen3())
 				.dozen4(bet.getDozen4()).dozen5(bet.getDozen5()).dozen6(bet.getDozen6())
 				.dozen7(bet.getDozen7()).dozen8(bet.getDozen8()).dozen9(bet.getDozen9())
@@ -45,15 +45,15 @@ public class DozenMapper {
 	}
 	
 	public static DozenDTO toDTO(List<Integer> values) {
-		return DozenDTO.builder().concurse(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
+		return DozenDTO.builder().id(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
 				.dozen4(values.get(3)).dozen5(values.get(4)).dozen6(values.get(5))
 				.dozen7(values.get(6)).dozen8(values.get(7)).dozen9(values.get(8))
 				.dozen10(values.get(9)).dozen11(values.get(10)).dozen12(values.get(11))
 				.dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14)).build();
 	}
 	
-	public static DozenDTO toDTO(Combination combination) {
-		return DozenDTO.builder().id(combination.getCombinationId())
+	public static DozenDTO toDTO(CombinationDozens combination) {
+		return DozenDTO.builder().id(combination.getId())
 				.dozen1(combination.getDozen1()).dozen2(combination.getDozen2()).dozen3(combination.getDozen3())
 				.dozen4(combination.getDozen4()).dozen5(combination.getDozen5()).dozen6(combination.getDozen6())
 				.dozen7(combination.getDozen7()).dozen8(combination.getDozen8()).dozen9(combination.getDozen9())

@@ -1,10 +1,8 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +21,7 @@ public class HistoricDataset {
 	@Id
 	private Long concurse;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@OneToOne(mappedBy = "dataset")
 	private Historic historic;
 	
 	private Integer dozensLastRaffle;

@@ -9,23 +9,23 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 import org.springframework.stereotype.Component;
 
-import com.luckybox.domain.Combination;
+import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
-import com.luckybox.domain.QCombination;
+import com.luckybox.domain.QCombinationDozens;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Component
-public class CombinationRepositoryImpl extends QueryDslRepositorySupport {
-	QCombination qCombination = QCombination.combination;
+public class CombinationDozensRepositoryImpl extends QueryDslRepositorySupport {
+	QCombinationDozens qCombination = QCombinationDozens.combinationDozens;
 
 	@PersistenceContext
 	private EntityManager em;
 
-	public CombinationRepositoryImpl() {
-		super(Combination.class);
+	public CombinationDozensRepositoryImpl() {
+		super(CombinationDozens.class);
 	}
 
-	public Combination findCombinationWithHistoric(Historic historic) {
+	public CombinationDozens findCombinationWithHistoric(Historic historic) {
 		return from(qCombination).where(qCombination.dozen1.eq(historic.getDozen1()),
 				qCombination.dozen2.eq(historic.getDozen2()), qCombination.dozen3.eq(historic.getDozen3()),
 				qCombination.dozen4.eq(historic.getDozen4()), qCombination.dozen5.eq(historic.getDozen5()),
@@ -36,35 +36,33 @@ public class CombinationRepositoryImpl extends QueryDslRepositorySupport {
 				qCombination.dozen14.eq(historic.getDozen14()), qCombination.dozen15.eq(historic.getDozen15()))
 				.fetchFirst();
 	}
-	
-	public List<Combination> listCombinations(Long limit){
+
+	public List<CombinationDozens> listCombinations(Long limit) {
 		long maxConcurseDrawn = getMaxConcurseDrawn();
 		long minConcurseDrawn = getMinConcurseDrawn();
 		return from(qCombination)
-				.where(qCombination.combinationId
-						.between(minConcurseDrawn, maxConcurseDrawn)
-						, qCombination.alreadyDrawn.isFalse())
-				.limit(limit)
-				.fetch();
+				.where(qCombination.id.between(minConcurseDrawn, maxConcurseDrawn), qCombination.alreadyDrawn.isFalse())
+				.limit(limit).fetch();
 	}
 
 	@Transactional
 	public void markWithDrawn(Long combinationId) {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-		queryFactory.update(qCombination).where(qCombination.combinationId.eq(combinationId))
-				.set(qCombination.alreadyDrawn, true).execute();
+		queryFactory.update(qCombination).where(qCombination.id.eq(combinationId)).set(qCombination.alreadyDrawn, true)
+				.execute();
 	}
-	
-	private long getMaxConcurseDrawn(){
-		return from(qCombination)
-				.select(qCombination.combinationId.max())
-				.where(qCombination.alreadyDrawn.isTrue()).fetchOne();
+
+	public long getMaxConcurseSaved() {
+		Long concurseId = from(qCombination).select(qCombination.id.max()).fetchOne();
+		return concurseId == null ? 0 : concurseId;
 	}
-	
-	private long getMinConcurseDrawn(){
-		return from(qCombination)
-				.select(qCombination.combinationId.min())
-				.where(qCombination.alreadyDrawn.isTrue()).fetchOne();
+
+	private long getMaxConcurseDrawn() {
+		return from(qCombination).select(qCombination.id.max()).where(qCombination.alreadyDrawn.isTrue()).fetchOne();
+	}
+
+	private long getMinConcurseDrawn() {
+		return from(qCombination).select(qCombination.id.min()).where(qCombination.alreadyDrawn.isTrue()).fetchOne();
 	}
 
 }

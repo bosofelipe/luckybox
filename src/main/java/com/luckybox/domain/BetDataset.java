@@ -1,10 +1,10 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +21,11 @@ import lombok.NoArgsConstructor;
 public class BetDataset {
 
 	@Id
-	private Long combinationId;
+	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@MapsId 
+	@OneToOne(mappedBy = "dataset")
+	@JoinColumn(name = "id")
 	private Bet bet;
 	
 	private Integer sum;

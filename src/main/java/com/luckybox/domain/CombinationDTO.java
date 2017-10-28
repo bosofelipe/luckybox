@@ -28,8 +28,8 @@ public class CombinationDTO {
 	private Integer dozen14;
 	private Integer dozen15;
 
-	public CombinationDTO(Combination combination) {
-		this(combination.getCombinationId(), combination.getDozen1(), combination.getDozen2(),
+	public CombinationDTO(CombinationDozens combination) {
+		this(combination.getId(), combination.getDozen1(), combination.getDozen2(),
 				combination.getDozen3(), combination.getDozen4(), combination.getDozen5(), combination.getDozen6(),
 				combination.getDozen7(), combination.getDozen8(), combination.getDozen9(), combination.getDozen10(),
 				combination.getDozen11(), combination.getDozen12(), combination.getDozen13(), combination.getDozen14(),

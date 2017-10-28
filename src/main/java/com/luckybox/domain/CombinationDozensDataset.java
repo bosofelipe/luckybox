@@ -1,10 +1,8 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,15 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "CombinationDataset")
-public class CombinationDataset {
+@Table(name = "Combination_dozens_dataset")
+public class CombinationDozensDataset {
 
 	@Id
-	private Long combinationId;
+	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
-	private Combination combination;
+	@OneToOne(mappedBy = "dataset")
+	private CombinationDozens combinationDozens;
 	
 	private Integer dozenSum;
 
@@ -60,4 +57,6 @@ public class CombinationDataset {
 	private Integer fourthColumn;
 
 	private Integer fivethColumn;
+	
 }
+

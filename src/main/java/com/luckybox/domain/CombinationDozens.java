@@ -1,12 +1,16 @@
 package com.luckybox.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -14,11 +18,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Combination")
-public class Combination {
+@Table(name = "Combination_dozens")
+@EqualsAndHashCode
+public class CombinationDozens {
 	
 	@Id
-	private Long combinationId;
+	private Long id;
 	private Integer dozen1;
 	private Integer dozen2;
 	private Integer dozen3;
@@ -35,5 +40,8 @@ public class Combination {
 	private Integer dozen14;
 	private Integer dozen15;
 	private Boolean alreadyDrawn;
-
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dataset_id")
+	private CombinationDozensDataset dataset;
 }

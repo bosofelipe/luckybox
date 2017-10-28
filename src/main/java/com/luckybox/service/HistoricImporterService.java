@@ -47,7 +47,7 @@ public class HistoricImporterService {
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(CAIXA_URL);
 		List<DozenDTO> historicDTO = historicFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTFAC.HTM");
 		historicDTO.stream().forEach(dto -> persist(dto));
-		historicDTO.stream().forEach(dto -> fillDatasetFields(dto));
+		//historicDTO.stream().forEach(dto -> fillDatasetFields(dto));
 		log.info("Finish importation");
 		return historicDTO;
 	}
@@ -69,6 +69,9 @@ public class HistoricImporterService {
 		Historic historic = repository.findOne(dto.getConcurse());
 		if (historic == null) {
 			Historic historicEntity = DozenMapper.toHistoric(dto);
+			HistoricDataset dataset = datasetCreator.createHistoricDataSet(dto);
+			dataset.setConcurse(dto.getConcurse());
+			historicEntity.setDataset(dataset);
 			repository.save(historicEntity);
 		}
 	}

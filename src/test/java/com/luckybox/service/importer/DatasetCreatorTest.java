@@ -8,7 +8,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
-import com.luckybox.domain.CombinationDataset;
+import com.luckybox.domain.CombinationDozensDataset;
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.service.DatasetCreator;
@@ -42,8 +42,8 @@ public class DatasetCreatorTest {
 	
 	@Test
 	public void createCombinationDataset() {
-		CombinationDataset dataSet = new DatasetCreator().createCombinationDataset(createDozenDTO());
-		MatcherAssert.assertThat(dataSet.getCombinationId(), CoreMatchers.equalTo(1L));
+		CombinationDozensDataset dataSet = new DatasetCreator().createCombinationDozensDataset(createDozenDTO());
+		MatcherAssert.assertThat(dataSet.getId(), CoreMatchers.equalTo(1L));
 		MatcherAssert.assertThat(dataSet.getDozenSum(), equalTo(180));
 		MatcherAssert.assertThat(dataSet.getAverage(), equalTo(12));
 		MatcherAssert.assertThat(dataSet.getFibonacci(), equalTo(6));
