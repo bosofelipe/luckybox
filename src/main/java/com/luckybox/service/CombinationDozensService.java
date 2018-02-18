@@ -14,12 +14,10 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.CombinationDozensDataset;
-import com.luckybox.domain.Historic;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.CombinationDozensRepository;
 import com.luckybox.repository.CombinationDozensRepositoryImpl;
-import com.luckybox.repository.HistoricRepository;
 
 import lombok.extern.log4j.Log4j;
 
@@ -38,20 +36,12 @@ public class CombinationDozensService {
 	@Inject
 	private DatasetCreator datasetCreator;
 
-	@Inject
-	private HistoricRepository historicRepository;
-
 	public void saveByFile(String name) throws IOException {
 		long maxConcurseSaved = combinationRepositoryImpl.getMaxConcurseSaved();
 		List<String> collectCombinationsByFile = collectCombinationsByFile(name, maxConcurseSaved);
 		for (String combination : collectCombinationsByFile) {
 			readLine(combination);
 		}
-	}
-
-	public void checkCombinationDrawn() {
-		List<Historic> historicDataset = historicRepository.findAll();
-		historicDataset.stream().forEach(h -> findCombination(h));
 	}
 
 	public List<String> collectCombinationsByFile(String name, long starts) {
@@ -89,11 +79,5 @@ public class CombinationDozensService {
 				.dozen10(Integer.valueOf(values[10])).dozen11(Integer.valueOf(values[11]))
 				.dozen12(Integer.valueOf(values[12])).dozen13(Integer.valueOf(values[13]))
 				.dozen14(Integer.valueOf(values[14])).dozen15(Integer.valueOf(values[15])).build();
-	}
-
-	private void findCombination(Historic historic) {
-		CombinationDozens combination = combinationRepositoryImpl.findCombinationWithHistoric(historic);
-		if (combination != null)
-			combinationRepositoryImpl.markWithDrawn(combination.getId());
 	}
 }

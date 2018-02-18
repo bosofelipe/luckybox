@@ -8,14 +8,19 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.mapper.DozenMapper;
+import com.luckybox.repository.CombinationDozensRepositoryImpl;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Service
 public class HistoricDatasetFiller {
 
@@ -34,13 +39,16 @@ public class HistoricDatasetFiller {
 	@Inject
 	private HistoricDatasetRepositoryImpl historicDatasetRepoImpl;
 	
+	@Inject
+	private CombinationDozensRepositoryImpl combinationRepositoryImpl;
+	
 	public void fillDataSet() {
 		List<Historic> allConcurses = historicRepository.findAll();
 		allConcurses.stream().forEach(c-> fillFields(c));
 	}
 	
 	public void fillAlreadyDrawnField() {
-		List<Historic> allConcurses = historicRepository.findAll();
+		List<Historic> allConcurses = historicRepository.findAllByAlreadyDrawnIsNull();
 		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c));
 	}
 	
@@ -77,8 +85,12 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
+		log.info("Check concurse " + historic.getConcurse());
 		if(historicService.findHistoricWithDozensNEConcurse(DozenMapper.toDTO(historic)).isEmpty());
 			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse());
+		CombinationDozens combination = combinationRepositoryImpl.findCombinationWithHistoric(historic);
+		if (combination != null)
+			combinationRepositoryImpl.markWithDrawn(combination.getId());
 	}
 	
 	private Integer calculateVariationWhenNotFirstConcurse(Long concurse) {

@@ -14,7 +14,6 @@ import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
-import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
 
 import lombok.extern.log4j.Log4j;
@@ -37,9 +36,6 @@ public class HistoricImporterService {
 	private HistoricRepository repository;
 
 	@Inject
-	private HistoricDatasetRepository datasetRepository;
-
-	@Inject
 	private DatasetCreator datasetCreator;
 
 	public List<DozenDTO> importConcurses() throws IOException, ZipException {
@@ -47,18 +43,8 @@ public class HistoricImporterService {
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(CAIXA_URL);
 		List<DozenDTO> historicDTO = historicFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTFAC.HTM");
 		historicDTO.stream().forEach(dto -> persist(dto));
-		//historicDTO.stream().forEach(dto -> fillDatasetFields(dto));
 		log.info("Finish importation");
 		return historicDTO;
-	}
-
-	private void fillDatasetFields(DozenDTO dto) {
-		Historic historic = repository.findOne(dto.getConcurse());
-		if (historic != null) {
-			HistoricDataset dataset = datasetCreator.createHistoricDataSet(dto);
-			dataset.setConcurse(dto.getConcurse());
-			datasetRepository.save(dataset);
-		}
 	}
 
 	public List<DozenDTO> findAll(Pageable pageable) {

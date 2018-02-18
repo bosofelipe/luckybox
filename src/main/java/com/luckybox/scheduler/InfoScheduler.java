@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.luckybox.service.CombinationDozensService;
 import com.luckybox.service.DozenInfoService;
 import com.luckybox.service.HistoricDatasetFiller;
 import com.luckybox.service.HistoricImporterService;
@@ -20,9 +19,6 @@ import net.lingala.zip4j.exception.ZipException;
 public class InfoScheduler {
 
 	@Inject
-	private CombinationDozensService combinationService;
-
-	@Inject
 	private DozenInfoService dozenInfoService;
 
 	@Inject
@@ -31,11 +27,10 @@ public class InfoScheduler {
 	@Inject
 	private HistoricImporterService historicService;
 
-	//@Scheduled(fixedRate=360000)
+	@Scheduled(fixedDelay = 7200000)
 	public void schedules() throws IOException, ZipException{
 		importHistoric();
-		checkHistoricAlreadyDrawn();
-		checkCombinationAlreadyDrawn();
+		checkAlreadyDrawn();
 		generateDozenInfo();
 		fillDatasetFields();
 	}
@@ -44,12 +39,6 @@ public class InfoScheduler {
 		log.info("Importing historic concurses...");
 		historicService.importConcurses();
 		log.info("Finished historic concurses...");
-	}
-	
-	private void checkCombinationAlreadyDrawn(){
-		log.info("Checking combinations drawn");
-		combinationService.checkCombinationDrawn();
-		log.info("Checking Combinations drawn finished...");
 	}
 	
 	private void generateDozenInfo() {
@@ -64,7 +53,7 @@ public class InfoScheduler {
 		log.info("Finished dataset fields...");
 	}
 	
-	private void checkHistoricAlreadyDrawn() throws IOException, ZipException {
+	private void checkAlreadyDrawn() throws IOException, ZipException {
 		log.info("Checking historic already drawn...");
 		historicDatasetFiller.fillAlreadyDrawnField();
 		log.info("Finished check historic already drawn...");

@@ -33,7 +33,8 @@ public class CombinationDozensRepositoryImpl extends QueryDslRepositorySupport {
 				qCombination.dozen8.eq(historic.getDozen8()), qCombination.dozen9.eq(historic.getDozen9()),
 				qCombination.dozen10.eq(historic.getDozen10()), qCombination.dozen11.eq(historic.getDozen11()),
 				qCombination.dozen12.eq(historic.getDozen12()), qCombination.dozen13.eq(historic.getDozen13()),
-				qCombination.dozen14.eq(historic.getDozen14()), qCombination.dozen15.eq(historic.getDozen15()))
+				qCombination.dozen14.eq(historic.getDozen14()), qCombination.dozen15.eq(historic.getDozen15()),
+				qCombination.alreadyDrawn.isNull())
 				.fetchFirst();
 	}
 

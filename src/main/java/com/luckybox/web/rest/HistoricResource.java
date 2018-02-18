@@ -24,7 +24,7 @@ import com.luckybox.service.HistoricImporterService;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
-@RequestMapping("/historic")
+@RequestMapping("/lotomania-historic")
 public class HistoricResource {
 
 	@Inject
@@ -41,6 +41,11 @@ public class HistoricResource {
 	@GetMapping(path = "/findAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<DozenDTO> findAll(Pageable pageable) throws IOException, ZipException {
 		return historicService.findAll(pageable);
+	}
+	
+	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public List<Historic> list() throws IOException, ZipException {
+		return historicRepository.findAll();
 	}
 	
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
