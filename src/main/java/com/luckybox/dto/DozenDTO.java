@@ -5,6 +5,7 @@ import java.util.Date;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class DozenDTO {
 	private Integer dozen18;
 	private Integer dozen19;
 	private Integer dozen20;
+	private LotteryType type;
 	
 	private Date date;
 	private Date concurseDate;

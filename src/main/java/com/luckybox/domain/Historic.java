@@ -4,6 +4,10 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -23,6 +27,9 @@ import lombok.NoArgsConstructor;
 public class Historic {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	
 	private Long concurse;
 	private Date concurseDate;
 	private Integer dozen1;
@@ -40,7 +47,14 @@ public class Historic {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	private Integer dozen16;
+	private Integer dozen17;
+	private Integer dozen18;
+	private Integer dozen19;
+	private Integer dozen20;
 	private Boolean alreadyDrawn;
+	@Enumerated(EnumType.STRING)
+	private LotteryType type;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "dataset_id")

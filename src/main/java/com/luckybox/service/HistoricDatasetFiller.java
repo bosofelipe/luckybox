@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.CombinationDozensRepositoryImpl;
 import com.luckybox.repository.HistoricDatasetRepository;
@@ -42,13 +43,13 @@ public class HistoricDatasetFiller {
 	@Inject
 	private CombinationDozensRepositoryImpl combinationRepositoryImpl;
 	
-	public void fillDataSet() {
-		List<Historic> allConcurses = historicRepository.findAll();
+	public void fillDataSet(LotteryType type) {
+		List<Historic> allConcurses = historicRepository.findAllByType(type);
 		allConcurses.stream().forEach(c-> fillFields(c));
 	}
 	
-	public void fillAlreadyDrawnField() {
-		List<Historic> allConcurses = historicRepository.findAllByAlreadyDrawnIsNull();
+	public void fillAlreadyDrawnField(LotteryType type) {
+		List<Historic> allConcurses = historicRepository.findAllByAlreadyDrawnIsNullAndType(type);
 		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c));
 	}
 	

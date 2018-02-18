@@ -2,6 +2,8 @@ package com.luckybox.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -39,7 +41,14 @@ public class CombinationDozens {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	private Integer dozen16;
+	private Integer dozen17;
+	private Integer dozen18;
+	private Integer dozen19;
+	private Integer dozen20;
 	private Boolean alreadyDrawn;
+	@Enumerated(EnumType.STRING)
+	private LotteryType type;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dataset_id")

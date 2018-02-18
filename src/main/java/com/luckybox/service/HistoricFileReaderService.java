@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 
 import lombok.extern.log4j.Log4j;
@@ -36,37 +37,37 @@ public class HistoricFileReaderService {
 
 	private List<DozenDTO> historicData = new ArrayList<>();
 
-	public List<DozenDTO> readHTML(String htmlPath) throws IOException {
+	public List<DozenDTO> readHTML(String htmlPath, LotteryType type) throws IOException {
 		File input = new File(htmlPath);
 		Document doc = Jsoup.parse(input, UTF_8);
 		Elements allLines = doc.select(TABLE_LINES);
-		return readDocumentBody(allLines);
+		return readDocumentBody(allLines, type);
 	}
 
-	private List<DozenDTO> readDocumentBody(Elements allLines) {
+	private List<DozenDTO> readDocumentBody(Elements allLines, LotteryType type) {
 		List<String> columnValues = new ArrayList<>();
-		allLines.stream().forEach(element -> catchElement(columnValues, element));
+		allLines.stream().forEach(element -> catchElement(columnValues, element, type));
 		return historicData;
 	}
 
-	private void catchElement(List<String> columnValues, Element element) {
+	private void catchElement(List<String> columnValues, Element element, LotteryType type) {
 		String nodeValue = element.text();
 		if (!nodeValue.isEmpty()) {
 			String[] values = element.text().split(SPLIT_SEPARATOR);
 			if (values.length > 8 && !values[0].equalsIgnoreCase(FIRST_LINE))
-				historicData.add(createHistoricDTO(values));
+				historicData.add(createHistoricDTO(values, type));
 		}
 	}
 
-	private DozenDTO createHistoricDTO(String[] values) {
-		return buildHistoricDTO(values);
+	private DozenDTO createHistoricDTO(String[] values, LotteryType type) {
+		return buildHistoricDTO(values, type);
 	}
 
-	private DozenDTO buildHistoricDTO(String[] values) {
+	private DozenDTO buildHistoricDTO(String[] values, LotteryType type) {
 		Long concurse = Long.valueOf(values[0]);
 		Date dateOfConcurse = convertStringToDate(values[1]);
 		List<Integer> dozens = createOrdenedListOfIntegers(values);
-		return DozenDTO.builder().concurse(concurse).concurseDate(dateOfConcurse)
+		return DozenDTO.builder().type(type).concurse(concurse).concurseDate(dateOfConcurse)
 				.dozen1(dozens.get(0)).dozen2(dozens.get(1))
 				.dozen3(dozens.get(2)).dozen4(dozens.get(3))
 				.dozen5(dozens.get(4)).dozen6(dozens.get(5))

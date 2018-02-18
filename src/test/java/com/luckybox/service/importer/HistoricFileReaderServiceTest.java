@@ -8,6 +8,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.service.HistoricFileReaderService;
 
@@ -18,7 +19,7 @@ public class HistoricFileReaderServiceTest {
 	@Test
 	public void readHtmlResultsFile() throws Exception {
 		String htmlPath = getClass().getResource("/results/D_LOTFAC.HTM").getFile();
-		List<DozenDTO> historic = service.readHTML(htmlPath);
+		List<DozenDTO> historic = service.readHTML(htmlPath, LotteryType.LOTOFACIL);
 		assertThat(historic.size(), CoreMatchers.equalTo(1494));
 		assertConcurse1(historic.get(0));
 		assertConcurse1105(historic.get(1104));

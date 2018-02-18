@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,7 +50,12 @@ public class Bet {
 	private Integer dozen16;
 	private Integer dozen17;
 	private Integer dozen18;
+	private Integer dozen19;
+	private Integer dozen20;
 	private Date creationDate;
+	@Enumerated(EnumType.STRING)
+	private LotteryType type;
+	
 	@OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
 	private BetDataset dataset;

@@ -1,6 +1,7 @@
 package com.luckybox.mapper;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.CombinationDozens;
@@ -12,36 +13,42 @@ import jersey.repackaged.com.google.common.collect.Lists;
 public class DozenMapper {
 
 	public static Bet toBet(DozenDTO dto) {
-		return Bet.builder().concurse(dto.getConcurse()).betId(dto.getId())
+		return Bet.builder().concurse(dto.getConcurse()).type(dto.getType()).betId(dto.getId())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())
 				.dozen5(dto.getDozen5()).dozen6(dto.getDozen6()).dozen7(dto.getDozen7()).dozen8(dto.getDozen8())
 				.dozen9(dto.getDozen9()).dozen10(dto.getDozen10()).dozen11(dto.getDozen11()).dozen12(dto.getDozen12())
-				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).build();
+				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15())
+				.dozen16(dto.getDozen16()).dozen17(dto.getDozen17()).dozen18(dto.getDozen18()).dozen19(dto.getDozen19())
+				.dozen20(dto.getDozen20())
+				.build();
 	}
 	
 	public static CombinationDozens toCombinationDozens(DozenDTO dto) {
-		return CombinationDozens.builder().id(dto.getId())
+		return CombinationDozens.builder().type(dto.getType()).id(dto.getId())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())
 				.dozen5(dto.getDozen5()).dozen6(dto.getDozen6()).dozen7(dto.getDozen7()).dozen8(dto.getDozen8())
 				.dozen9(dto.getDozen9()).dozen10(dto.getDozen10()).dozen11(dto.getDozen11()).dozen12(dto.getDozen12())
-				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).build();
+				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).dozen16(dto.getDozen16()).dozen17(dto.getDozen17()).dozen18(dto.getDozen18()).dozen19(dto.getDozen19())
+				.dozen20(dto.getDozen20()).build();
 	}
 
 	public static Historic toHistoric(DozenDTO dto) {
-		return Historic.builder().concurse(dto.getConcurse()).concurseDate(dto.getConcurseDate())
+		return Historic.builder().type(dto.getType()).concurse(dto.getConcurse()).concurseDate(dto.getConcurseDate())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())
 				.dozen5(dto.getDozen5()).dozen6(dto.getDozen6()).dozen7(dto.getDozen7()).dozen8(dto.getDozen8())
 				.dozen9(dto.getDozen9()).dozen10(dto.getDozen10()).dozen11(dto.getDozen11()).dozen12(dto.getDozen12())
-				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).build();
+				.dozen13(dto.getDozen13()).dozen14(dto.getDozen14()).dozen15(dto.getDozen15()).dozen16(dto.getDozen16()).dozen17(dto.getDozen17()).dozen18(dto.getDozen18()).dozen19(dto.getDozen19())
+				.dozen20(dto.getDozen20()).build();
 	}
 	
 	public static DozenDTO toDTO(Bet bet) {
-		return DozenDTO.builder().concurse(bet.getConcurse()).id(bet.getBetId()).date(bet.getCreationDate()).id(bet.getBetId())
+		return DozenDTO.builder().type(bet.getType()).concurse(bet.getConcurse()).id(bet.getBetId()).date(bet.getCreationDate()).id(bet.getBetId())
 				.dozen1(bet.getDozen1()).dozen2(bet.getDozen2()).dozen3(bet.getDozen3())
 				.dozen4(bet.getDozen4()).dozen5(bet.getDozen5()).dozen6(bet.getDozen6())
 				.dozen7(bet.getDozen7()).dozen8(bet.getDozen8()).dozen9(bet.getDozen9())
 				.dozen10(bet.getDozen10()).dozen11(bet.getDozen11()).dozen12(bet.getDozen12())
-				.dozen13(bet.getDozen13()).dozen14(bet.getDozen14()).dozen15(bet.getDozen15()).build();
+				.dozen13(bet.getDozen13()).dozen14(bet.getDozen14()).dozen15(bet.getDozen15()).dozen16(bet.getDozen16())
+				.dozen17(bet.getDozen17()).dozen18(bet.getDozen18()).dozen19(bet.getDozen19()).dozen20(bet.getDozen20()).build();
 	}
 	
 	public static DozenDTO toDTO(List<Integer> values) {
@@ -49,7 +56,9 @@ public class DozenMapper {
 				.dozen4(values.get(3)).dozen5(values.get(4)).dozen6(values.get(5))
 				.dozen7(values.get(6)).dozen8(values.get(7)).dozen9(values.get(8))
 				.dozen10(values.get(9)).dozen11(values.get(10)).dozen12(values.get(11))
-				.dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14)).build();
+				.dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14))
+				.dozen16(values.get(15)).dozen17(values.get(16)).dozen18(values.get(17)).dozen19(values.get(18))
+						.dozen20(values.get(19)).build();
 	}
 	
 	public static DozenDTO toDTO(CombinationDozens combination) {
@@ -58,7 +67,9 @@ public class DozenMapper {
 				.dozen4(combination.getDozen4()).dozen5(combination.getDozen5()).dozen6(combination.getDozen6())
 				.dozen7(combination.getDozen7()).dozen8(combination.getDozen8()).dozen9(combination.getDozen9())
 				.dozen10(combination.getDozen10()).dozen11(combination.getDozen11()).dozen12(combination.getDozen12())
-				.dozen13(combination.getDozen13()).dozen14(combination.getDozen14()).dozen15(combination.getDozen15()).build();
+				.dozen13(combination.getDozen13()).dozen14(combination.getDozen14()).dozen15(combination.getDozen15())
+				.dozen16(combination.getDozen16()).dozen17(combination.getDozen17()).dozen18(combination.getDozen18())
+						.dozen19(combination.getDozen19()).dozen20(combination.getDozen20()).build();
 	}
 	
 	public static DozenDTO toDTO(Historic historic) {
@@ -67,25 +78,37 @@ public class DozenMapper {
 				.dozen4(historic.getDozen4()).dozen5(historic.getDozen5()).dozen6(historic.getDozen6())
 				.dozen7(historic.getDozen7()).dozen8(historic.getDozen8()).dozen9(historic.getDozen9())
 				.dozen10(historic.getDozen10()).dozen11(historic.getDozen11()).dozen12(historic.getDozen12())
-				.dozen13(historic.getDozen13()).dozen14(historic.getDozen14()).dozen15(historic.getDozen15()).build();
+				.dozen13(historic.getDozen13()).dozen14(historic.getDozen14()).dozen15(historic.getDozen15())
+				.dozen16(historic.getDozen16()).dozen17(historic.getDozen17()).dozen18(historic.getDozen18())
+				.dozen19(historic.getDozen19()).dozen20(historic.getDozen20()).build();
 	}
 
 
 	public static List<Integer> toList(DozenDTO combination) {
-		return Lists.newArrayList(combination.getDozen1(), combination.getDozen2(), combination.getDozen3(), combination.getDozen4(), combination.getDozen5(),
+		List<Integer> dozens = Lists.newArrayList(combination.getDozen1(), combination.getDozen2(), combination.getDozen3(), combination.getDozen4(), combination.getDozen5(),
 				combination.getDozen6(), combination.getDozen7(), combination.getDozen8(), combination.getDozen9(), combination.getDozen10(), combination.getDozen11(),
-				combination.getDozen12(), combination.getDozen13(), combination.getDozen14(), combination.getDozen15());
+				combination.getDozen12(), combination.getDozen13(), combination.getDozen14(), combination.getDozen15()
+				, combination.getDozen16(), combination.getDozen17(), combination.getDozen18(), combination.getDozen19(), 
+				combination.getDozen20());
+		dozens.removeIf(Objects::isNull);
+		return dozens;
 	}
 	
 	public static List<Integer> toList(Historic historic) {
-		return Lists.newArrayList(historic.getDozen1(), historic.getDozen2(), historic.getDozen3(), historic.getDozen4(), historic.getDozen5(),
+		List<Integer> dozens = Lists.newArrayList(historic.getDozen1(), historic.getDozen2(), historic.getDozen3(), historic.getDozen4(), historic.getDozen5(),
 				historic.getDozen6(), historic.getDozen7(), historic.getDozen8(), historic.getDozen9(), historic.getDozen10(), historic.getDozen11(),
-				historic.getDozen12(), historic.getDozen13(), historic.getDozen14(), historic.getDozen15());
+				historic.getDozen12(), historic.getDozen13(), historic.getDozen14(), historic.getDozen15()
+				, historic.getDozen16(), historic.getDozen17(), historic.getDozen18(), historic.getDozen19(), historic.getDozen20());
+		dozens.removeIf(Objects::isNull);
+		return dozens;
 	}
 	
 	public static List<Integer> toList(Bet bet) {
-		return Lists.newArrayList(bet.getDozen1(), bet.getDozen2(), bet.getDozen3(), bet.getDozen4(), bet.getDozen5(),
+		List<Integer> dozens = Lists.newArrayList(bet.getDozen1(), bet.getDozen2(), bet.getDozen3(), bet.getDozen4(), bet.getDozen5(),
 				bet.getDozen6(), bet.getDozen7(), bet.getDozen8(), bet.getDozen9(), bet.getDozen10(), bet.getDozen11(),
-				bet.getDozen12(), bet.getDozen13(), bet.getDozen14(), bet.getDozen15());
+				bet.getDozen12(), bet.getDozen13(), bet.getDozen14(), bet.getDozen15(), bet.getDozen16(), bet.getDozen17()
+				, bet.getDozen18(), bet.getDozen19(), bet.getDozen20());
+		dozens.removeIf(Objects::isNull);
+		return dozens;
 	}
 }

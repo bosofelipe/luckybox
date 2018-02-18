@@ -27,13 +27,19 @@ public class CombinationDTO {
 	private Integer dozen13;
 	private Integer dozen14;
 	private Integer dozen15;
+	private Integer dozen16;
+	private Integer dozen17;
+	private Integer dozen18;
+	private Integer dozen19;
+	private Integer dozen20;
 
 	public CombinationDTO(CombinationDozens combination) {
 		this(combination.getId(), combination.getDozen1(), combination.getDozen2(),
 				combination.getDozen3(), combination.getDozen4(), combination.getDozen5(), combination.getDozen6(),
 				combination.getDozen7(), combination.getDozen8(), combination.getDozen9(), combination.getDozen10(),
 				combination.getDozen11(), combination.getDozen12(), combination.getDozen13(), combination.getDozen14(),
-				combination.getDozen15());
+				combination.getDozen15(),combination.getDozen16(), combination.getDozen17(),combination.getDozen18(),
+				combination.getDozen19(), combination.getDozen20());
 	}
 
 }

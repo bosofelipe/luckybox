@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import com.luckybox.service.HistoricImporterService;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
-@RequestMapping("/lotomania-historic")
+@RequestMapping("/historic")
 public class HistoricResource {
 
 	@Inject
@@ -33,9 +34,9 @@ public class HistoricResource {
 	@Inject
 	private HistoricRepository historicRepository;
 
-	@GetMapping(path = "/import", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<DozenDTO> importHistoric() throws IOException, ZipException {
-		return historicService.importConcurses();
+	@GetMapping(path = "/import/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public List<DozenDTO> importHistoric(@PathVariable String type) throws IOException, ZipException {
+		return historicService.importConcurses(type);
 	}
 	
 	@GetMapping(path = "/findAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })

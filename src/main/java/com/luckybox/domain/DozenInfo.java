@@ -1,6 +1,8 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,5 +32,7 @@ public class DozenInfo {
 	private Long qtSequenceDrawn;
 	
 	private Long currentSequenceDrawn;
+	@Enumerated(EnumType.STRING)
+	private LotteryType type;
 
 }

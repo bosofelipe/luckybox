@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.LotteryType;
 import com.luckybox.service.DozenInfoService;
 import com.luckybox.service.HistoricDatasetFiller;
 import com.luckybox.service.HistoricImporterService;
@@ -37,7 +38,7 @@ public class InfoScheduler {
 	
 	private void importHistoric() throws IOException, ZipException {
 		log.info("Importing historic concurses...");
-		historicService.importConcurses();
+		historicService.importConcurses("lotofacil");
 		log.info("Finished historic concurses...");
 	}
 	
@@ -48,14 +49,14 @@ public class InfoScheduler {
 	}
 	
 	private void fillDatasetFields() throws IOException, ZipException {
-		log.info("Filling dataset fields...");
-		historicDatasetFiller.fillDataSet();
-		log.info("Finished dataset fields...");
+		log.info("Filling dataset lotofacil fields...");
+		historicDatasetFiller.fillDataSet(LotteryType.LOTOFACIL);
+		log.info("Finished dataset lotofacil fields...");
 	}
 	
 	private void checkAlreadyDrawn() throws IOException, ZipException {
-		log.info("Checking historic already drawn...");
-		historicDatasetFiller.fillAlreadyDrawnField();
-		log.info("Finished check historic already drawn...");
+		log.info("Checking historic lotofacil already drawn...");
+		historicDatasetFiller.fillAlreadyDrawnField(LotteryType.LOTOFACIL);
+		log.info("Finished check historic lotofacil already drawn...");
 	}
 }
