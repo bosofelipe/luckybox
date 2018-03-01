@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.domain.QHistoric;
 import com.luckybox.dto.DozenDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -89,6 +90,11 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse)).set(qHistoric.alreadyDrawn, false)
 				.execute();
+	}
+	
+	public Historic getHistoryByConcurseAndType(Long concurse, LotteryType lotterytype) {
+		return from(qHistoric)
+				.where(qHistoric.concurse.eq(concurse), qHistoric.type.eq(lotterytype)).fetchFirst();
 	}
 	
 	private BooleanExpression whereDozens(DozenDTO dozenDTO) {

@@ -22,24 +22,24 @@ import net.lingala.zip4j.exception.ZipException;
 @Transactional
 public class HistoricDownloaderFileService {
 	private static String PATH_LOCAL = System.getProperty("java.io.tmpdir");
-	private static String FILE_ZIP_NAME = System.getProperty("java.io.tmpdir") + "/historic.zip";
+	private static String FILE_ZIP_PATH = System.getProperty("java.io.tmpdir") + "/";
 
-	public ZipFile downloadHtmlZippedFileAtCaixa(String caixaURL) throws IOException, ZipException {
-		downloadZipFile(caixaURL);
-		ZipFile zippedFile = extractZipFile();
+	public ZipFile downloadHtmlZippedFileAtCaixa(String caixaURL, String zipName) throws IOException, ZipException {
+		downloadZipFile(caixaURL, zipName);
+		ZipFile zippedFile = extractZipFile(zipName);
 		return zippedFile;
 	}
 
-	private File downloadZipFile(String caixaURL) throws IOException {
+	private File downloadZipFile(String caixaURL, String zipName) throws IOException {
 		CookieHandler.setDefault(new CookieManager(null, ACCEPT_ALL));
 		URL url = new URL(caixaURL);
-		readFileByURL(url);
-		return new File(FILE_ZIP_NAME);
+		readFileByURL(url, zipName);
+		return new File(FILE_ZIP_PATH + zipName);
 	}
 
-	private void readFileByURL(URL url) throws IOException {
+	private void readFileByURL(URL url, String zipName) throws IOException {
 		InputStream is = url.openStream();
-		FileOutputStream fos = new FileOutputStream(FILE_ZIP_NAME);
+		FileOutputStream fos = new FileOutputStream(FILE_ZIP_PATH + zipName);
 		readFile(is, fos);
 	}
 
@@ -56,10 +56,10 @@ public class HistoricDownloaderFileService {
 		}
 	}
 
-	private ZipFile extractZipFile() {
+	private ZipFile extractZipFile(String zipName) {
 		ZipFile zipFile = null;
 		try {
-			zipFile = new ZipFile(FILE_ZIP_NAME);
+			zipFile = new ZipFile(FILE_ZIP_PATH + zipName);
 			zipFile.extractAll(PATH_LOCAL);
 			return zipFile;
 		} catch (ZipException e) {

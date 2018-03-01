@@ -18,13 +18,13 @@ public class HistoricDownloaderFileServiceTest {
 	
 	@Test
 	public void downloadZippedFileAtCaixa() throws Exception {
-		ZipFile fileZipped = service.downloadHtmlZippedFileAtCaixa(CAIXA_URL);
+		ZipFile fileZipped = service.downloadHtmlZippedFileAtCaixa(CAIXA_URL, "lotofacil.zip");
 		MatcherAssert.assertThat(fileZipped.isValidZipFile(), equalTo(true));
 	}
 	
 	@Test(expected=UnknownHostException.class)
 	public void errorOnDownloadZippedFileAtInvalidURL() throws Exception {
-		ZipFile fileZipped = service.downloadHtmlZippedFileAtCaixa("http://www1.caixa.gov.sbr/lotserias/_arquivos/lotersias/D_lotfac.zip");
+		ZipFile fileZipped = service.downloadHtmlZippedFileAtCaixa("http://www1.caixa.gov.sbr/lotserias/_arquivos/lotersias/D_lotfac.zip", "lotofacil.zip");
 		MatcherAssert.assertThat(fileZipped.isValidZipFile(), equalTo(false));
 	}
 	

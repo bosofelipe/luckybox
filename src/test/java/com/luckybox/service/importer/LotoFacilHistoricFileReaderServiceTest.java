@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
-import com.luckybox.service.HistoricFileReaderService;
+import com.luckybox.service.LotoFacilHistoricFileReaderService;
 
-public class HistoricFileReaderServiceTest {
+public class LotoFacilHistoricFileReaderServiceTest {
 
-	private HistoricFileReaderService service = new HistoricFileReaderService();
+	private LotoFacilHistoricFileReaderService service = new LotoFacilHistoricFileReaderService();
 	
 	@Test
 	public void readHtmlResultsFile() throws Exception {

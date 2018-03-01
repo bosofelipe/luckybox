@@ -54,9 +54,10 @@ public class InfoScheduler {
 		log.info("Finished dataset lotofacil fields...");
 	}
 	
+	//TODO ajustar para pegar pelo tipo
 	private void checkAlreadyDrawn() throws IOException, ZipException {
 		log.info("Checking historic lotofacil already drawn...");
-		historicDatasetFiller.fillAlreadyDrawnField(LotteryType.LOTOFACIL);
+		//historicDatasetFiller.fillAlreadyDrawnField(LotteryType.LOTOFACIL);
 		log.info("Finished check historic lotofacil already drawn...");
 	}
 }

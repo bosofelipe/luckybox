@@ -27,7 +27,7 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Transactional
 @Log4j
-public class HistoricFileReaderService {
+public class LotoFacilHistoricFileReaderService {
 	private static final String TABLE_LINES = "table tr";
 	private static final String SPLIT_SEPARATOR = " ";
 	private static final String FIRST_LINE = "Concurso";

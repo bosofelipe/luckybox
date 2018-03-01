@@ -26,9 +26,16 @@ public class HistoricResourceIT {
 	
 	
 	@Test
-	public void importConcurses() throws Exception {
+	public void importConcursesLotofacil() throws Exception {
 		ParameterizedTypeReference<List<DozenDTO>> historic = new ParameterizedTypeReference<List<DozenDTO>>() {};
-		ResponseEntity<List<DozenDTO>> response = rest.exchange("/historic/import", HttpMethod.GET, null, historic);
+		ResponseEntity<List<DozenDTO>> response = rest.exchange("/historic/import/lotofacil", HttpMethod.GET, null, historic);
+		MatcherAssert.assertThat(response.getBody().get(0), CoreMatchers.notNullValue());
+	}
+	
+	@Test
+	public void importConcursesLotomania() throws Exception {
+		ParameterizedTypeReference<List<DozenDTO>> historic = new ParameterizedTypeReference<List<DozenDTO>>() {};
+		ResponseEntity<List<DozenDTO>> response = rest.exchange("/historic/import/lotomania", HttpMethod.GET, null, historic);
 		MatcherAssert.assertThat(response.getBody().get(0), CoreMatchers.notNullValue());
 	}
 
