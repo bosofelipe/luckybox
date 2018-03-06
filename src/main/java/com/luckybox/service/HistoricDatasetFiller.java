@@ -50,7 +50,7 @@ public class HistoricDatasetFiller {
 	
 	public void fillAlreadyDrawnField(LotteryType type) {
 		List<Historic> allConcurses = historicRepository.findAllByAlreadyDrawnIsNullAndType(type);
-		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c));
+		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c, type));
 	}
 	
 	public Integer dozensLastConcurse(Long concurse) {
@@ -85,10 +85,10 @@ public class HistoricDatasetFiller {
 		historicDatasetRepoImpl.updateVariationAndDozensLastRaffle(dataset);
 	}
 	
-	private void updateWhenHistoricAlreadyDrawn(Historic historic) {
+	private void updateWhenHistoricAlreadyDrawn(Historic historic, LotteryType type) {
 		log.info("Check concurse " + historic.getConcurse());
 		if(historicService.findHistoricWithDozensNEConcurse(DozenMapper.toDTO(historic)).isEmpty());
-			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse());
+			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse(), type);
 		CombinationDozens combination = combinationRepositoryImpl.findCombinationWithHistoric(historic);
 		if (combination != null)
 			combinationRepositoryImpl.markWithDrawn(combination.getId());

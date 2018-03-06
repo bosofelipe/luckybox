@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.LotteryType;
+
 @Component
 public class PrimeRule implements RuleChain {
 
@@ -18,12 +20,12 @@ public class PrimeRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		int dozensMatch = dozens.stream().filter(el -> PRIME.stream().anyMatch(el::equals)).collect(toList()).size();
 		if (dozensMatch < 4)
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW));
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW, lotteryType));
 		if(dozensMatch > 6 )
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH));
-		this.chain.checkRule(dozens, rules);
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH, lotteryType));
+		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 }

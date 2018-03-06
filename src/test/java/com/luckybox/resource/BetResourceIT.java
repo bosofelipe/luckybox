@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.luckybox.bet.rule.RuleType;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
 
@@ -82,7 +83,7 @@ public class BetResourceIT {
 	}
 	
 	private DozenDTO createDozenDTO2() {
-		return DozenDTO.builder().concurse(1522L)
+		return DozenDTO.builder().concurse(1522L).type(LotteryType.LOTOFACIL)
 		.dozen1(1)
 		.dozen2(3)
 		.dozen3(4)
@@ -101,7 +102,7 @@ public class BetResourceIT {
 	}
 	
 	private DozenDTO createHistoricDTO() {
-		return DozenDTO.builder().concurse(1522L)
+		return DozenDTO.builder().concurse(1522L).type(LotteryType.LOTOFACIL)
 		.dozen1(2)
 		.dozen2(3)
 		.dozen3(4)

@@ -32,7 +32,8 @@ public class InfoScheduler {
 	public void schedules() throws IOException, ZipException{
 		importHistoric();
 		checkAlreadyDrawn();
-		generateDozenInfo();
+		generateDozenInfoLotoFacil();
+		generateDozenInfoLotoMania();
 		fillDatasetFields();
 	}
 	
@@ -42,10 +43,16 @@ public class InfoScheduler {
 		log.info("Finished historic concurses...");
 	}
 	
-	private void generateDozenInfo() {
-		log.info("Generate number info...");
-		dozenInfoService.generateDozenInfo();
-		log.info("Finished generate number info...");
+	private void generateDozenInfoLotoFacil() {
+		log.info("Generate dozen info lotofacil...");
+		dozenInfoService.generateDozenInfo("lotofacil");
+		log.info("Finished generate dozen info lotofacil...");
+	}
+	
+	private void generateDozenInfoLotoMania() {
+		log.info("Generate dozen info lotomania...");
+		dozenInfoService.generateDozenInfo("lotomania");
+		log.info("Finished generate dozen info lotomania...");
 	}
 	
 	private void fillDatasetFields() throws IOException, ZipException {

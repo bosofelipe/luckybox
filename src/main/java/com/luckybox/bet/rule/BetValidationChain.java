@@ -31,7 +31,7 @@ public class BetValidationChain {
 		
 		List<RuleDTO> rules = Lists.newArrayList();
 		
-		getRules().checkRule(toList(dozenDTO), rules);
+		getRules().checkRule(toList(dozenDTO), rules, dozenDTO.getType());
 		
 		return rules;
 	}

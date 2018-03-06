@@ -27,32 +27,32 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 		super(Historic.class);
 	}
 
-	public Long findByNumber(int dozen) {
+	public Long findByNumber(int dozen, LotteryType lotteryType) {
 		return from(qHistoric).where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen))
 				.or(qHistoric.dozen3.eq(dozen)).or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen))
 				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
 				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
 				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-				.or(qHistoric.dozen15.eq(dozen))).select(qHistoric.concurse.max()).fetchFirst();
+				.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType))).select(qHistoric.concurse.max()).fetchFirst();
 	}
 
-	public Long countNumberDraw(int dozen) {
+	public Long countNumberDraw(int dozen, LotteryType lotteryType) {
 		return from(qHistoric).where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen))
 				.or(qHistoric.dozen3.eq(dozen)).or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen))
 				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
 				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
 				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-				.or(qHistoric.dozen15.eq(dozen))).fetchCount();
+				.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType))).fetchCount();
 	}
 
-	public List<Integer> listConcursesWithDozen(int dozen) {
+	public List<Integer> listConcursesWithDozen(int dozen, LotteryType lotteryType) {
 		return from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class))
 				.where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen)).or(qHistoric.dozen3.eq(dozen))
 						.or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen)).or(qHistoric.dozen6.eq(dozen))
 						.or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen)).or(qHistoric.dozen9.eq(dozen))
 						.or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen)).or(qHistoric.dozen12.eq(dozen))
 						.or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-						.or(qHistoric.dozen15.eq(dozen)))
+						.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType)))
 				.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
@@ -76,28 +76,29 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 						.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 
-	public List<Historic> getLastRaffles(Integer range) {
-		Long lastIndexRaffle = getLastIndexRaffle();
+	public List<Historic> getLastRaffles(Integer range, LotteryType lotteryType) {
+		Long lastIndexRaffle = getLastIndexRaffle(lotteryType);
 		return from(qHistoric).where(qHistoric.concurse.goe(lastIndexRaffle - range)).orderBy(qHistoric.concurse.desc()).fetch();
 	}
 
-	public Long getLastIndexRaffle() {
-		return from(qHistoric).select(qHistoric.concurse.max()).fetchFirst();
+	public Long getLastIndexRaffle(LotteryType lotteryType) {
+		return from(qHistoric).where(qHistoric.type.eq(lotteryType)).select(qHistoric.concurse.max()).fetchFirst();
 	}
 
 	@Transactional
-	public void updateAlreadyDrawn(Long concurse) {
+	public void updateAlreadyDrawn(Long concurse, LotteryType lotteryType) {
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse)).set(qHistoric.alreadyDrawn, false)
+		queryFactory.update(qHistoric).where(qHistoric.concurse.eq(concurse).and(qHistoric.type.eq(lotteryType))).set(qHistoric.alreadyDrawn, false)
 				.execute();
 	}
 	
-	public Historic getHistoryByConcurseAndType(Long concurse, LotteryType lotterytype) {
+	public Historic getHistoryByConcurseAndType(Long concurse, LotteryType lotteryType) {
 		return from(qHistoric)
-				.where(qHistoric.concurse.eq(concurse), qHistoric.type.eq(lotterytype)).fetchFirst();
+				.where(qHistoric.concurse.eq(concurse), qHistoric.type.eq(lotteryType)).fetchFirst();
 	}
 	
 	private BooleanExpression whereDozens(DozenDTO dozenDTO) {
+		if(LotteryType.LOTOFACIL.equals(dozenDTO.getType())) 
 		return qHistoric.dozen1.eq(dozenDTO.getDozen1())//
 				.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
 				.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
@@ -112,7 +113,30 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.and(qHistoric.dozen12.eq(dozenDTO.getDozen12()))//
 				.and(qHistoric.dozen13.eq(dozenDTO.getDozen13()))//
 				.and(qHistoric.dozen14.eq(dozenDTO.getDozen14()))//
-				.and(qHistoric.dozen15.eq(dozenDTO.getDozen15()));
+				.and(qHistoric.type.eq(dozenDTO.getType()));
+		else
+			return 
+					qHistoric.dozen1.eq(dozenDTO.getDozen1())//
+					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
+					.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
+					.and(qHistoric.dozen4.eq(dozenDTO.getDozen4()))//
+					.and(qHistoric.dozen5.eq(dozenDTO.getDozen5()))//
+					.and(qHistoric.dozen6.eq(dozenDTO.getDozen6()))//
+					.and(qHistoric.dozen7.eq(dozenDTO.getDozen7()))//
+					.and(qHistoric.dozen8.eq(dozenDTO.getDozen8()))//
+					.and(qHistoric.dozen9.eq(dozenDTO.getDozen9()))//
+					.and(qHistoric.dozen10.eq(dozenDTO.getDozen10()))//
+					.and(qHistoric.dozen11.eq(dozenDTO.getDozen11()))//
+					.and(qHistoric.dozen12.eq(dozenDTO.getDozen12()))//
+					.and(qHistoric.dozen13.eq(dozenDTO.getDozen13()))//
+					.and(qHistoric.dozen14.eq(dozenDTO.getDozen14()))//
+					.and(qHistoric.dozen15.eq(dozenDTO.getDozen15()))//
+					.and(qHistoric.dozen16.eq(dozenDTO.getDozen16()))//
+					.and(qHistoric.dozen17.eq(dozenDTO.getDozen17()))//
+					.and(qHistoric.dozen18.eq(dozenDTO.getDozen18()))//
+					.and(qHistoric.dozen19.eq(dozenDTO.getDozen19()))//
+					.and(qHistoric.dozen20.eq(dozenDTO.getDozen20()))//
+					.and(qHistoric.type.eq(dozenDTO.getType()));
 	}
 
 }

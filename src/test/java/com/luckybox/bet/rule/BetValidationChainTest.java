@@ -9,15 +9,18 @@ import java.util.List;
 
 import org.assertj.core.util.Lists;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
@@ -44,14 +47,14 @@ public class BetValidationChainTest {
 	
 	@Test
 	public void catchRulePrime() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTO());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
 	
 	@Test
 	public void catchRulePrimeExceed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithAllPrimes());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
@@ -59,7 +62,7 @@ public class BetValidationChainTest {
 	@Ignore
 	@Test
 	public void catchRuleFibonacci() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenFibonacci());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_LOW));
 	}
@@ -67,49 +70,49 @@ public class BetValidationChainTest {
 	@Ignore
 	@Test
 	public void catchRuleFibonacciExceeed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenFibonacci());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_HIGH));
 	}
 	
 	@Test
 	public void catchRulePair() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithUnpairs());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_LOW));
 	}
 	
 	@Test
 	public void catchRulePairWhenExceed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithExceedPairs());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_HIGH));
 	}
 	
 	@Test
 	public void catchRuleLastRaffle() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList(createHistoricManyDozens()));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList(createHistoricManyDozens()));
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithFirstLineDozensWhenExceed());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
 	
 	@Test
 	public void catchRuleLastRaffleWhenLessDozens() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList(createHistoricLessDozens()));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList(createHistoricLessDozens()));
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozenDTOWithDozenLastRaffle());
 		assertThat(validationChain.get(2).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
 	
 	@Test
 	public void catchRuleSumWithLowSum() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithLowSum());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_LOW));
 	}
 	
 	@Test
 	public void catchRuleSumWithHighSum() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithHighSum());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}
@@ -117,7 +120,7 @@ public class BetValidationChainTest {
 	@Test
 	public void catchRuleCurrentSequenceByDozenInfo() throws Exception {
 		when(dozenInfoRepository.findAll()).thenReturn(createDozenInfo());
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt())).thenReturn(newArrayList());
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(createDozensWithHighSum());
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}

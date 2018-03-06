@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
@@ -33,22 +34,22 @@ public class LastRaffleRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleDTO> rules) {
-		List<Historic> lastRaffles = historicRepositoryImpl.getLastRaffles(1);
+	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
+		List<Historic> lastRaffles = historicRepositoryImpl.getLastRaffles(1, lotteryType);
 		if (!lastRaffles.isEmpty())
-			checkLastDozens(dozens, rules, lastRaffles);
-		chain.checkRule(dozens, rules);
+			checkLastDozens(dozens, rules, lastRaffles,lotteryType);
+		chain.checkRule(dozens, rules, lotteryType);
 	}
 
-	private void checkLastDozens(List<Integer> dozens, List<RuleDTO> rules, List<Historic> lastRaffles) {
+	private void checkLastDozens(List<Integer> dozens, List<RuleDTO> rules, List<Historic> lastRaffles, LotteryType lotteryType) {
 		Historic historic = lastRaffles.get(0);
 		List<Integer> lastDozens = DozenMapper.toList(historic);
 		int dozensMatch = dozens.stream().filter(el -> lastDozens.stream().anyMatch(el::equals)).collect(toList())
 				.size();
 		if (dozensMatch < 7)
-			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW));
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
 		if(dozensMatch > 11)
-			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW));
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
 	}
 
 }
