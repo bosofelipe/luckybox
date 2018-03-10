@@ -1,6 +1,8 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,4 +68,7 @@ public class HistoricDataset {
 	private Integer fourthColumn;
 
 	private Integer fivethColumn;
+	
+	@Enumerated(EnumType.STRING)
+	private LotteryType type;
 }

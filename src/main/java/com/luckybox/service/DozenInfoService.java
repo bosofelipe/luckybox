@@ -26,8 +26,22 @@ public class DozenInfoService {
 	@Inject
 	private SequenceAnalyser sequenceAnalyser;
 
-	public DozenInfo persistDozenInfo(int dozen, String type) {
+	public List<DozenInfo> generateDozenInfo(String type) {
 		LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
+		List<DozenInfo> dozenInfo = new ArrayList<>();
+		int maxDozens = 100;
+		if(LotteryType.LOTOFACIL.equals(lotteryType))
+			maxDozens = 25;
+		for (int i = 1; i <= maxDozens; i++) {
+			int dozen = i;
+			if(i == 100)
+				dozen = 0;
+			dozenInfo.add(persistDozenInfo(dozen, lotteryType));
+		}
+		return dozenInfo;
+	}
+	
+	private DozenInfo persistDozenInfo(int dozen, LotteryType lotteryType) {
 		if(LotteryType.LOTOFACIL.equals(lotteryType)) {
 			return dozenInfoRepository.save(createDozenInfo(dozen, LotteryType.LOTOFACIL));
 		}
@@ -45,10 +59,14 @@ public class DozenInfoService {
 
 		return DozenInfo.builder().type(lotteryType).number(dozen).countDrawNumber(countNumberDraw)
 				.currentSequenceDrawn(findCurrentSequenceDrawn(dozen, lotteryType))
-				.lastDrawNumber(historicService.getLastIndexRaffle(lotteryType) - lastDrawByNumber)
+				.lastDrawNumber(getLastDrawNumber(lotteryType, lastDrawByNumber))
 				.lastEfetiveConcurseNumber(lastDrawByNumber).maxSequenceDrawn(greaterSequence.get(0).longValue())
 				.qtSequenceDrawn(greaterSequence.get(1).longValue()).build();
 
+	}
+
+	private long getLastDrawNumber(LotteryType lotteryType, Long lastDrawByNumber) {
+			return historicService.getLastIndexRaffle(lotteryType) - lastDrawByNumber;
 	}
 
 	private long findCurrentSequenceDrawn(int dozen, LotteryType lotteryType) {
@@ -59,12 +77,5 @@ public class DozenInfoService {
 			}
 		}
 		return 0;
-	}
-
-	public List<DozenInfo> generateDozenInfo(String type) {
-		List<DozenInfo> DozenInfos = new ArrayList<>();
-		for (int i = 1; i <= 25; i++)
-			DozenInfos.add(persistDozenInfo(i, type));
-		return DozenInfos;
 	}
 }

@@ -19,7 +19,7 @@ public class SequenceAnalyser {
 		Collections.sort(diffs);
 		Collections.reverse(diffs);
 		List<Integer> values = new ArrayList<Integer>();
-		values.add(diffs.get(0));
+		values.add(diffs.size() >0 ? diffs.get(0) : 0);
 		values.add(diffs.size());
 		return values;
 	}

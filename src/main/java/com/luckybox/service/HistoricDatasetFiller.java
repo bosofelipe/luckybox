@@ -14,7 +14,6 @@ import com.luckybox.domain.HistoricDataset;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.CombinationDozensRepositoryImpl;
-import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
@@ -35,9 +34,6 @@ public class HistoricDatasetFiller {
 	private HistoricService historicService;
 	
 	@Inject
-	private HistoricDatasetRepository historicDatasetRepo;
-	
-	@Inject
 	private HistoricDatasetRepositoryImpl historicDatasetRepoImpl;
 	
 	@Inject
@@ -45,7 +41,7 @@ public class HistoricDatasetFiller {
 	
 	public void fillDataSet(LotteryType type) {
 		List<Historic> allConcurses = historicRepository.findAllByType(type);
-		allConcurses.stream().forEach(c-> fillFields(c));
+		allConcurses.stream().forEach(c-> fillFields(c, type));
 	}
 	
 	public void fillAlreadyDrawnField(LotteryType type) {
@@ -53,12 +49,12 @@ public class HistoricDatasetFiller {
 		allConcurses.stream().forEach(c-> updateWhenHistoricAlreadyDrawn(c, type));
 	}
 	
-	public Integer dozensLastConcurse(Long concurse) {
+	public Integer dozensLastConcurse(Long concurse, LotteryType type) {
 		if (concurse == 1)
 			return 0;
 		else{
-			Historic previousConcurse = historicRepository.findByConcurse(concurse-1);
-			Historic currentConcurse = historicRepository.findByConcurse(concurse);
+			Historic previousConcurse = historicRepository.findByConcurseAndType(concurse-1, type);
+			Historic currentConcurse = historicRepository.findByConcurseAndType(concurse, type);
 			return getDozensAtHistoric(DozenMapper.toList(previousConcurse), DozenMapper.toList(currentConcurse)).size();
 		}
 	}
@@ -68,21 +64,21 @@ public class HistoricDatasetFiller {
 		return collect;
 	}
 
-	public Integer calculateVariationSum(Long concurse) {
+	public Integer calculateVariationSum(Long concurse, LotteryType type) {
 		if (concurse == 1)
 			return 0;
 		else
-			return calculateVariationWhenNotFirstConcurse(concurse);
+			return calculateVariationWhenNotFirstConcurse(concurse, type);
 	}
 
-	private void fillFields(Historic historic) {
+	private void fillFields(Historic historic, LotteryType type) {
 		Long concurse = historic.getConcurse();
-		Integer variationSum = calculateVariationSum(concurse);
-		Integer dozensLastConcurse = dozensLastConcurse(concurse);
-		HistoricDataset dataset = historicDatasetRepo.findByConcurse(concurse);
+		Integer variationSum = calculateVariationSum(concurse, type);
+		Integer dozensLastConcurse = dozensLastConcurse(concurse, type);
+		HistoricDataset dataset = historicDatasetRepoImpl.findByConcurseAndType(concurse, type);
 		dataset.setDozensLastRaffle(dozensLastConcurse);
 		dataset.setVariationSum(variationSum);
-		historicDatasetRepoImpl.updateVariationAndDozensLastRaffle(dataset);
+		historicDatasetRepoImpl.updateVariationAndDozensLastRaffle(dataset, type);
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic, LotteryType type) {
@@ -94,9 +90,9 @@ public class HistoricDatasetFiller {
 			combinationRepositoryImpl.markWithDrawn(combination.getId());
 	}
 	
-	private Integer calculateVariationWhenNotFirstConcurse(Long concurse) {
-		Historic previousConcurse = historicRepository.findByConcurse(concurse -1);
-		Historic currentConcurse = historicRepository.findByConcurse(concurse);
+	private Integer calculateVariationWhenNotFirstConcurse(Long concurse, LotteryType type) {
+		Historic previousConcurse = historicRepository.findByConcurseAndType(concurse -1, type);
+		Historic currentConcurse = historicRepository.findByConcurseAndType(concurse, type);
 		List<Integer> listOfNumbersPreviousConcurse = DozenMapper.toList(previousConcurse);
 		List<Integer> listOfNumbersCurrentConcurse = DozenMapper.toList(currentConcurse);
 		int variation = sumDozens(listOfNumbersCurrentConcurse) - sumDozens(listOfNumbersPreviousConcurse);

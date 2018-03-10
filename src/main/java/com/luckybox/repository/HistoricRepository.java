@@ -11,7 +11,7 @@ public interface HistoricRepository extends JpaRepository<Historic, Long> {
 	
 	boolean exists(Long concurse);
 	
-	Historic findByConcurse(Long concurse);
+	Historic findByConcurseAndType(Long concurse, LotteryType type);
 	
 	List<Historic> findAllByType(LotteryType type);
 	

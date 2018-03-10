@@ -94,6 +94,7 @@ public class HistoricImporterService {
 			Historic historicEntity = DozenMapper.toHistoric(dto);
 			HistoricDataset dataset = null;
 			
+			dto.setType(type);
 			if(type == LotteryType.LOTOFACIL)
 				dataset = datasetCreator.createHistoricDataSet(dto);
 			else

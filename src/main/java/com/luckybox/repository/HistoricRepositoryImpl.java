@@ -33,7 +33,13 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
 				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
 				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-				.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType))).select(qHistoric.concurse.max()).fetchFirst();
+				.or(qHistoric.dozen15.eq(dozen))
+				.or(qHistoric.dozen16.eq(dozen))
+				.or(qHistoric.dozen17.eq(dozen))
+				.or(qHistoric.dozen18.eq(dozen))
+				.or(qHistoric.dozen19.eq(dozen))
+				.or(qHistoric.dozen20.eq(dozen))
+				.and(qHistoric.type.eq(lotteryType))).select(qHistoric.concurse.max()).fetchFirst();
 	}
 
 	public Long countNumberDraw(int dozen, LotteryType lotteryType) {
@@ -42,7 +48,11 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.or(qHistoric.dozen6.eq(dozen)).or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen))
 				.or(qHistoric.dozen9.eq(dozen)).or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen))
 				.or(qHistoric.dozen12.eq(dozen)).or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-				.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType))).fetchCount();
+				.or(qHistoric.dozen15.eq(dozen)).or(qHistoric.dozen16.eq(dozen))
+				.or(qHistoric.dozen17.eq(dozen))
+				.or(qHistoric.dozen18.eq(dozen))
+				.or(qHistoric.dozen19.eq(dozen))
+				.or(qHistoric.dozen20.eq(dozen)).and(qHistoric.type.eq(lotteryType))).fetchCount();
 	}
 
 	public List<Integer> listConcursesWithDozen(int dozen, LotteryType lotteryType) {
@@ -52,7 +62,11 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 						.or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen)).or(qHistoric.dozen9.eq(dozen))
 						.or(qHistoric.dozen10.eq(dozen)).or(qHistoric.dozen11.eq(dozen)).or(qHistoric.dozen12.eq(dozen))
 						.or(qHistoric.dozen13.eq(dozen)).or(qHistoric.dozen14.eq(dozen))
-						.or(qHistoric.dozen15.eq(dozen)).and(qHistoric.type.eq(lotteryType)))
+						.or(qHistoric.dozen15.eq(dozen)).or(qHistoric.dozen16.eq(dozen))
+						.or(qHistoric.dozen17.eq(dozen))
+						.or(qHistoric.dozen18.eq(dozen))
+						.or(qHistoric.dozen19.eq(dozen))
+						.or(qHistoric.dozen20.eq(dozen)).and(qHistoric.type.eq(lotteryType)))
 				.orderBy(qHistoric.concurse.asc()).fetch();
 	}
 

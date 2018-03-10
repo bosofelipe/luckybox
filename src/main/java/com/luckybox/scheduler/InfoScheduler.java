@@ -30,16 +30,23 @@ public class InfoScheduler {
 
 	@Scheduled(fixedDelay = 7200000)
 	public void schedules() throws IOException, ZipException{
-		importHistoric();
+		importHistoricLotoFacil();
+		importHistoricLotoMania();
 		checkAlreadyDrawn();
 		generateDozenInfoLotoFacil();
 		generateDozenInfoLotoMania();
 		fillDatasetFields();
 	}
 	
-	private void importHistoric() throws IOException, ZipException {
+	private void importHistoricLotoFacil() throws IOException, ZipException {
 		log.info("Importing historic concurses...");
 		historicService.importConcurses("lotofacil");
+		log.info("Finished historic concurses...");
+	}
+	
+	private void importHistoricLotoMania() throws IOException, ZipException {
+		log.info("Importing historic concurses...");
+		historicService.importConcurses("lotomania");
 		log.info("Finished historic concurses...");
 	}
 	

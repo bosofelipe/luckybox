@@ -16,19 +16,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.luckybox.filter.ObjectFilter;
+import com.luckybox.domain.DozenInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class FilterResourceIT {
+public class DozenInfoResourceIT {
 
 	@Inject
-	private TestRestTemplate rest;
+	private TestRestTemplate restTemplate;
 	
 	@Test
-	public void filterSum() throws Exception {
-		ParameterizedTypeReference<List<ObjectFilter>> filter = new ParameterizedTypeReference<List<ObjectFilter>>() {};
-		ResponseEntity<List<ObjectFilter>> response = rest.exchange("/filter/sum", HttpMethod.GET, null, filter);
+	public void generateInfoLotoFacil() throws Exception {
+		ParameterizedTypeReference<List<DozenInfo>> historic = new ParameterizedTypeReference<List<DozenInfo>>() {};
+		ResponseEntity<List<DozenInfo>> response = restTemplate.exchange("/dozeninfo/generate/lotofacil", HttpMethod.GET, null, historic);
 		MatcherAssert.assertThat(response.getBody().get(0), CoreMatchers.notNullValue());
 	}
 }

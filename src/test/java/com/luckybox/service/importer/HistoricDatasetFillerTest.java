@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricDatasetFiller;
 
@@ -29,37 +30,37 @@ public class HistoricDatasetFillerTest {
 	
 	@Test
 	public void dozensLastConcurseWhenFirstConcurse() throws Exception {
-		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(1L);
+		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(1L, LotteryType.LOTOFACIL);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(0));
 	}
 	
 	@Test
 	public void dozensLastConcurse() throws Exception {
-		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(1L);
-		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(2L);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurseAndType(2L, LotteryType.LOTOFACIL);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurseAndType(1L, LotteryType.LOTOFACIL);
+		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(2L, LotteryType.LOTOFACIL);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(12));
 	}
 	
 	@Test
 	public void calculateVariationSumWhenFirstConcurse() throws Exception {
-		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(1L);
+		Integer dozensLastConcurse = datasetFiller.dozensLastConcurse(1L, LotteryType.LOTOFACIL);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(0));
 	}
 	
 	@Test
 	public void calculateVariationSum() throws Exception {
-		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(1L);
-		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurseAndType(2L, LotteryType.LOTOFACIL);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurseAndType(1L, LotteryType.LOTOFACIL);
+		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L, LotteryType.LOTOFACIL);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(30));
 	}
 	
 	@Test
 	public void calculateVariationSumWhenNegative() throws Exception {
-		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurse(2L);
-		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurse(1L);
-		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L);
+		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurseAndType(2L, LotteryType.LOTOFACIL);
+		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurseAndType(1L, LotteryType.LOTOFACIL);
+		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L, LotteryType.LOTOFACIL);
 		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(30));
 	}
 

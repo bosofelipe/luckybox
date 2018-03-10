@@ -18,14 +18,14 @@ public class LotoManiaDatasetCreator {
 	private static final int QUANTITY_OF_DOZENS = 20;
 	private List<Integer> dozens = new ArrayList<>();
 
-	public HistoricDataset createHistoricDataSet(DozenDTO historicDTO) {
-		dozens = DozenMapper.toList(historicDTO);
+	public HistoricDataset createHistoricDataSet(DozenDTO dozenDTO) {
+		dozens = DozenMapper.toList(dozenDTO);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
-		return HistoricDataset.builder().dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
+		return HistoricDataset.builder().type(dozenDTO.getType()).dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
 				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
-				.concurse(historicDTO.getConcurse()).build();
+				.concurse(dozenDTO.getConcurse()).build();
 	}
 	
 	private Integer sumDozens() {
