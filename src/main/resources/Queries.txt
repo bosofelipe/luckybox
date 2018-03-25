@@ -83,3 +83,39 @@ and qtd_sequences in
       order by co desc limit 3
    ) as t2
 )
+
+
+==========================
+
+select count(*), pair from historic_dataset  where type='LOTOMANIA'
+group by pair
+
+select count(*), fibonacci from historic_dataset  where type='LOTOMANIA'
+group by fibonacci
+
+select count(*), dozen_sum from historic_dataset  where type='LOTOMANIA'
+group by dozen_sum
+
+select count(*), prime from historic_dataset  where type='LOTOMANIA'
+group by prime
+
+select count(*), qtd_sequences from historic_dataset  where type='LOTOMANIA'
+group by qtd_sequences
+
+select count(*), qtd_sequences from historic_dataset  where type='LOTOMANIA'
+group by qtd_sequences
+
+
+select concurse, fibonacci,prime,fibonacci_prime, dozen_sum,qtd_sequences from historic_dataset  where concurse >= ((select max(concurse) from historic_dataset  where type='LOTOMANIA')  - 10) order by concurse desc
+
+select dozen1,dozen2,dozen3,dozen4,dozen5,dozen6,dozen7,dozen8,dozen9,dozen10,dozen11,dozen12,dozen13,dozen14,dozen15,dozen16,dozen17,dozen18,dozen19,dozen20 from historic  where concurse >= ((select max(concurse) from historic  where type='LOTOMANIA')  - 20) order by concurse desc
+
+
+1, 2, 3, 5, 8, 13, 21, 34, 55, 89
+   2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+
+2,3,5,13,89
+
+
+
+

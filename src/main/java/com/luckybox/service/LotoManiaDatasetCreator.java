@@ -1,5 +1,6 @@
 package com.luckybox.service;
 
+import static com.luckybox.constants.ConstantsLoto.FIBONACCI_PRIME_SEQUENCE;
 import static com.luckybox.constants.ConstantsLoto.FIBONACCI_SEQUENCE;
 import static com.luckybox.constants.ConstantsLoto.PRIME;
 
@@ -23,7 +24,7 @@ public class LotoManiaDatasetCreator {
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
 		return HistoricDataset.builder().type(dozenDTO.getType()).dozenSum(sumDozens).average(sumDozens / QUANTITY_OF_DOZENS).pair(countPairs())
-				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers())
+				.fibonacci(countFibonacciNumbers()).prime(countPrimeNumbers()).fibonacciPrime(countFibonacciPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
 				.concurse(dozenDTO.getConcurse()).build();
 	}
@@ -46,6 +47,10 @@ public class LotoManiaDatasetCreator {
 
 	private Integer countPrimeNumbers() {
 		return (int) dozens.stream().filter(c -> PRIME.contains(c)).mapToInt(c -> c).count();
+	}
+	
+	private Integer countFibonacciPrimeNumbers() {
+		return (int) dozens.stream().filter(c -> FIBONACCI_PRIME_SEQUENCE.contains(c)).mapToInt(c -> c).count();
 	}
 
 	private List<Integer> getGreaterSequence() {

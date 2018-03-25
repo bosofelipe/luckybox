@@ -13,6 +13,8 @@ import javax.ws.rs.Produces;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,8 @@ import com.luckybox.domain.Bet;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
 import com.luckybox.service.BetService;
+
+import net.lingala.zip4j.exception.ZipException;
 
 @RestController
 @RequestMapping("/bet")
@@ -50,6 +54,11 @@ public class BetResource {
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody DozenDTO dozenDTO) {
 		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozenDTO), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/check/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public List<Bet> checkBets(@PathVariable String type) throws IOException, ZipException {
+		return betService.checkBets(type);
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)

@@ -36,6 +36,9 @@ public class InfoScheduler {
 		generateDozenInfoLotoFacil();
 		generateDozenInfoLotoMania();
 		fillDatasetFields();
+		
+		generateDozenInfoLotoFacil();
+		generateDozenInfoLotoMania();
 	}
 	
 	private void importHistoricLotoFacil() throws IOException, ZipException {

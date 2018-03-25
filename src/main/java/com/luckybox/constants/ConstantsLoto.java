@@ -35,6 +35,8 @@ public class ConstantsLoto {
 
 	public static final List<Integer> PRIME = asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97);
 
+	public static final List<Integer> FIBONACCI_PRIME_SEQUENCE = asList(2,3,5,13,89);
+	
 	public static final List<Integer> FIRST_COLUMN = asList(1, 6, 11, 16, 21);
 
 	public static final List<Integer> SECOND_COLUMN = asList(2, 7, 12, 17, 22);

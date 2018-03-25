@@ -44,6 +44,8 @@ public class HistoricDataset {
 	private Integer fibonacci;
 
 	private Integer prime;
+	
+	private Integer fibonacciPrime;
 
 	private Integer greatherSequence;
 	

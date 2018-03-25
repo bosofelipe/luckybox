@@ -30,7 +30,8 @@ public class Bet {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long betId;
-	
+	private Integer hits;
+	private Boolean alreadyChecked;
 	private Long concurse;
 	private Integer dozen1;
 	private Integer dozen2;
@@ -64,7 +65,4 @@ public class Bet {
 	public void prePersist(){
 		this.creationDate = new Date();
 	}
-	
-	
-	
 }
