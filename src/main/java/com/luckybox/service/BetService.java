@@ -1,5 +1,8 @@
 package com.luckybox.service;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.luckybox.mapper.DozenMapper.toBet;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -20,13 +23,20 @@ import com.luckybox.dto.GroupBetMessageDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.reader.CSVBetReader;
 import com.luckybox.repository.BetRepository;
+import com.luckybox.repository.BetRepositoryImpl;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Service
 public class BetService {
 
 	@Inject
 	private BetRepository betRepository;
+
+	@Inject
+	private BetRepositoryImpl betRepositoryImpl;
 
 	@Inject
 	private HistoricRepositoryImpl historicRepository;
@@ -37,9 +47,18 @@ public class BetService {
 	@Inject
 	private BetValidationChain chainOfRules;
 
-	public Bet save(DozenDTO dozenDTO) {
-		Bet bet = DozenMapper.toBet(dozenDTO);
-		return betRepository.save(bet);
+	public List<Bet> save(DozenDTO dozenDTO) {
+		List<Bet> bets = newArrayList();
+		if (dozenDTO.getConcurses() != null) {
+			for (int i = 0; i < dozenDTO.getConcurses(); i++) {
+				log.info(dozenDTO.getConcurse() + i);
+				Bet bet = toBet(dozenDTO);
+				bet.setConcurse(dozenDTO.getConcurse() + i);
+				bets.add(bet);
+			}
+			betRepository.save(bets);
+		}
+		return bets;
 	}
 
 	public boolean isAlreadyDrawn(DozenDTO dozenDTO) {
@@ -78,7 +97,7 @@ public class BetService {
 	}
 
 	public List<Bet> checkBets(String type) {
-		List<Bet> bets = betRepository.findAllByAlreadyChecked(false);
+		List<Bet> bets = betRepositoryImpl.findAllNotChecked();
 		bets.forEach(bet -> check(bet, LotteryType.valueOf(type.toUpperCase())));
 		return bets;
 	}
@@ -86,10 +105,12 @@ public class BetService {
 	private void check(Bet bet, LotteryType type) {
 		Long concurse = bet.getConcurse();
 		Historic historic = historicRepository.getHistoryByConcurseAndType(concurse, type);
-		List<Integer> betDozens = DozenMapper.toList(bet);
-		List<Integer> historicDozens = DozenMapper.toList(historic);
-		betDozens.retainAll(historicDozens);
-		bet.setHits(betDozens.size());
-		betRepository.save(bet);
+		if (historic != null) {
+			List<Integer> betDozens = DozenMapper.toList(bet);
+			List<Integer> historicDozens = DozenMapper.toList(historic);
+			betDozens.retainAll(historicDozens);
+			bet.setHits(betDozens.size());
+			betRepository.save(bet);
+		}
 	}
 }

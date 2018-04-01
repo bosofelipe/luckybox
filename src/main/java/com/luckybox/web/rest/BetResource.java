@@ -42,8 +42,8 @@ public class BetResource {
 	private BetService betService;
 
 	@PostMapping(path = "/toBet", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Bet> toBet(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<Bet>(betService.save(dozenDTO), HttpStatus.OK);
+	public ResponseEntity<List<Bet>> toBet(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<List<Bet>>(betService.save(dozenDTO), HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/validate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })

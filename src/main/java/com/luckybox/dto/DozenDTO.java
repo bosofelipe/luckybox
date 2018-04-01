@@ -41,7 +41,42 @@ public class DozenDTO {
 	private Integer dozen18;
 	private Integer dozen19;
 	private Integer dozen20;
+	
+	private Integer dozen21;
+	private Integer dozen22;
+	private Integer dozen23;
+	private Integer dozen24;
+	private Integer dozen25;
+	private Integer dozen26;
+	private Integer dozen27;
+	private Integer dozen28;
+	private Integer dozen29;
+	private Integer dozen30;
+	
+	private Integer dozen31;
+	private Integer dozen32;
+	private Integer dozen33;
+	private Integer dozen34;
+	private Integer dozen35;
+	private Integer dozen36;
+	private Integer dozen37;
+	private Integer dozen38;
+	private Integer dozen39;
+	private Integer dozen40;
+	
+	private Integer dozen41;
+	private Integer dozen42;
+	private Integer dozen43;
+	private Integer dozen44;
+	private Integer dozen45;
+	private Integer dozen46;
+	private Integer dozen47;
+	private Integer dozen48;
+	private Integer dozen49;
+	private Integer dozen50;
 	private LotteryType type;
+	
+	private Integer concurses;
 	
 	private Date date;
 	private Date concurseDate;
