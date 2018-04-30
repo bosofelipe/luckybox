@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
+import com.luckybox.dto.BetInfoDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
 import com.luckybox.service.BetService;
@@ -57,7 +58,7 @@ public class BetResource {
 	}
 	
 	@GetMapping(path = "/check/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<Bet> checkBets(@PathVariable String type) throws IOException, ZipException {
+	public List<BetInfoDTO> checkBets(@PathVariable String type) throws IOException, ZipException {
 		return betService.checkBets(type);
 	}
 

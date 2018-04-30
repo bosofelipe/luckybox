@@ -5,6 +5,7 @@ import static com.luckybox.mapper.DozenMapper.toBet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.BetInfoDTO;
 import com.luckybox.dto.BetMessageDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
@@ -96,20 +98,30 @@ public class BetService {
 		message.add(BetMessageDTO.builder().bet(bet).rules(validationChain).build());
 	}
 
-	public List<Bet> checkBets(String type) {
-		List<Bet> bets = betRepositoryImpl.findAllNotChecked();
-		bets.forEach(bet -> check(bet, LotteryType.valueOf(type.toUpperCase())));
-		return bets;
+	public List<BetInfoDTO> checkBets(String type) {
+		List<BetInfoDTO> betsDTO = Lists.newArrayList();
+		betRepositoryImpl.findAllNotChecked()
+							.forEach(bet -> check(betsDTO, bet, LotteryType.valueOf(type.toUpperCase())));
+		return betsDTO;
 	}
 
-	private void check(Bet bet, LotteryType type) {
+	private void check(List<BetInfoDTO> bets , Bet bet, LotteryType type) {
 		Long concurse = bet.getConcurse();
 		Historic historic = historicRepository.getHistoryByConcurseAndType(concurse, type);
 		if (historic != null) {
 			List<Integer> betDozens = DozenMapper.toList(bet);
 			List<Integer> historicDozens = DozenMapper.toList(historic);
+			Collections.sort(historicDozens);
 			betDozens.retainAll(historicDozens);
 			bet.setHits(betDozens.size());
+			
+			BetInfoDTO infoDTO = BetInfoDTO.builder().hits(betDozens.size())
+											.concurse(concurse)
+											.concurseDate(historic.getConcurseDate())
+											.concurseDozens(historicDozens)
+											.dozenDrawn(betDozens).build();
+			
+			bets.add(infoDTO);
 			betRepository.save(bet);
 		}
 	}
