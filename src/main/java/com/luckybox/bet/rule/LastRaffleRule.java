@@ -17,6 +17,10 @@ import com.luckybox.repository.HistoricRepositoryImpl;
 public class LastRaffleRule implements RuleChain {
 
 	private RuleChain chain;
+	
+	private Integer minMatch;
+
+	private Integer maxMatch;
 
 	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
@@ -24,7 +28,9 @@ public class LastRaffleRule implements RuleChain {
 	public LastRaffleRule() {
 	}
 	
-	public LastRaffleRule(HistoricRepositoryImpl historicRepositoryImpl) {
+	public LastRaffleRule(HistoricRepositoryImpl historicRepositoryImpl, Integer minMatch, Integer maxMatch) {
+		this.minMatch = minMatch;
+		this.maxMatch = maxMatch;
 		this.historicRepositoryImpl = historicRepositoryImpl;
 	}
 
@@ -46,9 +52,9 @@ public class LastRaffleRule implements RuleChain {
 		List<Integer> lastDozens = DozenMapper.toList(historic);
 		int dozensMatch = dozens.stream().filter(el -> lastDozens.stream().anyMatch(el::equals)).collect(toList())
 				.size();
-		if (dozensMatch < 7)
+		if (dozensMatch < this.minMatch)
 			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
-		if(dozensMatch > 11)
+		if(dozensMatch > this.maxMatch)
 			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
 	}
 

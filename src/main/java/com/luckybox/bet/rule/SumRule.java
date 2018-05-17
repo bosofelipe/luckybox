@@ -10,6 +10,15 @@ import com.luckybox.domain.LotteryType;
 public class SumRule implements RuleChain {
 
 	private RuleChain chain;
+	
+	private Integer minMatch;
+
+	private Integer maxMatch;
+
+	public SumRule(Integer minMatch, Integer maxMatch) {
+		this.minMatch = minMatch;
+		this.maxMatch = maxMatch;
+	}
 
 	@Override
 	public void setNextChain(RuleChain nextChain) {
@@ -19,9 +28,9 @@ public class SumRule implements RuleChain {
 	@Override
 	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
 		int sum = numbers.stream().mapToInt(Number::intValue).sum();
-		if (sum < 141)
+		if (sum < this.minMatch)
 			rules.add(buildRule(sum, RuleType.SUM_LOW, lotteryType));
-		if (sum > 247)
+		if (sum > this.maxMatch)
 			rules.add(buildRule(sum, RuleType.SUM_HIGH, lotteryType));
 		
 		this.chain.checkRule(numbers, rules, lotteryType);

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
@@ -31,20 +32,42 @@ public class BetValidationChain {
 		
 		List<RuleDTO> rules = Lists.newArrayList();
 		
-		getRules().checkRule(toList(dozenDTO), rules, dozenDTO.getType());
-		
+		if(dozenDTO.getType() == LotteryType.LOTOFACIL)
+			getLotofacilRules().checkRule(toList(dozenDTO), rules, dozenDTO.getType());
+		if(dozenDTO.getType() == LotteryType.LOTOMANIA)
+			getLotomaniaRules().checkRule(toList(dozenDTO), rules, dozenDTO.getType());
 		return rules;
 	}
 
-	private RuleChain getRules() {
-		RuleChain rule = new PrimeRule();
-		RuleChain pair = new PairRule();
+	private RuleChain getLotofacilRules() {
+		RuleChain rule = new PrimeRule(4,6);
+		RuleChain pair = new PairRule(6,8);
 		RuleChain columnLine = new ColumnLineRule();
-		RuleChain sum = new SumRule();
+		RuleChain sum = new SumRule(141,247);
 		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
-		RuleChain fibonacci = new FibonacciRule();
+		RuleChain fibonacci = new FibonacciRule(3,6);
 		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicService);
-		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl);
+		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl, 7 ,10);
+
+		rule.setNextChain(pair);
+		pair.setNextChain(sum);
+		sum.setNextChain(lastRaffle);
+		lastRaffle.setNextChain(dozenInfo);
+		dozenInfo.setNextChain(columnLine);
+		columnLine.setNextChain(alreadyDrawn);
+		alreadyDrawn.setNextChain(fibonacci);
+		return rule;
+	}
+	
+	private RuleChain getLotomaniaRules() {
+		RuleChain rule = new PrimeRule(4,6);
+		RuleChain pair = new PairRule(6,8);
+		RuleChain columnLine = new ColumnLineRule();
+		RuleChain sum = new SumRule(141,247);
+		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
+		RuleChain fibonacci = new FibonacciRule(3,6);
+		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicService);
+		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl, 7 ,10);
 
 		rule.setNextChain(pair);
 		pair.setNextChain(sum);

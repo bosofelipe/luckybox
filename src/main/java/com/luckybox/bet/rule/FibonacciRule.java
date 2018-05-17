@@ -12,6 +12,14 @@ import com.luckybox.domain.LotteryType;
 @Component
 public class FibonacciRule implements RuleChain {
 
+	private Integer minMatch;
+
+	private Integer maxMatch;
+
+	public FibonacciRule(Integer minMatch, Integer maxMatch) {
+		this.minMatch = minMatch;
+		this.maxMatch = maxMatch;
+	}
 	@SuppressWarnings("unused")
 	private RuleChain chain;
 
@@ -24,9 +32,9 @@ public class FibonacciRule implements RuleChain {
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		int dozensMatch = dozens.stream().filter(el -> ConstantsLoto.FIBONACCI_SEQUENCE.stream().anyMatch(el::equals))
 				.collect(toList()).size();
-		if (dozensMatch < 3)
+		if (dozensMatch < this.minMatch)
 			rules.add(buildRule(dozensMatch, RuleType.FIBONACCI_LOW, lotteryType));
-		if(dozensMatch > 6)
+		if(dozensMatch > this.maxMatch)
 			rules.add(buildRule(dozensMatch,RuleType.FIBONACCI_HIGH, lotteryType));
 	}
 }
