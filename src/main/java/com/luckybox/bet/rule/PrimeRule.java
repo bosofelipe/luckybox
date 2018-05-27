@@ -18,6 +18,8 @@ public class PrimeRule implements RuleChain {
 	
 	private Integer maxMatch;
 	
+	public PrimeRule() {}
+	
 	public PrimeRule(Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;

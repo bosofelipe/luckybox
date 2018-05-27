@@ -15,6 +15,8 @@ public class SumRule implements RuleChain {
 
 	private Integer maxMatch;
 
+	public SumRule() {}
+	
 	public SumRule(Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;

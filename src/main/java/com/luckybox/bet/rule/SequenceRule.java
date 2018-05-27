@@ -8,21 +8,23 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.service.SequenceAnalyser;
 
 @Component
-public class PairRule implements RuleChain {
+public class SequenceRule implements RuleChain {
 
 	private RuleChain chain;
 
-	private Integer minMatch;
-
 	private Integer maxMatch;
 
-	public PairRule() {}
-	
-	public PairRule(Integer minMatch, Integer maxMatch) {
-		this.minMatch = minMatch;
+	private Integer countMatch;
+
+	public SequenceRule() {
+	}
+
+	public SequenceRule(Integer maxMatch, Integer countMatch) {
 		this.maxMatch = maxMatch;
+		this.countMatch = countMatch;
 	}
 
 	@Override
@@ -32,12 +34,15 @@ public class PairRule implements RuleChain {
 
 	@Override
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
+		List<Integer> greaterSequence = new SequenceAnalyser().getGreaterSequence(dozens);
+		Integer greater = greaterSequence.get(0);
+		Integer qtdSequences = greaterSequence.get(1);
 		int dozensMatch = dozens.stream().filter(el -> PAIR_NUMBERS.stream().anyMatch(el::equals)).collect(toList())
 				.size();
-		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PAIR_LOW, lotteryType));
-		if (dozensMatch > this.maxMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PAIR_HIGH, lotteryType));
+		if (greater > this.maxMatch)
+			rules.add(buildRule(dozensMatch, RuleType.GREATER_SEQUENCE, lotteryType));
+		if (qtdSequences > this.countMatch)
+			rules.add(buildRule(dozensMatch, RuleType.QTD_SEQUENCE, lotteryType));
 		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 

@@ -16,6 +16,8 @@ public class FibonacciRule implements RuleChain {
 
 	private Integer maxMatch;
 
+	public FibonacciRule() {}
+	
 	public FibonacciRule(Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;
