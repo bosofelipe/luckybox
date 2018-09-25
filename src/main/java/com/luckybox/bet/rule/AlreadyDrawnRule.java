@@ -6,9 +6,11 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
-import com.luckybox.service.HistoricService;
+import com.luckybox.repository.HistoricRepositoryImpl;
 
 @Component
 public class AlreadyDrawnRule implements RuleChain {
@@ -16,13 +18,13 @@ public class AlreadyDrawnRule implements RuleChain {
 	private RuleChain chain;
 	
 	@Inject
-	private HistoricService historicService;
+	private HistoricRepositoryImpl historicRepository;
 	
 	public AlreadyDrawnRule(){
 	}
 	
-	public AlreadyDrawnRule(HistoricService historicService) {
-		this.historicService = historicService;
+	public AlreadyDrawnRule(HistoricRepositoryImpl historicRepository) {
+		this.historicRepository = historicRepository;
 	}
 
 	@Override
@@ -32,9 +34,16 @@ public class AlreadyDrawnRule implements RuleChain {
 
 	@Override
 	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
-		if(!historicService.findHistoricWithDozensNEConcurse(DozenMapper.toDTO(numbers)).isEmpty())
+		
+		DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
+				
+		List<Historic> historic = historicRepository.findHistoricByDozens(dozenDTO);
+		boolean isAlreadyDown = historic.isEmpty() ? false : true;
+		
+		if(isAlreadyDown)
 			rules.add(
 					RuleDTO.builder()//
+							.dozens(dozenDTO)
 						    .type(RuleType.ALREADY_DRAWN)//
 							.build());
 		this.chain.checkRule(numbers, rules, lotteryType);

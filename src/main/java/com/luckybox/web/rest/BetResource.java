@@ -46,15 +46,15 @@ public class BetResource {
 	public ResponseEntity<List<Bet>> toBet(@RequestBody DozenDTO dozenDTO) {
 		return new ResponseEntity<List<Bet>>(betService.save(dozenDTO), HttpStatus.OK);
 	}
-
-	@PostMapping(path = "/validate", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Boolean> validateBet(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<Boolean>(betService.isAlreadyDrawn(dozenDTO), HttpStatus.OK);
+	
+	@PostMapping(path = "/validateAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<List<DozenDTO>> validateBets(@RequestBody List<DozenDTO> dozens) {
+		return new ResponseEntity<List<DozenDTO>>(betService.isAlreadyDrawn(dozens), HttpStatus.OK);
 	}
-
+	
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozenDTO), HttpStatus.OK);
+	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody List<DozenDTO> dozens) {
+		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozens), HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/check/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })

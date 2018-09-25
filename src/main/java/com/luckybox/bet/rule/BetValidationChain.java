@@ -14,7 +14,6 @@ import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
-import com.luckybox.service.HistoricService;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 
@@ -28,15 +27,14 @@ public class BetValidationChain {
 	private DozenInfoRepository dozenInfoRepo;
 	
 	@Inject
-	private HistoricService historicService;
-	
-	@Inject
 	private BetRuleSettingsRepository betRuleSettingsRepository;
 	
-	public List<RuleDTO> validationChain(DozenDTO dozenDTO) {
+	public List<RuleDTO> validationChain(List<DozenDTO> dozens) {
 		
 		List<RuleDTO> rules = Lists.newArrayList();
-		getRules(dozenDTO.getType()).checkRule(toList(dozenDTO), rules, dozenDTO.getType());
+		
+		dozens.stream().forEach(e -> getRules(e.getType()).checkRule(toList(e), rules, e.getType()));
+		
 		return rules;
 	}
 
@@ -48,7 +46,7 @@ public class BetValidationChain {
 		RuleChain sum = new SumRule(settings.getMinSum(),settings.getMaxSum());
 		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
 		RuleChain fibonacci = new FibonacciRule(settings.getMinFibonacci(),settings.getMaxFibonacci());
-		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicService);
+		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicRepositoryImpl);
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl, settings.getMinDozensLastRaffle() ,settings.getMaxDozensLastRaffle());
 
 		rule.setNextChain(pair);

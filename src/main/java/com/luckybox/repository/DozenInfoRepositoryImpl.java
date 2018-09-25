@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.DozenInfo;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.domain.QDozenInfo;
 import com.luckybox.domain.QHistoric;
 
@@ -21,6 +22,10 @@ public class DozenInfoRepositoryImpl extends QueryDslRepositorySupport {
 
 	public Long getLastConcurse() {
 		return from(qHistoric).select(qHistoric.concurse.max()).fetchFirst();
+	}
+	
+	public DozenInfo findByDozenAndType(Integer number, LotteryType type) {
+			return from(qDozenInfo).where(qDozenInfo.number.eq(number), qDozenInfo.type.eq(type)).fetchFirst();
 	}
 
 	public DozenInfo getDetailsNumberMoreLate(Boolean asc) {

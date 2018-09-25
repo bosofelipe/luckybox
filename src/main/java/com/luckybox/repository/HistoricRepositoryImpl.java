@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.domain.QHistoric;
@@ -56,7 +57,7 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 	}
 
 	public List<Integer> listConcursesWithDozen(int dozen, LotteryType lotteryType) {
-		return from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class))
+		List<Integer> concurses = from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class))
 				.where(qHistoric.dozen1.eq(dozen).or(qHistoric.dozen2.eq(dozen)).or(qHistoric.dozen3.eq(dozen))
 						.or(qHistoric.dozen4.eq(dozen)).or(qHistoric.dozen5.eq(dozen)).or(qHistoric.dozen6.eq(dozen))
 						.or(qHistoric.dozen7.eq(dozen)).or(qHistoric.dozen8.eq(dozen)).or(qHistoric.dozen9.eq(dozen))
@@ -68,6 +69,23 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 						.or(qHistoric.dozen19.eq(dozen))
 						.or(qHistoric.dozen20.eq(dozen)).and(qHistoric.type.eq(lotteryType)))
 				.orderBy(qHistoric.concurse.asc()).fetch();
+		return concurses;
+	}
+	
+	public List<Integer> listConcursesWithDozens(List<Integer> dozens, LotteryType lotteryType) {
+		List<Integer> concurses = from(qHistoric).select(qHistoric.concurse.castToNum(Integer.class))
+				.where(qHistoric.dozen1.in(dozens).and(qHistoric.dozen2.in(dozens)).and(qHistoric.dozen3.in(dozens))
+						.and(qHistoric.dozen4.in(dozens)).and(qHistoric.dozen5.in(dozens)).and(qHistoric.dozen6.in(dozens))
+						.and(qHistoric.dozen7.in(dozens)).and(qHistoric.dozen8.in(dozens)).and(qHistoric.dozen9.in(dozens))
+						.and(qHistoric.dozen10.in(dozens)).and(qHistoric.dozen11.in(dozens)).and(qHistoric.dozen12.in(dozens))
+						.and(qHistoric.dozen13.in(dozens)).and(qHistoric.dozen14.in(dozens))
+						.and(qHistoric.dozen15.in(dozens)).and(qHistoric.dozen16.in(dozens))
+						.and(qHistoric.dozen17.in(dozens))
+						.and(qHistoric.dozen18.in(dozens))
+						.and(qHistoric.dozen19.in(dozens))
+						.and(qHistoric.dozen20.in(dozens)).and(qHistoric.type.eq(lotteryType)))
+				.orderBy(qHistoric.concurse.asc()).fetch();
+		return concurses;
 	}
 
 	public List<Historic> findHistoricByDozens(DozenDTO dozenDTO) {
@@ -92,7 +110,9 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 
 	public List<Historic> getLastRaffles(Integer range, LotteryType lotteryType) {
 		Long lastIndexRaffle = getLastIndexRaffle(lotteryType);
-		return from(qHistoric).where(qHistoric.concurse.goe(lastIndexRaffle - range)).orderBy(qHistoric.concurse.desc()).fetch();
+		if(lastIndexRaffle !=null )
+			return from(qHistoric).where(qHistoric.concurse.goe(lastIndexRaffle - range)).orderBy(qHistoric.concurse.desc()).fetch();
+		return Lists.newArrayList();
 	}
 
 	public Long getLastIndexRaffle(LotteryType lotteryType) {
@@ -109,6 +129,11 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 	public Historic getHistoryByConcurseAndType(Long concurse, LotteryType lotteryType) {
 		return from(qHistoric)
 				.where(qHistoric.concurse.eq(concurse), qHistoric.type.eq(lotteryType)).fetchFirst();
+	}
+	
+	public List<Historic> findAllByAlreadyDrawnIsNullAndType(LotteryType lotteryType) {
+		return from(qHistoric)
+				.where(qHistoric.alreadyDrawn.isNull(), qHistoric.type.eq(lotteryType)).fetch();
 	}
 	
 	private BooleanExpression whereDozens(DozenDTO dozenDTO) {
@@ -128,7 +153,7 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 				.and(qHistoric.dozen13.eq(dozenDTO.getDozen13()))//
 				.and(qHistoric.dozen14.eq(dozenDTO.getDozen14()))//
 				.and(qHistoric.type.eq(dozenDTO.getType()));
-		else
+		else if(LotteryType.LOTOMANIA.equals(dozenDTO.getType())) 
 			return 
 					qHistoric.dozen1.eq(dozenDTO.getDozen1())//
 					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
@@ -150,6 +175,14 @@ public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
 					.and(qHistoric.dozen18.eq(dozenDTO.getDozen18()))//
 					.and(qHistoric.dozen19.eq(dozenDTO.getDozen19()))//
 					.and(qHistoric.dozen20.eq(dozenDTO.getDozen20()))//
+					.and(qHistoric.type.eq(dozenDTO.getType()));
+		else 
+			return 
+					qHistoric.dozen1.eq(dozenDTO.getDozen1())//
+					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
+					.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
+					.and(qHistoric.dozen4.eq(dozenDTO.getDozen4()))//
+					.and(qHistoric.dozen5.eq(dozenDTO.getDozen5()))//
 					.and(qHistoric.type.eq(dozenDTO.getType()));
 	}
 

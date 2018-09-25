@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.constants.ConstantsLoto;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class FibonacciRule implements RuleChain {
@@ -34,9 +36,10 @@ public class FibonacciRule implements RuleChain {
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		int dozensMatch = dozens.stream().filter(el -> ConstantsLoto.FIBONACCI_SEQUENCE.stream().anyMatch(el::equals))
 				.collect(toList()).size();
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.FIBONACCI_LOW, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.FIBONACCI_LOW, lotteryType, dozenDTO));
 		if(dozensMatch > this.maxMatch)
-			rules.add(buildRule(dozensMatch,RuleType.FIBONACCI_HIGH, lotteryType));
+			rules.add(buildRule(dozensMatch,RuleType.FIBONACCI_HIGH, lotteryType, dozenDTO));
 	}
 }

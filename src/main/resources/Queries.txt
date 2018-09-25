@@ -117,5 +117,10 @@ select dozen1,dozen2,dozen3,dozen4,dozen5,dozen6,dozen7,dozen8,dozen9,dozen10,do
 2,3,5,13,89
 
 
+select h.concurse, dozen1, dozen2, dozen3,dozen4, dozen5, dozen6, dozen7 , dozen8, dozen9, dozen10,dozen11, dozen12, dozen13, dozen14, dozen15, dozen_sum from 
+historic h  
+join historic_dataset ht on h.dataset_id = ht.id
+where h.type='LOTOFACIL' order by h.concurse desc
+
 
 

@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.service.SequenceAnalyser;
 
 @Component
@@ -39,10 +41,12 @@ public class SequenceRule implements RuleChain {
 		Integer qtdSequences = greaterSequence.get(1);
 		int dozensMatch = dozens.stream().filter(el -> PAIR_NUMBERS.stream().anyMatch(el::equals)).collect(toList())
 				.size();
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
+		
 		if (greater > this.maxMatch)
-			rules.add(buildRule(dozensMatch, RuleType.GREATER_SEQUENCE, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.GREATER_SEQUENCE, lotteryType, dozenDTO));
 		if (qtdSequences > this.countMatch)
-			rules.add(buildRule(dozensMatch, RuleType.QTD_SEQUENCE, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.QTD_SEQUENCE, lotteryType, dozenDTO));
 		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 

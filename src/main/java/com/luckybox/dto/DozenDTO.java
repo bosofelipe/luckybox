@@ -3,7 +3,6 @@ package com.luckybox.dto;
 import java.util.Date;
 
 import com.luckybox.domain.Bet;
-import com.luckybox.domain.CombinationDozens;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 
@@ -87,10 +86,6 @@ public class DozenDTO {
 	}
 	
 	public DozenDTO(Bet bet) {
-		this();
-	}
-	
-	public DozenDTO(CombinationDozens combination) {
 		this();
 	}
 

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.DozenInfoRepository;
 
 @Component
@@ -40,8 +42,10 @@ public class DozenInfoRule implements RuleChain {
 		else {
 			List<DozenInfo> withCurrent = dozenInfos.stream().filter(dozen -> dozen.getCurrentSequenceDrawn() > 3).collect(toList());
 			int dozensMatch = withCurrent.stream().filter(el -> numbers.stream().anyMatch(el.getNumber()::equals)).collect(toList()).size();
-			if(dozensMatch == 0)
-				rules.add(buildRule(dozensMatch, RuleType.CURRENT_SEQUENCE, lotteryType) );
+			if(dozensMatch == 0){
+				DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
+				rules.add(buildRule(dozensMatch, RuleType.CURRENT_SEQUENCE, lotteryType, dozenDTO) );
+			}
 		}
 		this.chain.checkRule(numbers, rules, lotteryType);
 	}

@@ -42,4 +42,46 @@ public class HistoricDatasetRepositoryImpl extends QueryDslRepositorySupport {
 			.where(qHistoricDataset.historic.concurse.eq(concurse), qHistoricDataset.historic.type.eq(type))//
 			.orderBy(qHistoricDataset.concurse.asc()).fetchFirst();
 	}
+	
+	public HistoricDataset getHistoryByConcurseAndType(Long concurse, LotteryType lotteryType) {
+		return from(qHistoricDataset)
+				.where(qHistoricDataset.concurse.eq(concurse), qHistoricDataset.type.eq(lotteryType)).fetchFirst();
+	}
+	
+	public Integer getMinSum(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.dozenSum.min()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxSum(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.dozenSum.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxPrime(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.prime.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxFibonacci(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.fibonacci.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxFibonacciPrime(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.fibonacciPrime.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxDozensLastRaffle(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.dozensLastRaffle.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxGreatherSequence(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.greatherSequence.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxPair(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.pair.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
+	public Integer getMaxSequence(LotteryType lotteryType) {
+		return from(qHistoricDataset).select(qHistoricDataset.qtdSequences.max()).where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
+	}
+	
 }

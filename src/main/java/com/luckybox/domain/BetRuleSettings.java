@@ -34,6 +34,12 @@ public class BetRuleSettings {
 	private Integer minFibonacci;
 	private Integer maxFibonacci;
 	
+	private Integer minFibonacciPrime;
+	private Integer maxFibonacciPrime;
+	
+	private Integer minGreatherSequence;
+	private Integer maxGreatherSequence;
+	
 
 	private Integer minPrime;
 	private Integer maxPrime;
@@ -44,7 +50,7 @@ public class BetRuleSettings {
 	private Integer minDozensLastRaffle;
 	private Integer maxDozensLastRaffle;
 	
-	private Integer qtdSequence;
+	private Integer minSequence;
 	private Integer maxSequence;
 	
 }

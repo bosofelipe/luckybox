@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
@@ -52,10 +53,11 @@ public class LastRaffleRule implements RuleChain {
 		List<Integer> lastDozens = DozenMapper.toList(historic);
 		int dozensMatch = dozens.stream().filter(el -> lastDozens.stream().anyMatch(el::equals)).collect(toList())
 				.size();
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType, dozenDTO));
 		if(dozensMatch > this.maxMatch)
-			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType, dozenDTO));
 	}
 
 }

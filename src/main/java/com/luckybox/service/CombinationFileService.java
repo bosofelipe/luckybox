@@ -17,10 +17,9 @@ import lombok.extern.log4j.Log4j;
 @Service
 public class CombinationFileService {
 	private static final Integer MAX_COMBINATION_BY_FILE = 100000;
-	private static String PATH_LOCAL = System.getProperty("java.io.tmpdir");
 	private static final String SEPARATOR = "-";
 
-	public void generateCombination(int maxNumber, int quantityOfNumbers) throws InterruptedException, IOException {
+	public void generateCombination(int quantityOfNumbers) throws InterruptedException, IOException {
 		int[][] m = geraCombinacao(25, 15);
 		List<String> values = Lists.newArrayList();
 		int fileNumber = 1;
@@ -60,23 +59,25 @@ public class CombinationFileService {
 	}
 
 	private void createFile(List<String> values) throws IOException {
-		File fout = new File(PATH_LOCAL + "lotofacil.txt");
+		File fout = new File(System.getProperty("java.io.tmpdir") + "lotofacil.txt");
 		FileOutputStream fos = new FileOutputStream(fout);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		for (int i = 0; i < values.size(); i++) {
 			osw.write(i + SEPARATOR + values.get(i) + System.getProperty("line.separator"));
 		}
 		osw.close();
+		fos.close();
 	}
 	
 	private void createFile(List<String> values, int fileNumber) throws IOException {
-		File fout = new File(PATH_LOCAL + "lotofacil-" + fileNumber + ".txt");
+		File fout = new File(System.getProperty("java.io.tmpdir") + "lotofacil-" + fileNumber + ".txt");
 		FileOutputStream fos = new FileOutputStream(fout);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		for (int i = 0; i < values.size(); i++) {
 			osw.write(i + SEPARATOR + values.get(i) + System.getProperty("line.separator"));
 		}
 		osw.close();
+		fos.close();
 	}
 
 	private int possibities(int n, int p) {

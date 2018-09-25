@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class PrimeRule implements RuleChain {
@@ -33,10 +35,11 @@ public class PrimeRule implements RuleChain {
 	@Override
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		int dozensMatch = dozens.stream().filter(el -> PRIME.stream().anyMatch(el::equals)).collect(toList()).size();
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW, lotteryType, dozenDTO));
 		if(dozensMatch > this.maxMatch )
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH, lotteryType, dozenDTO));
 		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 }

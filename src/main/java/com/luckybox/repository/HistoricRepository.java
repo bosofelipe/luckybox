@@ -13,7 +13,7 @@ public interface HistoricRepository extends JpaRepository<Historic, Long> {
 	
 	Historic findByConcurseAndType(Long concurse, LotteryType type);
 	
-	List<Historic> findAllByType(LotteryType type);
+	List<Historic> findAllByTypeOrderByConcurse(LotteryType type);
 	
 	List<Historic> findAllByAlreadyDrawnIsNullAndType(LotteryType type);
 }

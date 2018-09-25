@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class PairRule implements RuleChain {
@@ -34,10 +36,11 @@ public class PairRule implements RuleChain {
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		int dozensMatch = dozens.stream().filter(el -> PAIR_NUMBERS.stream().anyMatch(el::equals)).collect(toList())
 				.size();
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PAIR_LOW, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.PAIR_LOW, lotteryType, dozenDTO));
 		if (dozensMatch > this.maxMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PAIR_HIGH, lotteryType));
+			rules.add(buildRule(dozensMatch, RuleType.PAIR_HIGH, lotteryType, dozenDTO));
 		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 

@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
@@ -17,6 +18,7 @@ import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
+import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
@@ -28,59 +30,57 @@ import net.lingala.zip4j.exception.ZipException;
 @Transactional
 public class HistoricImporterService {
 	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
-	private static final String LOTOFACIL = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_lotfac.zip";
-	private static final String LOTOMANIA = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_lotoma.zip";
-	
+
 	@Inject
 	private HistoricDownloaderFileService historicDownloaderFileService;
 
 	@Inject
-	private LotoFacilHistoricFileReaderService lotoFacilhistoricFileReaderService;
-	
-	@Inject
-	private LotoManiaHistoricFileReaderService lotoManiahistoricFileReaderService;
+	private HistoricFileReaderService historicFileReaderService;
 
 	@Inject
 	private HistoricRepository repository;
-	
+
 	@Inject
 	private HistoricRepositoryImpl repositoryImpl;
-	
+
 	@Inject
 	private HistoricDatasetRepository historicRepository;
 
 	@Inject
-	private DatasetCreator datasetCreator;
-	
+	private HistoricDatasetRepositoryImpl historicDatasetRepositoryImpl;
+
 	@Inject
-	private LotoManiaDatasetCreator lotoManiadatasetCreator;
+	private DatasetCreator datasetCreator;
 
 	public List<DozenDTO> importConcurses(String type) throws IOException, ZipException {
-		LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
-		if(LotteryType.LOTOFACIL.equals(lotteryType)) {
-			return importLotoFacil(lotteryType);
+		if (type.equalsIgnoreCase("all"))
+			return importAllLotteries();
+		else {
+			LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
+			if (lotteryType != null)
+				return importConcurses(lotteryType);
+			return Lists.newArrayList();
 		}
-		if(LotteryType.LOTOMANIA.equals(lotteryType)) {
-			return importLotoMania(lotteryType);
-		}
-		return Lists.newArrayList();
 	}
 
-	private List<DozenDTO> importLotoFacil(LotteryType lotteryType) throws IOException, ZipException {
-		log.info("Start importation lotofacil");
-		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(LOTOFACIL, "lotofacil.zip");
-		List<DozenDTO> historicDTO = lotoFacilhistoricFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTFAC.HTM", lotteryType);
-		historicDTO.stream().forEach(dto -> persist(dto, LotteryType.LOTOFACIL));
-		log.info("Finish importation lotofacil");
-		return historicDTO;
+	private List<DozenDTO> importAllLotteries() throws IOException, ZipException {
+		List<DozenDTO> values = Lists.newArrayList();
+		Iterable<DozenDTO> combinedIterables = null;
+		for (LotteryType type : LotteryType.values()) {
+			List<DozenDTO> importConcurses = importConcurses(type);
+			combinedIterables = Iterables.unmodifiableIterable(Iterables.concat(values, importConcurses));
+		}
+		combinedIterables.forEach(values::add);
+		return values;
 	}
-	
-	private List<DozenDTO> importLotoMania(LotteryType lotteryType) throws IOException, ZipException {
-		log.info("Start importation lotomania");
-		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(LOTOMANIA, "lotomania.zip");
-		List<DozenDTO> historicDTO = lotoManiahistoricFileReaderService.readHTML(TEMP_DIR + File.separator + "D_LOTMAN.HTM", lotteryType);
-		historicDTO.stream().forEach(dto -> persist(dto, LotteryType.LOTOMANIA));
-		log.info("Finish importation lotomania");
+
+	private List<DozenDTO> importConcurses(LotteryType lotteryType) throws IOException, ZipException {
+		log.info("Start importation " + lotteryType.getName());
+		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(lotteryType.getZipName());
+		List<DozenDTO> historicDTO = historicFileReaderService
+				.readHTML(TEMP_DIR + File.separator + lotteryType.getHtmlName(), lotteryType);
+		historicDTO.stream().forEach(dto -> persist(dto, lotteryType));
+		log.info("Finish importation " + lotteryType.getName());
 		return historicDTO;
 	}
 
@@ -89,24 +89,33 @@ public class HistoricImporterService {
 	}
 
 	private void persist(DozenDTO dto, LotteryType type) {
-		Historic historic = repository.findOne(dto.getConcurse());
+		Historic historic = repositoryImpl.getHistoryByConcurseAndType(dto.getConcurse(), type);
 		if (historic == null) {
 			Historic historicEntity = DozenMapper.toHistoric(dto);
 			HistoricDataset dataset = null;
-			
+
 			dto.setType(type);
-			if(type == LotteryType.LOTOFACIL)
-				dataset = datasetCreator.createHistoricDataSet(dto);
-			else
-				dataset = lotoManiadatasetCreator.createHistoricDataSet(dto);
-			
-			Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
-			if(hist == null) {
+			dataset = datasetCreator.createHistoricDataSet(dto, type.getDozens());
+
+			Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
+					historicEntity.getType());
+			if (hist == null) {
 				dataset.setConcurse(dto.getConcurse());
-				dataset = historicRepository.save(dataset);
-				historicEntity.setDataset(dataset);
+				saveHistoricDataset(historicEntity, dataset);
 				repository.save(historicEntity);
 			}
+		}
+	}
+
+	private void saveHistoricDataset(Historic historicEntity, HistoricDataset dataset) {
+		HistoricDataset histDataset = historicDatasetRepositoryImpl
+				.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
+		if (histDataset != null) {
+			dataset.setId(histDataset.getId());
+			dataset = historicRepository.save(dataset);
+		} else {
+			dataset = historicRepository.save(dataset);
+			historicEntity.setDataset(dataset);
 		}
 	}
 

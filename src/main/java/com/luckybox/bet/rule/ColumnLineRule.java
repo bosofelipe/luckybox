@@ -18,6 +18,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
+import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class ColumnLineRule implements RuleChain {
@@ -43,9 +45,10 @@ public class ColumnLineRule implements RuleChain {
 		int fourthColumn = dozens.stream().filter(el -> FOURTH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
 		int fivethColumn = dozens.stream().filter(el -> FIVETH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
 
+		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (asList(firstLine, firstColumn, secondLine, secondColumn, thirdLine, thirdColumn, fourthLine,
 				fourthColumn, fivethLine, fivethColumn).contains(0))
-			rules.add(buildRule(0, RuleType.FIRST_LINE, lotteryType));
+			rules.add(buildRule(0, RuleType.FIRST_LINE, lotteryType, dozenDTO));
 		
 		this.chain.checkRule(dozens, rules, lotteryType);
 	}

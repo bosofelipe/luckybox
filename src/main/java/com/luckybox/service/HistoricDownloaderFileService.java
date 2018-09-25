@@ -23,9 +23,10 @@ import net.lingala.zip4j.exception.ZipException;
 public class HistoricDownloaderFileService {
 	private static String PATH_LOCAL = System.getProperty("java.io.tmpdir");
 	private static String FILE_ZIP_PATH = System.getProperty("java.io.tmpdir") + "/";
+	private static final String URL = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/";
 
-	public ZipFile downloadHtmlZippedFileAtCaixa(String caixaURL, String zipName) throws IOException, ZipException {
-		downloadZipFile(caixaURL, zipName);
+	public ZipFile downloadHtmlZippedFileAtCaixa(String zipName) throws IOException, ZipException {
+		downloadZipFile(URL+ zipName, zipName);
 		ZipFile zippedFile = extractZipFile(zipName);
 		return zippedFile;
 	}

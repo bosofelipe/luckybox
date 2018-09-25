@@ -16,10 +16,10 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @Builder
 @Entity
 @AllArgsConstructor
@@ -98,5 +98,13 @@ public class Bet {
 	@PrePersist
 	public void prePersist(){
 		this.creationDate = new Date();
+	}
+
+	public void setConcurse(long concurse) {
+		this.concurse = concurse;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
 	}
 }

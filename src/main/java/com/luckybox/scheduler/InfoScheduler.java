@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.LotteryType;
@@ -24,57 +23,53 @@ public class InfoScheduler {
 
 	@Inject
 	private HistoricDatasetFiller historicDatasetFiller;
-	
+
 	@Inject
 	private HistoricImporterService historicService;
 
-	@Scheduled(fixedDelay = 7200000)
-	public void schedules() throws IOException, ZipException{
-		importHistoricLotoFacil();
-		importHistoricLotoMania();
-		checkAlreadyDrawn();
-		generateDozenInfoLotoFacil();
-		generateDozenInfoLotoMania();
+	//@Scheduled(cron = "0 0/1 * * * ?")
+	public void schedules2() throws IOException, ZipException {
+		checkAlreadyDrawn(LotteryType.LOTOFACIL);
+		checkAlreadyDrawn(LotteryType.QUINA);
+		checkAlreadyDrawn(LotteryType.LOTOMANIA);
 		fillDatasetFields();
-		
-		generateDozenInfoLotoFacil();
-		generateDozenInfoLotoMania();
+
+		generateDozenInfo(LotteryType.LOTOFACIL.getName());
+		generateDozenInfo(LotteryType.QUINA.getName());
+		generateDozenInfo(LotteryType.LOTOMANIA.getName());
 	}
-	
-	private void importHistoricLotoFacil() throws IOException, ZipException {
-		log.info("Importing historic concurses...");
-		historicService.importConcurses("lotofacil");
-		log.info("Finished historic concurses...");
+
+	//@Scheduled(cron = "0 0/30 * * * ?")
+	public void schedules() throws IOException, ZipException {
+		importHistoric(LotteryType.LOTOFACIL.getName());
+		importHistoric(LotteryType.QUINA.getName());
+		importHistoric(LotteryType.LOTOMANIA.getName());
 	}
-	
-	private void importHistoricLotoMania() throws IOException, ZipException {
-		log.info("Importing historic concurses...");
-		historicService.importConcurses("lotomania");
-		log.info("Finished historic concurses...");
+
+	private void importHistoric(String type) throws IOException, ZipException {
+		log.info(String.format("Importing historic concurses %s...", type));
+		historicService.importConcurses(type);
+		log.info(String.format("Finished historic concurses %s...", type));
 	}
-	
-	private void generateDozenInfoLotoFacil() {
-		log.info("Generate dozen info lotofacil...");
-		dozenInfoService.generateDozenInfo("lotofacil");
-		log.info("Finished generate dozen info lotofacil...");
+
+	private void generateDozenInfo(String type) {
+		log.info(String.format("Generate dozen info %s ...", type));
+		dozenInfoService.generateDozenInfo(type);
+		log.info(String.format("Finished dozen info %s ...", type));
 	}
-	
-	private void generateDozenInfoLotoMania() {
-		log.info("Generate dozen info lotomania...");
-		dozenInfoService.generateDozenInfo("lotomania");
-		log.info("Finished generate dozen info lotomania...");
-	}
-	
+
 	private void fillDatasetFields() throws IOException, ZipException {
 		log.info("Filling dataset lotofacil fields...");
 		historicDatasetFiller.fillDataSet(LotteryType.LOTOFACIL);
+		historicDatasetFiller.fillDataSet(LotteryType.QUINA);
+		historicDatasetFiller.fillDataSet(LotteryType.LOTOMANIA);
 		log.info("Finished dataset lotofacil fields...");
 	}
-	
-	//TODO ajustar para pegar pelo tipo
-	private void checkAlreadyDrawn() throws IOException, ZipException {
-		log.info("Checking historic lotofacil already drawn...");
-		//historicDatasetFiller.fillAlreadyDrawnField(LotteryType.LOTOFACIL);
-		log.info("Finished check historic lotofacil already drawn...");
+
+	// TODO ajustar para pegar pelo tipo
+	private void checkAlreadyDrawn(LotteryType type) throws IOException, ZipException {
+		log.info(String.format("Checking historic %s already drawn...", type.getName()));
+		historicDatasetFiller.fillAlreadyDrawnField(type);
+		log.info(String.format("Finished check historic %s already drawn...", type.getName()));
 	}
 }

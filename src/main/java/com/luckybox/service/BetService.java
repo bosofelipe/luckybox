@@ -5,6 +5,7 @@ import static com.luckybox.mapper.DozenMapper.toBet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,11 +66,18 @@ public class BetService {
 
 	public boolean isAlreadyDrawn(DozenDTO dozenDTO) {
 		List<Historic> historic = historicRepository.findHistoricByDozens(dozenDTO);
-		return historic.isEmpty() ? false : true;
+		boolean isAlreadyDown = historic.isEmpty() ? false : true;
+		dozenDTO.setAlreadyDrawn(isAlreadyDown);
+		return isAlreadyDown;
+	}
+	
+	public List<DozenDTO> isAlreadyDrawn(List<DozenDTO> dozens) {
+		dozens.stream().forEach(e -> isAlreadyDrawn(e));
+		return dozens;
 	}
 
-	public List<RuleDTO> checkRules(DozenDTO dozenDTO) {
-		return chainOfRules.validationChain(dozenDTO);
+	public List<RuleDTO> checkRules(List<DozenDTO> dozens) {
+		return chainOfRules.validationChain(dozens);
 	}
 
 	public GroupBetMessageDTO saveBetsByFile(File file) throws IOException {
@@ -91,7 +99,7 @@ public class BetService {
 	}
 
 	private void checkRulesAndSave(List<BetMessageDTO> message, DozenDTO dozenDTO) {
-		List<RuleDTO> validationChain = checkRules(dozenDTO);
+		List<RuleDTO> validationChain = checkRules(Arrays.asList(dozenDTO));
 		Bet bet = DozenMapper.toBet(dozenDTO);
 		if (validationChain.isEmpty())
 			betRepository.save(bet);

@@ -1,12 +1,15 @@
 package com.luckybox.bet.rule;
 
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.DozenDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @Builder
+@Getter
+@AllArgsConstructor
 public class RuleDTO {
 
 	private RuleType type;
@@ -14,4 +17,6 @@ public class RuleDTO {
 	private Integer value;
 	
 	private LotteryType lotterType;
+	
+	private DozenDTO dozens;
 }
