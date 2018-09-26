@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepository;
@@ -47,6 +48,11 @@ public class HistoricResource {
 	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<Historic> list() throws IOException, ZipException {
 		return historicRepository.findAll();
+	}
+	
+	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public List<Historic> listByType(@PathVariable String type) throws IOException, ZipException {
+		return historicRepository.findAllByTypeOrderByConcurse(LotteryType.valueOf(type.toUpperCase()));
 	}
 	
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })

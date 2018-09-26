@@ -1,8 +1,6 @@
 package com.luckybox.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,21 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "combinationdozen")
-public class CombinationDozen {
+@Table(name = "combinationdozendata")
+public class CombinationDozenData {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Enumerated(EnumType.STRING)
-	private LotteryType type;
-
-	private Integer quantity;
-	
-	private Integer lastConcurse;
-	
 	private Integer keyValues;
-
-	private String key;
+	
+	private LotteryType type;
 }

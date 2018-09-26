@@ -8,9 +8,11 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.CombinationDozen;
+import com.luckybox.domain.CombinationDozenData;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
+import com.luckybox.repository.CombinationDozenDataRepository;
 import com.luckybox.repository.CombinationDozenRepository;
 import com.luckybox.repository.HistoricRepository;
 
@@ -27,6 +29,9 @@ public class CombinationDozenService {
 
 	@Inject
 	private CombinationDozenRepository combinationDozenRepository;
+	
+	@Inject
+	private CombinationDozenDataRepository combinationDozenDataRepository;
 
 	public List<CombinationDozen> generateCombination(Integer combinations, String type)
 			throws InterruptedException, IOException {
@@ -37,7 +42,11 @@ public class CombinationDozenService {
 
 		for (int i = 2; i < combinations; i++) {
 			Integer comb = new Integer(i);
-			concurses.forEach(e -> load(e, comb, lotteryType));
+			CombinationDozenData findByKeyValuesAndType = combinationDozenDataRepository.findByKeyValuesAndType(i, lotteryType);
+			if(findByKeyValuesAndType == null){
+				concurses.forEach(e -> load(e, comb, lotteryType));
+				combinationDozenDataRepository.save(CombinationDozenData.builder().keyValues((i)).type(lotteryType).build());
+			}
 		}
 
 		return combinationDozen;
