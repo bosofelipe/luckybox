@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,19 +41,14 @@ public class HistoricResource {
 		return historicService.importConcurses(type);
 	}
 	
-	@GetMapping(path = "/findAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<DozenDTO> findAll(Pageable pageable) throws IOException, ZipException {
-		return historicService.findAll(pageable);
-	}
-	
 	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<Historic> list() throws IOException, ZipException {
-		return historicRepository.findAll();
+	public Page<Historic> list(Pageable pageable) throws IOException, ZipException {
+		return historicRepository.findAll(pageable);
 	}
 	
 	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<Historic> listByType(@PathVariable String type) throws IOException, ZipException {
-		return historicRepository.findAllByTypeOrderByConcurse(LotteryType.valueOf(type.toUpperCase()));
+	public Page<Historic> listByType(@PathVariable String type, Pageable pageable) throws IOException, ZipException {
+		return historicRepository.findAllByTypeOrderByConcurse(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 	
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
