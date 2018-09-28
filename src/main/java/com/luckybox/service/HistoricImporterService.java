@@ -22,10 +22,8 @@ import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
-import lombok.extern.log4j.Log4j;
 import net.lingala.zip4j.exception.ZipException;
 
-@Log4j
 @Service
 @Transactional
 public class HistoricImporterService {
@@ -75,12 +73,10 @@ public class HistoricImporterService {
 	}
 
 	private List<DozenDTO> importConcurses(LotteryType lotteryType) throws IOException, ZipException {
-		log.info("Start importation " + lotteryType.getName());
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(lotteryType.getZipName());
 		List<DozenDTO> historicDTO = historicFileReaderService
 				.readHTML(TEMP_DIR + File.separator + lotteryType.getHtmlName(), lotteryType);
 		historicDTO.stream().forEach(dto -> persist(dto, lotteryType));
-		log.info("Finish importation " + lotteryType.getName());
 		return historicDTO;
 	}
 

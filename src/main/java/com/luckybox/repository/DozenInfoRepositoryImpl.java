@@ -2,7 +2,7 @@ package com.luckybox.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.DozenInfo;
@@ -11,7 +11,7 @@ import com.luckybox.domain.QDozenInfo;
 import com.luckybox.domain.QHistoric;
 
 @Component
-public class DozenInfoRepositoryImpl extends QueryDslRepositorySupport {
+public class DozenInfoRepositoryImpl extends QuerydslRepositorySupport {
 	private static final QHistoric qHistoric = QHistoric.historic;
 	private static final QDozenInfo qDozenInfo = QDozenInfo.dozenInfo;
 

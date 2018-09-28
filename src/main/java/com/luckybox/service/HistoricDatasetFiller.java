@@ -17,9 +17,6 @@ import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @Service
 public class HistoricDatasetFiller {
 
@@ -80,7 +77,6 @@ public class HistoricDatasetFiller {
 	}
 	
 	private void updateWhenHistoricAlreadyDrawn(Historic historic, LotteryType type) {
-		log.info("Check concurse " + historic.getConcurse());
 		DozenDTO dozenDTO = DozenMapper.toDTO(historic);
 		if(historicService.findHistoricWithDozensNEConcurse(dozenDTO).isEmpty());
 			historicRepositoryImpl.updateAlreadyDrawn(historic.getConcurse(), type);

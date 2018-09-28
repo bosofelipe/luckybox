@@ -11,13 +11,11 @@ import com.luckybox.domain.LotteryType;
 
 public interface HistoricRepository extends JpaRepository<Historic, Long> {
 	
-	boolean exists(Long concurse);
-	
 	Historic findByConcurseAndType(Long concurse, LotteryType type);
 	
 	List<Historic> findAllByTypeOrderByConcurse(LotteryType type);
 	
-	Page<Historic> findAllByTypeOrderByConcurse(LotteryType type, Pageable pageable);
+	Page<Historic> findAllByType(LotteryType type, Pageable pageable);
 	
 	List<Historic> findAllByAlreadyDrawnIsNullAndType(LotteryType type);
 }

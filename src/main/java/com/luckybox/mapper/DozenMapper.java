@@ -3,12 +3,12 @@ package com.luckybox.mapper;
 import java.util.List;
 import java.util.Objects;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 
 public class DozenMapper {
 

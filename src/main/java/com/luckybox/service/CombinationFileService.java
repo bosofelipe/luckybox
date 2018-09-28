@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @Service
 public class CombinationFileService {
 	private static final Integer MAX_COMBINATION_BY_FILE = 100000;
@@ -54,7 +51,6 @@ public class CombinationFileService {
 			combinationGroup.append(value);
 		}
 		String value = combinationGroup.append(combinationGroup.hashCode()).append(SEPARATOR).append(i).toString();
-		log.info(value);
 		return value;
 	}
 

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Component
-public class HistoricRepositoryImpl extends QueryDslRepositorySupport {
+public class HistoricRepositoryImpl extends QuerydslRepositorySupport {
 	private static final QHistoric qHistoric = QHistoric.historic;
 
 	@PersistenceContext

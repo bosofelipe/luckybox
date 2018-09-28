@@ -48,7 +48,7 @@ public class HistoricResource {
 	
 	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public Page<Historic> listByType(@PathVariable String type, Pageable pageable) throws IOException, ZipException {
-		return historicRepository.findAllByTypeOrderByConcurse(LotteryType.valueOf(type.toUpperCase()),pageable);
+		return historicRepository.findAllByType(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 	
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })

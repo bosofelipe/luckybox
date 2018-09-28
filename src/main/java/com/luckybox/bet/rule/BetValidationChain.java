@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.BetRuleSettings;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
@@ -15,7 +16,6 @@ import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 
 @Component
 public class BetValidationChain {

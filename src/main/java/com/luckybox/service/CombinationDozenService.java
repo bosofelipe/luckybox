@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.CombinationDozen;
 import com.luckybox.domain.CombinationDozenData;
 import com.luckybox.domain.Historic;
@@ -16,10 +17,6 @@ import com.luckybox.repository.CombinationDozenDataRepository;
 import com.luckybox.repository.CombinationDozenRepository;
 import com.luckybox.repository.HistoricRepository;
 
-import jersey.repackaged.com.google.common.collect.Lists;
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @Service
 public class CombinationDozenService {
 	private static final String SEPARATOR = "-";
@@ -65,7 +62,6 @@ public class CombinationDozenService {
 				b.append(saida[i]).append(SEPARATOR);
 			}
 			String key = b.substring(0, b.length() - 1).toString();
-			log.info("Key: "+ key + " Combinações: " + combinations + " Concurse: " + e.getConcurse());
 			save(type, key, combinations, e.getConcurse());
 		}
 		return e;

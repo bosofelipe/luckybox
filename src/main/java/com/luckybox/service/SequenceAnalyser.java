@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.CombinationDozen;
 import com.luckybox.domain.DozenInfoSequence;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 
 @Service
 public class SequenceAnalyser {

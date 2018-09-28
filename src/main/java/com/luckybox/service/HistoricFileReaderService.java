@@ -22,11 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 
-import lombok.extern.log4j.Log4j;
-
 @Service
 @Transactional
-@Log4j
 public class HistoricFileReaderService {
 	private static final String TABLE_LINES = "table tr";
 	private static final String SPLIT_SEPARATOR = " ";
@@ -119,7 +116,6 @@ public class HistoricFileReaderService {
 		try {
 			return format.parse(dateAtString);
 		} catch (ParseException e) {
-			log.error("Error on parse string to date " + dateAtString);
 			return EMPTY_DATE;
 		}
 	}

@@ -29,9 +29,6 @@ import com.luckybox.repository.BetRepository;
 import com.luckybox.repository.BetRepositoryImpl;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @Service
 public class BetService {
 
@@ -54,12 +51,11 @@ public class BetService {
 		List<Bet> bets = newArrayList();
 		if (dozenDTO.getConcurses() != null) {
 			for (int i = 0; i < dozenDTO.getConcurses(); i++) {
-				log.info(dozenDTO.getConcurse() + i);
 				Bet bet = toBet(dozenDTO);
 				bet.setConcurse(dozenDTO.getConcurse() + i);
 				bets.add(bet);
 			}
-			betRepository.save(bets);
+			betRepository.saveAll(bets);
 		}
 		return bets;
 	}
