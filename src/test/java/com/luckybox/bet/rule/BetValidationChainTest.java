@@ -2,7 +2,7 @@ package com.luckybox.bet.rule;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -18,9 +18,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.luckybox.domain.BetRuleSettings;
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 import com.luckybox.service.HistoricService;
@@ -39,14 +42,43 @@ public class BetValidationChainTest {
 	@Mock
 	private HistoricService historicService;
 	
+	@Mock
+	private BetRuleSettingsRepository betRuleSettingsRepository;
+	
 	@Before
 	public void start(){
 		MockitoAnnotations.initMocks(this);
+		when(betRuleSettingsRepository.findByType(LotteryType.LOTOFACIL)).thenReturn(createBetRule());
 	}
 	
+	private BetRuleSettings createBetRule() {
+		BetRuleSettings settings = BetRuleSettings.builder()
+			.maxDozensLastRaffle(10)//
+			.maxFibonacci(7)//
+			.maxPrime(7)//
+			.maxFibonacciPrime(7)//
+			.maxSequence(6)//
+			.maxPair(10)//
+			.minDozensLastRaffle(7)//
+			.minFibonacci(5)//
+			.minPrime(5)//
+			.minSequence(5)//
+			.minPair(6)//
+			.minFibonacciPrime(0)//
+			.maxGreatherSequence(10)//
+			.minGreatherSequence(5)//
+			.minSum(156)//
+			.maxSum(256)//
+			.type(LotteryType.LOTOFACIL)
+			.minPair(0)//
+			.build();
+		return settings;
+	}
+
 	@Test
 	public void catchRulePrime() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
+		when(betRuleSettingsRepository.findByType(LotteryType.LOTOFACIL)).thenReturn(createBetRule());
 		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTO()));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
@@ -171,6 +203,7 @@ public class BetValidationChainTest {
 				.dozen13(21)//
 				.dozen14(24)//
 				.dozen15(25)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 	
@@ -191,6 +224,7 @@ public class BetValidationChainTest {
 				.dozen13(18)//
 				.dozen14(23)//
 				.dozen15(25)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 
@@ -211,6 +245,7 @@ public class BetValidationChainTest {
 		.dozen13(21)//
 		.dozen14(24)//
 		.dozen15(25)//
+		.type(LotteryType.LOTOFACIL)//
 		.build();
 	}
 	
@@ -232,6 +267,7 @@ public class BetValidationChainTest {
 		.dozen13(22)//
 		.dozen14(24)//
 		.dozen15(25)//
+		.type(LotteryType.LOTOFACIL)//
 		.build();
 	}
 	
@@ -252,6 +288,7 @@ public class BetValidationChainTest {
 		.dozen13(23)//
 		.dozen14(24)//
 		.dozen15(25)//
+		.type(LotteryType.LOTOFACIL)///
 		.build();
 	}
 	
@@ -272,6 +309,7 @@ public class BetValidationChainTest {
 		.dozen13(21)//
 		.dozen14(23)//
 		.dozen15(25)//
+		.type(LotteryType.LOTOFACIL)//
 		.build();
 	}
 	
@@ -292,6 +330,7 @@ public class BetValidationChainTest {
 		.dozen13(21)//
 		.dozen14(24)//
 		.dozen15(25)//
+		.type(LotteryType.LOTOFACIL)//
 		.build();
 	}
 	
@@ -312,6 +351,7 @@ public class BetValidationChainTest {
 				.dozen13(18)//
 				.dozen14(23)//
 				.dozen15(25)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 	
@@ -332,6 +372,7 @@ public class BetValidationChainTest {
 				.dozen13(13)//
 				.dozen14(14)//
 				.dozen15(15)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 	
@@ -352,6 +393,7 @@ public class BetValidationChainTest {
 				.dozen13(22)//
 				.dozen14(23)//
 				.dozen15(24)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 	
@@ -372,6 +414,7 @@ public class BetValidationChainTest {
 				.dozen13(20)//
 				.dozen14(22)//
 				.dozen15(23)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 	

@@ -27,9 +27,7 @@ public class CombinationDozen {
 	@Enumerated(EnumType.STRING)
 	private LotteryType type;
 
-	private Integer quantity;
-	
-	private Integer lastConcurse;
+	private Long concurse;
 	
 	private Integer keyValues;
 

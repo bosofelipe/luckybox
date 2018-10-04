@@ -7,6 +7,6 @@ import com.luckybox.domain.LotteryType;
 
 public interface CombinationDozenRepository extends JpaRepository<CombinationDozen, Long>{
 	
-	public CombinationDozen findByKeyAndType(String key, LotteryType type);
+	public CombinationDozen findByConcurseAndKeyAndType(Long concurse, String key, LotteryType type);
 
 }

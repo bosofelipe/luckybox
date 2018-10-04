@@ -61,7 +61,7 @@ public class HistoricDatasetFillerTest {
 		Mockito.doReturn(createHistoricConcurse1()).when(historicRepository).findByConcurseAndType(2L, LotteryType.LOTOFACIL);
 		Mockito.doReturn(createHistoricConcurse2()).when(historicRepository).findByConcurseAndType(1L, LotteryType.LOTOFACIL);
 		Integer dozensLastConcurse = datasetFiller.calculateVariationSum(2L, LotteryType.LOTOFACIL);
-		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(30));
+		MatcherAssert.assertThat(dozensLastConcurse, CoreMatchers.equalTo(-30));
 	}
 
 	private Historic createHistoricConcurse1() {

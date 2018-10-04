@@ -16,7 +16,6 @@ import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
-
 @Component
 public class BetValidationChain {
 

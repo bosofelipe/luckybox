@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.luckybox.domain.CombinationDozen;
-import com.luckybox.domain.CombinationDozenData;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
-import com.luckybox.repository.CombinationDozenDataRepository;
 import com.luckybox.repository.CombinationDozenRepository;
 import com.luckybox.repository.HistoricRepository;
 
@@ -26,9 +24,6 @@ public class CombinationDozenService {
 
 	@Inject
 	private CombinationDozenRepository combinationDozenRepository;
-	
-	@Inject
-	private CombinationDozenDataRepository combinationDozenDataRepository;
 
 	public List<CombinationDozen> generateCombination(Integer combinations, String type)
 			throws InterruptedException, IOException {
@@ -37,24 +32,23 @@ public class CombinationDozenService {
 
 		List<Historic> concurses = historicRepository.findAllByTypeOrderByConcurse(lotteryType);
 
-		for (int i = 2; i < combinations; i++) {
-			Integer comb = new Integer(i);
-			CombinationDozenData findByKeyValuesAndType = combinationDozenDataRepository.findByKeyValuesAndType(i, lotteryType);
-			if(findByKeyValuesAndType == null){
-				concurses.forEach(e -> load(e, comb, lotteryType));
-				combinationDozenDataRepository.save(CombinationDozenData.builder().keyValues((i)).type(lotteryType).build());
-			}
-		}
+		concurses.forEach(hist -> saveCombination(hist, combinations, lotteryType));
 
 		return combinationDozen;
 
 	}
 
-	private Object load(Historic e, Integer combinations, LotteryType type) {
+	private void saveCombination(Historic historic, Integer combinations, LotteryType lotteryType) {
+		for (int i = 2; i < combinations; i++) {
+			load(historic, new Integer(i), lotteryType);
+		}
+	}
+
+	private Object load(Historic e, Integer keyLength, LotteryType type) {
 		List<Integer> values = DozenMapper.toList(e);
 		Integer[] finalResult = values.toArray(new Integer[values.size()]);
 		Integer[] saida = null;
-		Combination comb1 = new Combination(finalResult, combinations);
+		Combination comb1 = new Combination(finalResult, keyLength);
 		while (comb1.hasNext()) {
 			saida = comb1.next();
 			StringBuilder b = new StringBuilder();
@@ -62,29 +56,22 @@ public class CombinationDozenService {
 				b.append(saida[i]).append(SEPARATOR);
 			}
 			String key = b.substring(0, b.length() - 1).toString();
-			save(type, key, combinations, e.getConcurse());
+			save(type, key, keyLength, e.getConcurse());
 		}
 		return e;
 	}
 
 	private CombinationDozen save(LotteryType type, String key, Integer combinations, Long concurse) {
-
-		CombinationDozen dozen = combinationDozenRepository.findByKeyAndType(key, type);
-		if (dozen != null && dozen.getId() != null) {
-			dozen.setKeyValues(combinations);
-			dozen.setType(type);
-			dozen.setQuantity(dozen.getQuantity() + 1);
-			dozen.setLastConcurse(concurse.intValue());
-			return combinationDozenRepository.save(dozen);
-
-		} else {
+		CombinationDozen dozen = combinationDozenRepository.findByConcurseAndKeyAndType(concurse, key, type);
+		if (dozen == null) {
 			CombinationDozen combinationDozen = CombinationDozen.builder().type(type)//
 					.keyValues(combinations)//
 					.key(key)//
-					.quantity(1)//
-					.lastConcurse(concurse.intValue())//
+					.concurse(concurse)//
 					.build();
 			return combinationDozenRepository.save(combinationDozen);
+		} else {
+			return dozen;
 		}
 	}
 }

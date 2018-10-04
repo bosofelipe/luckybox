@@ -73,10 +73,7 @@ public class SequenceAnalyser {
 		String value = values[i];
 		if(value.contains("-")){
 			String concursesInSequence[] = value.split("-");
-			Integer initialConcurse = Integer.valueOf(concursesInSequence[0].trim());
-			Integer finalConcurse = Integer.valueOf(concursesInSequence[1].trim());
-			sequences.add(CombinationDozen.builder().quantity(finalConcurse - initialConcurse)
-				.key(key).build());
+			sequences.add(CombinationDozen.builder().key(key).build());
 		}
 	}
 
