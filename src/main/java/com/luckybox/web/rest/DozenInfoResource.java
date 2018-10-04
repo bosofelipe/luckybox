@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.service.DozenInfoService;
 
+import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
@@ -24,6 +25,7 @@ public class DozenInfoResource {
 	@Inject
 	private DozenInfoService dozenInfoService;
 
+	@ApiOperation(value="Generate info to dozens of lottery types", notes="")
 	@GetMapping(path = "/generate/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<DozenInfo> generate(@PathVariable String type) throws IOException, ZipException {
 		return dozenInfoService.generateDozenInfo(type);

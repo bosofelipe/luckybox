@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luckybox.domain.BetRuleSettings;
 import com.luckybox.service.BetRuleSettingsService;
 
+import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
@@ -26,6 +27,7 @@ public class BetRuleSettingsResource {
 	@Inject
 	private BetRuleSettingsService betRuleSettingsService;
 	
+	@ApiOperation(value="Generate rules of lotteries", notes="")
 	@GetMapping(path = "/generate/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public BetRuleSettings checkBets(@PathVariable String type) throws IOException, ZipException {
 		return betRuleSettingsService.generateBetRuleSettings(type);

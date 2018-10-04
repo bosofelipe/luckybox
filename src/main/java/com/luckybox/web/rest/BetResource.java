@@ -31,6 +31,7 @@ import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
 import com.luckybox.service.BetService;
 
+import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
@@ -42,27 +43,31 @@ public class BetResource {
 	@Inject
 	private BetService betService;
 
+	@ApiOperation(value="save a list of bets", notes="")
 	@PostMapping(path = "/toBet", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<List<Bet>> toBet(@RequestBody DozenDTO dozenDTO) {
 		return new ResponseEntity<List<Bet>>(betService.save(dozenDTO), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value="Validate bets by rules defined", notes="")
 	@PostMapping(path = "/validateAll", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<List<DozenDTO>> validateBets(@RequestBody List<DozenDTO> dozens) {
 		return new ResponseEntity<List<DozenDTO>>(betService.isAlreadyDrawn(dozens), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value="Check if bets are inside rules", notes="")
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody List<DozenDTO> dozens) {
 		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozens), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value="Check if bets are inside rules by type of lottery", notes="")
 	@GetMapping(path = "/check/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<BetInfoDTO> checkBets(@PathVariable String type) throws IOException, ZipException {
 		return betService.checkBets(type);
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
 		String name = "file";
 		if (!file.isEmpty()) {
@@ -79,8 +84,9 @@ public class BetResource {
 		} else {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
+	}*/
 
+	@ApiOperation(value="Save bets using file path", notes="")
 	@RequestMapping(value = "/saveByPath", method = RequestMethod.POST)
 	public GroupBetMessageDTO saveBetsByPath(@RequestParam("file") String path) throws IOException {
 		return betService.saveBetsByPath(path);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.service.InfoService;
 
+import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
@@ -20,6 +21,7 @@ public class ImportAllDataResource {
 	@Inject
 	private InfoService infoService;
 
+	@ApiOperation(value="Import all historic", notes="")
 	@GetMapping(path = "/import", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public String importData() throws IOException, ZipException {
 		infoService.importData();

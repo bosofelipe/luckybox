@@ -24,6 +24,7 @@ import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
 
+import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
 
 @RestController
@@ -36,21 +37,25 @@ public class HistoricResource {
 	@Inject
 	private HistoricRepository historicRepository;
 
+	@ApiOperation(value="Import historic of concurses", notes="")
 	@GetMapping(path = "/import/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<DozenDTO> importHistoric(@PathVariable String type) throws IOException, ZipException {
 		return historicService.importConcurses(type);
 	}
 	
+	@ApiOperation(value="List paginated concurses", notes="")
 	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public Page<Historic> list(Pageable pageable) throws IOException, ZipException {
 		return historicRepository.findAll(pageable);
 	}
 	
+	@ApiOperation(value="List paginated concurses by type of lottery", notes="")
 	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public Page<Historic> listByType(@PathVariable String type, Pageable pageable) throws IOException, ZipException {
 		return historicRepository.findAllByType(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 	
+	@ApiOperation(value="Save a historic of lottery", notes="")
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
 		return new ResponseEntity<Historic>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
