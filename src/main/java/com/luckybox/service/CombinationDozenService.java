@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -17,6 +19,8 @@ import com.luckybox.repository.HistoricRepository;
 
 @Service
 public class CombinationDozenService {
+	private static Logger logger = LogManager.getLogger(CombinationDozenService.class);
+	
 	private static final String SEPARATOR = "-";
 
 	@Inject
@@ -69,8 +73,10 @@ public class CombinationDozenService {
 					.key(key)//
 					.concurse(concurse)//
 					.build();
+			logger.info(String.format("Save combination key: %s, concurse: %s ", key, concurse.toString()));
 			return combinationDozenRepository.save(combinationDozen);
 		} else {
+			logger.info(String.format("Save combination key: %s, concurse: %s ", dozen.getKey(), dozen.getConcurse().toString()));
 			return dozen;
 		}
 	}
