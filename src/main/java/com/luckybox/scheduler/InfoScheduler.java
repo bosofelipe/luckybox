@@ -37,7 +37,7 @@ public class InfoScheduler {
 		generateDozenInfo(LotteryType.LOTOMANIA.getName());
 	}
 
-	//@Scheduled(cron = "0 0/30 * * * ?")
+	@org.springframework.scheduling.annotation.Scheduled(cron = "0 0/30 * * * ?")
 	public void schedules() throws IOException, ZipException {
 		importHistoric(LotteryType.LOTOFACIL.getName());
 		importHistoric(LotteryType.QUINA.getName());
