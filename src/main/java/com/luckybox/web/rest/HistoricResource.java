@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luckybox.ApiPageable;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
@@ -42,16 +43,18 @@ public class HistoricResource {
 	public List<DozenDTO> importHistoric(@PathVariable String type) throws IOException, ZipException {
 		return historicService.importConcurses(type);
 	}
-	
+
+	@ApiPageable
 	@ApiOperation(value="List paginated concurses", notes="")
 	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public Page<Historic> list(Pageable pageable) throws IOException, ZipException {
 		return historicRepository.findAll(pageable);
 	}
 	
+	@ApiPageable
 	@ApiOperation(value="List paginated concurses by type of lottery", notes="")
 	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public Page<Historic> listByType(@PathVariable String type, Pageable pageable) throws IOException, ZipException {
+	public Page<Historic> listByType(@PathVariable String type,Pageable pageable) throws IOException, ZipException {
 		return historicRepository.findAllByType(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 	
