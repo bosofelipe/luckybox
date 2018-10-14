@@ -72,7 +72,6 @@ public class SequenceAnalyser {
 	private void addCombinationDozenSequences(List<CombinationDozen> sequences, String[] values, int i, String key) {
 		String value = values[i];
 		if(value.contains("-")){
-			String concursesInSequence[] = value.split("-");
 			sequences.add(CombinationDozen.builder().key(key).build());
 		}
 	}

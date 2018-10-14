@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.luckybox.ApiPageable;
 import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.BetInfoDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
+import com.luckybox.repository.BetRepository;
 import com.luckybox.service.BetService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +42,9 @@ public class BetResource {
 
 	@Inject
 	private BetService betService;
+	
+	@Inject
+	private BetRepository betRepository;
 
 	@ApiOperation(value="save a list of bets", notes="")
 	@PostMapping(path = "/toBet", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
@@ -60,6 +68,13 @@ public class BetResource {
 	@GetMapping(path = "/check/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<BetInfoDTO> checkBets(@PathVariable String type) throws IOException, ZipException {
 		return betService.checkBets(type);
+	}
+	
+	@ApiPageable
+	@ApiOperation(value="List paginated concurses by type of lottery", notes="")
+	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public Page<Bet> listByType(@PathVariable String type,Pageable pageable) throws IOException, ZipException {
+		return betRepository.findAllByType(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 
 	/*@RequestMapping(value = "/upload", method = RequestMethod.POST)

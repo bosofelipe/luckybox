@@ -21,17 +21,26 @@ public class BetRuleSettingsService {
 	public BetRuleSettings generateBetRuleSettings(String lotteryType) {
 		LotteryType type = LotteryType.valueOf(lotteryType.toUpperCase());
 		BetRuleSettings savedSettings = betRuleSettingsRepository.findByType(type);
-		Integer maxDozensLastRaffle = historicDatasetRepositoryImpl.getMaxDozensLastRaffle(type);
-		Integer maxFibonacci = historicDatasetRepositoryImpl.getMaxFibonacci(type);
-		Integer maxPrime = historicDatasetRepositoryImpl.getMaxPrime(type);
-		Integer maxFibonacciPrime = historicDatasetRepositoryImpl.getMaxFibonacciPrime(type);
-		Integer maxQTDSequence = historicDatasetRepositoryImpl.getMaxSequence(type);
-		Integer maxGreatherSequence = historicDatasetRepositoryImpl.getMaxGreatherSequence(type);
 		
-		Integer minSum = historicDatasetRepositoryImpl.getMinSum(type);
-		Integer maxSum = historicDatasetRepositoryImpl.getMaxSum(type);
+		Integer maxDozensLastRaffle = historicDatasetRepositoryImpl.getMaxDozensLastRaffle(type, true);
+		Integer maxFibonacci = historicDatasetRepositoryImpl.getMaxFibonacci(type, true);
+		Integer maxPrime = historicDatasetRepositoryImpl.getMaxPrime(type, true);
+		Integer maxFibonacciPrime = historicDatasetRepositoryImpl.getMaxFibonacciPrime(type, true);
+		Integer maxQTDSequence = historicDatasetRepositoryImpl.getMaxSequence(type, true);
+		Integer maxGreatherSequence = historicDatasetRepositoryImpl.getMaxGreatherSequence(type, true);
+		Integer maxSum = historicDatasetRepositoryImpl.getMaxSum(type, true);
+		Integer maxPair = historicDatasetRepositoryImpl.getMaxPair(type, true);
 		
-		Integer maxPair = historicDatasetRepositoryImpl.getMaxPair(type);
+		
+		Integer minDozensLastRaffle = historicDatasetRepositoryImpl.getMaxDozensLastRaffle(type, false);
+		Integer minFibonacci = historicDatasetRepositoryImpl.getMaxFibonacci(type, false);
+		Integer minPrime = historicDatasetRepositoryImpl.getMaxPrime(type, false);
+		Integer minFibonacciPrime = historicDatasetRepositoryImpl.getMaxFibonacciPrime(type, false);
+		Integer minQTDSequence = historicDatasetRepositoryImpl.getMaxSequence(type, false);
+		Integer minGreatherSequence = historicDatasetRepositoryImpl.getMaxGreatherSequence(type, false);
+		Integer minSum = historicDatasetRepositoryImpl.getMaxSum(type, false);
+		Integer minPair = historicDatasetRepositoryImpl.getMaxPair(type, false);
+
 		if (savedSettings == null) {
 			BetRuleSettings settings = BetRuleSettings.builder()
 					.maxDozensLastRaffle(maxDozensLastRaffle)//
@@ -40,17 +49,17 @@ public class BetRuleSettingsService {
 					.maxFibonacciPrime(maxFibonacciPrime)//
 					.maxSequence(maxQTDSequence)//
 					.maxPair(maxPair)//
-					.minDozensLastRaffle(0)//
-					.minFibonacci(0)//
-					.minPrime(0)//
-					.minSequence(0)
-					.minFibonacciPrime(0)//
-					.maxGreatherSequence(maxGreatherSequence)//
-					.minGreatherSequence(0)//
-					.minSum(minSum)//
 					.maxSum(maxSum)//
+					.maxGreatherSequence(maxGreatherSequence)//
+					.minPair(minPair)//
+					.minDozensLastRaffle(minDozensLastRaffle)//
+					.minFibonacci(minFibonacci)//
+					.minPrime(minPrime)//
+					.minSequence(minQTDSequence)
+					.minFibonacciPrime(minFibonacciPrime)//
+					.minGreatherSequence(minGreatherSequence)//
+					.minSum(minSum)//
 					.type(type)
-					.minPair(0)//
 					.build();
 			return betRuleSettingsRepository.save(settings);
 		}
@@ -61,8 +70,15 @@ public class BetRuleSettingsService {
 		savedSettings.setMaxPair(maxPair);
 		savedSettings.setMaxPrime(maxPrime);
 		savedSettings.setMaxSequence(maxQTDSequence);
+		
+		savedSettings.setMinDozensLastRaffle(minDozensLastRaffle);
+		savedSettings.setMinFibonacci(minFibonacciPrime);
+		savedSettings.setMinFibonacciPrime(minFibonacciPrime);
+		savedSettings.setMinGreatherSequence(minGreatherSequence);
+		savedSettings.setMinPair(minPair);
+		savedSettings.setMinPrime(minPrime);
+		savedSettings.setMinSequence(minQTDSequence);
+
 		return betRuleSettingsRepository.save(savedSettings);
-
 	}
-
 }

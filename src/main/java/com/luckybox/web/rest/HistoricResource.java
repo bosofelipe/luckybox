@@ -22,11 +22,13 @@ import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
+import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
 
 import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/historic")
@@ -38,6 +40,10 @@ public class HistoricResource {
 	@Inject
 	private HistoricRepository historicRepository;
 
+	@Inject
+	private HistoricDatasetRepository historicDatasetRepository;
+
+	
 	@ApiOperation(value="Import historic of concurses", notes="")
 	@GetMapping(path = "/import/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<DozenDTO> importHistoric(@PathVariable String type) throws IOException, ZipException {
@@ -62,5 +68,13 @@ public class HistoricResource {
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
 		return new ResponseEntity<Historic>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
+	}
+	
+	@ApiIgnore
+	@PostMapping(path = "/clear", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public String clear(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
+		historicRepository.deleteAll();
+		historicDatasetRepository.deleteAll();
+		return "OK";
 	}
 }

@@ -23,4 +23,5 @@ public class HistoricService {
 	public List<Historic> findHistoricWithDozensNEConcurse(DozenDTO dozenDTO) {
 		return repository.findHistoricByDozensNEConcurse(dozenDTO);
 	}
+	
 }
