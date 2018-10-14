@@ -71,8 +71,8 @@ public class HistoricResource {
 	}
 	
 	@ApiIgnore
-	@PostMapping(path = "/clear", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public String clear(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
+	@GetMapping(path = "/clear", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public String clear() throws IOException, ZipException {
 		historicRepository.deleteAll();
 		historicDatasetRepository.deleteAll();
 		return "OK";
