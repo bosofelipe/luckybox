@@ -68,7 +68,8 @@ public class HistoricImporterService {
 			List<DozenDTO> importConcurses = importConcurses(type);
 			combinedIterables = Iterables.unmodifiableIterable(Iterables.concat(values, importConcurses));
 		}
-		combinedIterables.forEach(values::add);
+		if(combinedIterables != null)
+			combinedIterables.forEach(values::add);
 		return values;
 	}
 
