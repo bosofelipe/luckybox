@@ -11,7 +11,7 @@ import com.luckybox.domain.LotteryType;
 import net.lingala.zip4j.exception.ZipException;
 
 @Service
-public class InfoService {
+public class ImporterDataService {
 
 	@Inject
 	private DozenInfoService dozenInfoService;
@@ -21,23 +21,38 @@ public class InfoService {
 
 	@Inject
 	private HistoricImporterService historicService;
-
-	public void importData() throws IOException, ZipException {
+	
+	@Inject
+	private BetRuleSettingsService betRuleSettingsService;
+	
+	public void importHistoric() throws IOException, ZipException {
 		importHistoric(LotteryType.LOTOFACIL.getName());
 		importHistoric(LotteryType.QUINA.getName());
 		importHistoric(LotteryType.LOTOMANIA.getName());
-		
-		checkAlreadyDrawn(LotteryType.LOTOFACIL);
-		checkAlreadyDrawn(LotteryType.QUINA);
-		checkAlreadyDrawn(LotteryType.LOTOMANIA);
-		
-		fillDatasetFields(LotteryType.LOTOFACIL);
-		fillDatasetFields(LotteryType.QUINA);
-		fillDatasetFields(LotteryType.LOTOMANIA);
-
+	}
+	
+	public void generateDozenInfo() {
 		generateDozenInfo(LotteryType.LOTOFACIL.getName());
 		generateDozenInfo(LotteryType.QUINA.getName());
 		generateDozenInfo(LotteryType.LOTOMANIA.getName());
+	}
+
+	public void checkAlreadyDrawn() throws IOException, ZipException {
+		checkAlreadyDrawn(LotteryType.LOTOFACIL);
+		checkAlreadyDrawn(LotteryType.QUINA);
+		checkAlreadyDrawn(LotteryType.LOTOMANIA);
+	}
+	
+	public void fillDatasetFields() throws IOException, ZipException {
+		historicDatasetFiller.fillDataSet(LotteryType.LOTOFACIL);
+		historicDatasetFiller.fillDataSet(LotteryType.QUINA);
+		historicDatasetFiller.fillDataSet(LotteryType.LOTOMANIA);
+	}
+	
+	public void generateRules() {
+		betRuleSettingsService.generateBetRuleSettings(LotteryType.LOTOFACIL.getName());
+		betRuleSettingsService.generateBetRuleSettings(LotteryType.QUINA.getName());
+		betRuleSettingsService.generateBetRuleSettings(LotteryType.LOTOMANIA.getName());
 	}
 
 	private void importHistoric(String type) throws IOException, ZipException {
@@ -48,12 +63,9 @@ public class InfoService {
 		dozenInfoService.generateDozenInfo(type);
 	}
 
-	private void fillDatasetFields(LotteryType type) throws IOException, ZipException {
-		historicDatasetFiller.fillDataSet(type);
-	}
-
 	// TODO ajustar para pegar pelo tipo
 	private void checkAlreadyDrawn(LotteryType type) throws IOException, ZipException {
 		historicDatasetFiller.fillAlreadyDrawnField(type);
 	}
+	
 }

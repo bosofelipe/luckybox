@@ -7,6 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ import net.lingala.zip4j.exception.ZipException;
 @Service
 @Transactional
 public class HistoricImporterService {
+	private static Logger LOGGER = LogManager.getLogger(HistoricImporterService.class);
+	
 	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
 	@Inject
@@ -102,6 +106,9 @@ public class HistoricImporterService {
 					dataset.setConcurse(dto.getConcurse());
 					saveHistoricDataset(historicEntity, dataset);
 					repository.save(historicEntity);
+					LOGGER.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
+				}else {
+					LOGGER.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(), dto.getType().getName()));
 				}
 			}
 		}

@@ -2,6 +2,8 @@ package com.luckybox.service;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.luckybox.domain.BetRuleSettings;
@@ -11,6 +13,7 @@ import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 
 @Service
 public class BetRuleSettingsService {
+	private static Logger LOGGER = LogManager.getLogger(BetRuleSettingsService.class);
 	
 	@Inject
 	private BetRuleSettingsRepository betRuleSettingsRepository;
@@ -61,6 +64,7 @@ public class BetRuleSettingsService {
 					.minSum(minSum)//
 					.type(type)
 					.build();
+		    LOGGER.info(String.format("Saved bet rule settings, type: %s", type.getName()));
 			return betRuleSettingsRepository.save(settings);
 		}
 		savedSettings.setMaxDozensLastRaffle(maxDozensLastRaffle);
@@ -78,7 +82,8 @@ public class BetRuleSettingsService {
 		savedSettings.setMinPair(minPair);
 		savedSettings.setMinPrime(minPrime);
 		savedSettings.setMinSequence(minQTDSequence);
-
+		
+		LOGGER.info(String.format("Updated bet rule settings, type: %s", type.getName()));
 		return betRuleSettingsRepository.save(savedSettings);
 	}
 }
