@@ -123,4 +123,14 @@ join historic_dataset ht on h.dataset_id = ht.id
 where h.type='LOTOFACIL' order by h.concurse desc
 
 
+-- DELETE DATA --
 
+delete from historic;
+delete from historic_dataset;
+delete from combinationdozen;
+delete from combinationdozendata;
+delete from dozeninfosequence;
+delete from dozeninfo;
+delete from bet;
+delete from bet_dataset;
+delete from bet_rule_settings;

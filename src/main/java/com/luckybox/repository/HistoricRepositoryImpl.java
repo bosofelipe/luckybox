@@ -137,7 +137,7 @@ public class HistoricRepositoryImpl extends QuerydslRepositorySupport {
 	}
 	
 	private BooleanExpression whereDozens(DozenDTO dozenDTO) {
-		if(LotteryType.LOTOFACIL.equals(dozenDTO.getType())) 
+		if(LotteryType.LOTOFACIL == dozenDTO.getType()) 
 		return qHistoric.dozen1.eq(dozenDTO.getDozen1())//
 				.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
 				.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
@@ -153,7 +153,7 @@ public class HistoricRepositoryImpl extends QuerydslRepositorySupport {
 				.and(qHistoric.dozen13.eq(dozenDTO.getDozen13()))//
 				.and(qHistoric.dozen14.eq(dozenDTO.getDozen14()))//
 				.and(qHistoric.type.eq(dozenDTO.getType()));
-		else if(LotteryType.LOTOMANIA.equals(dozenDTO.getType())) 
+		else if(LotteryType.LOTOMANIA == dozenDTO.getType()) 
 			return 
 					qHistoric.dozen1.eq(dozenDTO.getDozen1())//
 					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
