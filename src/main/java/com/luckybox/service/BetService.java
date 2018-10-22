@@ -57,6 +57,7 @@ public class BetService {
 			for (int i = 0; i < dozenDTO.getConcurses(); i++) {
 				Bet bet = toBet(dozenDTO);
 				bet.setConcurse(dozenDTO.getConcurse() + i);
+				setHits(bet, bet.getType());
 				bets.add(bet);
 			}
 			betRepository.saveAll(bets);
@@ -131,6 +132,18 @@ public class BetService {
 			
 			bets.add(infoDTO);
 			betRepository.save(bet);
+		}
+	}
+	
+	private void setHits(Bet bet, LotteryType type) {
+		Long concurse = bet.getConcurse();
+		Historic historic = historicRepository.getHistoryByConcurseAndType(concurse, type);
+		if (historic != null) {
+			List<Integer> betDozens = DozenMapper.toList(bet);
+			List<Integer> historicDozens = DozenMapper.toList(historic);
+			Collections.sort(historicDozens);
+			betDozens.retainAll(historicDozens);
+			bet.setHits(betDozens.size());
 		}
 	}
 }
