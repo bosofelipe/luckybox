@@ -40,6 +40,9 @@ public class BetRuleSettings {
 	private Integer minGreatherSequence;
 	private Integer maxGreatherSequence;
 	
+	private Integer minQuantitySequence;
+	private Integer maxQuantitySequence;
+	
 
 	private Integer minPrime;
 	private Integer maxPrime;

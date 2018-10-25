@@ -11,7 +11,6 @@ import java.util.List;
 import org.assertj.core.util.Lists;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,130 +31,173 @@ public class BetValidationChainTest {
 
 	@InjectMocks
 	private BetValidationChain chainValidation;
-	
+
 	@Mock
 	private HistoricRepositoryImpl historicDatasetRepositoryImpl;
-	
+
 	@Mock
 	private DozenInfoRepository dozenInfoRepository;
-	
+
 	@Mock
 	private HistoricService historicService;
-	
+
 	@Mock
 	private BetRuleSettingsRepository betRuleSettingsRepository;
-	
+
 	@Before
-	public void start(){
+	public void start() {
 		MockitoAnnotations.initMocks(this);
 		when(betRuleSettingsRepository.findByType(LotteryType.LOTOFACIL)).thenReturn(createBetRule());
+		when(dozenInfoRepository.findAll()).thenReturn(createDozenInfo());
 	}
-	
+
 	private BetRuleSettings createBetRule() {
-		BetRuleSettings settings = BetRuleSettings.builder()
-			.maxDozensLastRaffle(10)//
-			.maxFibonacci(7)//
-			.maxPrime(7)//
-			.maxFibonacciPrime(7)//
-			.maxSequence(6)//
-			.maxPair(10)//
-			.minDozensLastRaffle(7)//
-			.minFibonacci(5)//
-			.minPrime(5)//
-			.minSequence(5)//
-			.minPair(6)//
-			.minFibonacciPrime(0)//
-			.maxGreatherSequence(10)//
-			.minGreatherSequence(5)//
-			.minSum(156)//
-			.maxSum(256)//
-			.type(LotteryType.LOTOFACIL)
-			.minPair(0)//
-			.build();
+		BetRuleSettings settings = BetRuleSettings.builder().maxDozensLastRaffle(10)//
+				.maxFibonacci(5)//
+				.minFibonacci(2)//
+				.maxPrime(7)//
+				.minPrime(3)//
+				.maxFibonacciPrime(7)//
+				.minFibonacciPrime(1)//
+				.maxSequence(6)//
+				.minSequence(5)//
+				.maxPair(10)//
+				.minPair(6)//
+				.maxDozensLastRaffle(10)//
+				.minDozensLastRaffle(6)//
+				.maxGreatherSequence(10)//
+				.minGreatherSequence(5)//
+				.minQuantitySequence(1)//
+				.maxQuantitySequence(6)//
+				.minSum(156)//
+				.maxSum(256)//
+				.type(LotteryType.LOTOFACIL).minPair(0)//
+				.build();
 		return settings;
 	}
 
 	@Test
-	public void catchRulePrime() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		when(betRuleSettingsRepository.findByType(LotteryType.LOTOFACIL)).thenReturn(createBetRule());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTO()));
+	public void catchRulePrimeHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
-	
+
 	@Test
-	public void catchRulePrimeExceed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozensWithAllPrimes()));
-		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
+	public void catchRulePrimeLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays
+				.asList(createDozenDTO(Lists.newArrayList(1, 4, 6, 8, 10, 11, 12, 14, 15, 16, 18, 20, 23, 24, 25))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PRIME_LOW));
 	}
-	
-	@Ignore
+
 	@Test
-	public void catchRuleFibonacci() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenFibonacci()));
+	public void catchRuleFibonacciLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays
+				.asList(createDozenDTO(Lists.newArrayList(1, 4, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 22, 23))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_LOW));
 	}
-	
-	@Ignore
+
 	@Test
-	public void catchRuleFibonacciExceeed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenFibonacci()));
+	public void catchRuleFibonacciHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 13, 21, 23, 24, 25))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.FIBONACCI_HIGH));
 	}
-	
+
 	@Test
-	public void catchRulePair() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTOWithUnpairs()));
+	public void catchRulePairLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_LOW));
 	}
-	
+
 	@Test
-	public void catchRulePairWhenExceed() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTOWithExceedPairs()));
+	public void catchRulePairHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays
+				.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 25))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_HIGH));
 	}
-	
+
 	@Test
-	public void catchRuleLastRaffle() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList(createHistoricManyDozens()));
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTOWithFirstLineDozensWhenExceed()));
+	public void catchRuleLastRaffleLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(
+				newArrayList(createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15))));
+		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays
+				.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
-	
+
 	@Test
-	public void catchRuleLastRaffleWhenLessDozens() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList(createHistoricLessDozens()));
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozenDTOWithDozenLastRaffle()));
-		assertThat(validationChain.get(2).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
+	public void catchRuleLastRaffleHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(
+				newArrayList(createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 18, 19, 20, 25))));
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 18, 19, 20, 25))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
 	}
-	
+
 	@Test
-	public void catchRuleSumWithLowSum() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozensWithLowSum()));
+	public void catchRuleSumLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_LOW));
 	}
-	
+
 	@Test
-	public void catchRuleSumWithHighSum() throws Exception {
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozensWithHighSum()));
+	public void catchRuleSumHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(
+				createDozenDTO(Lists.newArrayList(11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25))));
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}
-	
+
 	@Test
-	public void catchRuleCurrentSequenceByDozenInfo() throws Exception {
-		when(dozenInfoRepository.findAll()).thenReturn(createDozenInfo());
-		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.anyObject())).thenReturn(newArrayList());
-		List<RuleDTO> validationChain = chainValidation.validationChain(Arrays.asList(createDozensWithHighSum()));
-		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
+	public void catchRuleAlreadyDrawn() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.ALREADY_DRAWN));
 	}
-	
+
+	@Test
+	public void catchRuleGreatherSequenceLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.GREATER_SEQUENCE_LOW));
+	}
+
+	@Test
+	public void catchRuleGreatherSequenceHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.GREATER_SEQUENCE_HIGH));
+	}
+
+	@Test
+	public void catchRuleQtdSequenceHigh() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_HIGH));
+	}
+
+	@Test
+	public void catchRuleQtdSequenceLow() throws Exception {
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<RuleDTO> validationChain = chainValidation.validationChain(
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))));
+		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_LOW));
+	}
+
 	private Iterable<DozenInfo> createDozenInfo() {
 		Lists.newArrayList(DozenInfo.builder().number(1).currentSequenceDrawn(7L),
 				DozenInfo.builder().number(2).currentSequenceDrawn(7L),
@@ -181,241 +223,47 @@ public class BetValidationChainTest {
 				DozenInfo.builder().number(22).currentSequenceDrawn(1L),
 				DozenInfo.builder().number(23).currentSequenceDrawn(0L),
 				DozenInfo.builder().number(24).currentSequenceDrawn(1L),
-				DozenInfo.builder().number(25).currentSequenceDrawn(0L)
-				);
+				DozenInfo.builder().number(25).currentSequenceDrawn(0L));
 		return null;
 	}
 
-	private Historic createHistoricManyDozens() {
-		return Historic.builder()
-				.dozen1(1)//
-				.dozen2(2)//
-				.dozen3(5)//
-				.dozen4(6)//
-				.dozen5(7)//
-				.dozen6(8)//
-				.dozen7(10)//
-				.dozen8(11)//
-				.dozen9(12)//
-				.dozen10(13)//
-				.dozen11(15)//
-				.dozen12(17)//
-				.dozen13(21)//
-				.dozen14(24)//
-				.dozen15(25)//
-				.type(LotteryType.LOTOFACIL)//
-				.build();
-	}
-	
-	private Historic createHistoricLessDozens() {
-		return Historic.builder()
-				.dozen1(1)//
-				.dozen2(2)//
-				.dozen3(3)//
-				.dozen4(4)//
-				.dozen5(5)//
-				.dozen6(6)//
-				.dozen7(9)//
-				.dozen8(11)//
-				.dozen9(14)//
-				.dozen10(13)//
-				.dozen11(15)//
-				.dozen12(17)//
-				.dozen13(18)//
-				.dozen14(23)//
-				.dozen15(25)//
+	private Historic createHistoric(List<Integer> dozens) {
+		return Historic.builder().dozen1(dozens.get(0))//
+				.dozen2(dozens.get(1))//
+				.dozen3(dozens.get(2))//
+				.dozen4(dozens.get(3))//
+				.dozen5(dozens.get(4))//
+				.dozen6(dozens.get(5))//
+				.dozen7(dozens.get(6))//
+				.dozen8(dozens.get(7))//
+				.dozen9(dozens.get(8))//
+				.dozen10(dozens.get(9))//
+				.dozen11(dozens.get(10))//
+				.dozen12(dozens.get(11))//
+				.dozen13(dozens.get(12))//
+				.dozen14(dozens.get(13))//
+				.dozen15(dozens.get(14))//
 				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
 
-	private DozenDTO createDozenDTO() {
-		return DozenDTO.builder()
-		.dozen1(2)//
-		.dozen2(3)//
-		.dozen3(4)//
-		.dozen4(5)//
-		.dozen5(7)//
-		.dozen6(8)//
-		.dozen7(10)//
-		.dozen8(11)//
-		.dozen9(12)//
-		.dozen10(13)//
-		.dozen11(15)//
-		.dozen12(17)//
-		.dozen13(21)//
-		.dozen14(24)//
-		.dozen15(25)//
-		.type(LotteryType.LOTOFACIL)//
-		.build();
-	}
-	
-	//1, 2, 3, 5, 8, 13, 21
-	private DozenDTO createDozenFibonacci() {
-		return DozenDTO.builder()
-		.dozen1(1)//
-		.dozen2(3)//
-		.dozen3(6)//
-		.dozen4(6)//
-		.dozen5(7)//
-		.dozen6(9)//
-		.dozen7(10)//
-		.dozen8(11)//
-		.dozen9(12)//
-		.dozen10(14)//
-		.dozen11(15)//
-		.dozen12(17)//
-		.dozen13(22)//
-		.dozen14(24)//
-		.dozen15(25)//
-		.type(LotteryType.LOTOFACIL)//
-		.build();
-	}
-	
-	private DozenDTO createDozenDTOWithExceedPairs() {
-		return DozenDTO.builder()
-		.dozen1(2)//
-		.dozen2(4)//
-		.dozen3(6)//
-		.dozen4(8)//
-		.dozen5(10)//
-		.dozen6(12)//
-		.dozen7(14)//
-		.dozen8(16)//
-		.dozen9(17)//
-		.dozen10(19)//
-		.dozen11(20)//
-		.dozen12(21)//
-		.dozen13(23)//
-		.dozen14(24)//
-		.dozen15(25)//
-		.type(LotteryType.LOTOFACIL)///
-		.build();
-	}
-	
-	private DozenDTO createDozenDTOWithUnpairs() {
-		return DozenDTO.builder()
-		.dozen1(1)//
-		.dozen2(3)//
-		.dozen3(4)//
-		.dozen4(7)//
-		.dozen5(8)//
-		.dozen6(10)//
-		.dozen7(11)//
-		.dozen8(12)//
-		.dozen9(14)//
-		.dozen10(15)//
-		.dozen11(17)//
-		.dozen12(19)//
-		.dozen13(21)//
-		.dozen14(23)//
-		.dozen15(25)//
-		.type(LotteryType.LOTOFACIL)//
-		.build();
-	}
-	
-	private DozenDTO createDozenDTOWithFirstLineDozensWhenExceed() {
-		return DozenDTO.builder()
-		.dozen1(1)//
-		.dozen2(2)//
-		.dozen3(3)//
-		.dozen4(4)//
-		.dozen5(5)//
-		.dozen6(8)//
-		.dozen7(10)//
-		.dozen8(11)//
-		.dozen9(12)//
-		.dozen10(13)//
-		.dozen11(15)//
-		.dozen12(17)//
-		.dozen13(21)//
-		.dozen14(24)//
-		.dozen15(25)//
-		.type(LotteryType.LOTOFACIL)//
-		.build();
-	}
-	
-	private DozenDTO createDozenDTOWithDozenLastRaffle() {
-		return DozenDTO.builder()
-				.dozen1(1)//
-				.dozen2(3)//
-				.dozen3(4)//
-				.dozen4(5)//
-				.dozen5(7)//
-				.dozen6(8)//
-				.dozen7(9)//
-				.dozen8(11)//
-				.dozen9(14)//
-				.dozen10(13)//
-				.dozen11(15)//
-				.dozen12(17)//
-				.dozen13(18)//
-				.dozen14(23)//
-				.dozen15(25)//
+	private DozenDTO createDozenDTO(List<Integer> dozens) {
+		return DozenDTO.builder().dozen1(dozens.get(0))//
+				.dozen2(dozens.get(1))//
+				.dozen3(dozens.get(2))//
+				.dozen4(dozens.get(3))//
+				.dozen5(dozens.get(4))//
+				.dozen6(dozens.get(5))//
+				.dozen7(dozens.get(6))//
+				.dozen8(dozens.get(7))//
+				.dozen9(dozens.get(8))//
+				.dozen10(dozens.get(9))//
+				.dozen11(dozens.get(10))//
+				.dozen12(dozens.get(11))//
+				.dozen13(dozens.get(12))//
+				.dozen14(dozens.get(13))//
+				.dozen15(dozens.get(14))//
 				.type(LotteryType.LOTOFACIL)//
 				.build();
 	}
-	
-	private DozenDTO createDozensWithLowSum() {
-		return DozenDTO.builder()
-				.dozen1(1)//
-				.dozen2(2)//
-				.dozen3(3)//
-				.dozen4(4)//
-				.dozen5(5)//
-				.dozen6(6)//
-				.dozen7(7)//
-				.dozen8(8)//
-				.dozen9(9)//
-				.dozen10(10)//
-				.dozen11(11)//
-				.dozen12(12)//
-				.dozen13(13)//
-				.dozen14(14)//
-				.dozen15(15)//
-				.type(LotteryType.LOTOFACIL)//
-				.build();
-	}
-	
-	private DozenDTO createDozensWithHighSum() {
-		return DozenDTO.builder()
-				.dozen1(10)//
-				.dozen2(11)//
-				.dozen3(12)//
-				.dozen4(13)//
-				.dozen5(14)//
-				.dozen6(15)//
-				.dozen7(16)//
-				.dozen8(17)//
-				.dozen9(18)//
-				.dozen10(19)//
-				.dozen11(20)//
-				.dozen12(21)//
-				.dozen13(22)//
-				.dozen14(23)//
-				.dozen15(24)//
-				.type(LotteryType.LOTOFACIL)//
-				.build();
-	}
-	
-	private DozenDTO createDozensWithAllPrimes() {
-		return DozenDTO.builder()
-				.dozen1(2)//
-				.dozen2(3)//
-				.dozen3(5)//
-				.dozen4(7)//
-				.dozen5(11)//
-				.dozen6(13)//
-				.dozen7(14)//
-				.dozen8(15)//
-				.dozen9(16)//
-				.dozen10(17)//
-				.dozen11(18)//
-				.dozen12(19)//
-				.dozen13(20)//
-				.dozen14(22)//
-				.dozen15(23)//
-				.type(LotteryType.LOTOFACIL)//
-				.build();
-	}
-	
 }

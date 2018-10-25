@@ -1,8 +1,5 @@
 package com.luckybox.bet.rule;
 
-import static com.luckybox.constants.ConstantsLoto.PAIR_NUMBERS;
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -19,14 +16,20 @@ public class SequenceRule implements RuleChain {
 
 	private Integer maxMatch;
 
-	private Integer countMatch;
+	private Integer countMatchMax;
+	
+	private Integer minMatch;
+	
+	private Integer countMatchMin;
 
 	public SequenceRule() {
 	}
 
-	public SequenceRule(Integer maxMatch, Integer countMatch) {
+	public SequenceRule(Integer maxMatch, Integer countMatchMax,Integer minMatch, Integer countMatchMin) {
 		this.maxMatch = maxMatch;
-		this.countMatch = countMatch;
+		this.minMatch = minMatch;
+		this.countMatchMax = countMatchMax;
+		this.countMatchMin = countMatchMin;
 	}
 
 	@Override
@@ -39,15 +42,17 @@ public class SequenceRule implements RuleChain {
 		List<Integer> greaterSequence = new SequenceAnalyser().getGreaterSequence(dozens);
 		Integer greater = greaterSequence.get(0);
 		Integer qtdSequences = greaterSequence.get(1);
-		int dozensMatch = dozens.stream().filter(el -> PAIR_NUMBERS.stream().anyMatch(el::equals)).collect(toList())
-				.size();
 		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		
 		if (greater > this.maxMatch)
-			rules.add(buildRule(dozensMatch, RuleType.GREATER_SEQUENCE, lotteryType, dozenDTO));
-		if (qtdSequences > this.countMatch)
-			rules.add(buildRule(dozensMatch, RuleType.QTD_SEQUENCE, lotteryType, dozenDTO));
-		this.chain.checkRule(dozens, rules, lotteryType);
+			rules.add(buildRule(0, RuleType.GREATER_SEQUENCE_HIGH, lotteryType, dozenDTO));
+		if (qtdSequences > this.countMatchMax)
+			rules.add(buildRule(0, RuleType.QTD_SEQUENCE_HIGH, lotteryType, dozenDTO));
+		if (greater < this.minMatch)
+			rules.add(buildRule(0, RuleType.GREATER_SEQUENCE_LOW, lotteryType, dozenDTO));
+		if (qtdSequences < this.countMatchMin)
+			rules.add(buildRule(0, RuleType.QTD_SEQUENCE_LOW, lotteryType, dozenDTO));
+		//this.chain.checkRule(dozens, rules, lotteryType);
 	}
 
 }

@@ -39,22 +39,24 @@ public class BetValidationChain {
 
 	private RuleChain getRules(LotteryType type) {
 		BetRuleSettings settings = betRuleSettingsRepository.findByType(type);
-		RuleChain rule = new PrimeRule(settings.getMinPrime(),settings.getMaxPrime());
+		RuleChain prime = new PrimeRule(settings.getMinPrime(),settings.getMaxPrime());
 		RuleChain pair = new PairRule(settings.getMinPair(),settings.getMaxPair());
 		RuleChain columnLine = new ColumnLineRule();
 		RuleChain sum = new SumRule(settings.getMinSum(),settings.getMaxSum());
+		RuleChain sequence = new SequenceRule(settings.getMaxGreatherSequence(),settings.getMaxQuantitySequence(),settings.getMinGreatherSequence(),settings.getMinQuantitySequence());
 		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
 		RuleChain fibonacci = new FibonacciRule(settings.getMinFibonacci(),settings.getMaxFibonacci());
 		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicRepositoryImpl);
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl, settings.getMinDozensLastRaffle() ,settings.getMaxDozensLastRaffle());
 
-		rule.setNextChain(pair);
+		prime.setNextChain(pair);
 		pair.setNextChain(sum);
 		sum.setNextChain(lastRaffle);
 		lastRaffle.setNextChain(dozenInfo);
 		dozenInfo.setNextChain(columnLine);
 		columnLine.setNextChain(alreadyDrawn);
 		alreadyDrawn.setNextChain(fibonacci);
-		return rule;
+		fibonacci.setNextChain(pair);
+		return pair;
 	}
 }
