@@ -77,8 +77,8 @@ public class BetService {
 		return dozens;
 	}
 
-	public List<RuleDTO> checkRules(List<DozenDTO> dozens) {
-		return chainOfRules.validationChain(dozens);
+	public List<RuleDTO> checkRules(List<DozenDTO> dozens, LotteryType type) {
+		return chainOfRules.validationChain(dozens, type);
 	}
 
 	public GroupBetMessageDTO saveBetsByFile(File file) throws IOException {
@@ -100,7 +100,7 @@ public class BetService {
 	}
 
 	private void checkRulesAndSave(List<BetMessageDTO> message, DozenDTO dozenDTO) {
-		List<RuleDTO> validationChain = checkRules(Arrays.asList(dozenDTO));
+		List<RuleDTO> validationChain = checkRules(Arrays.asList(dozenDTO), dozenDTO.getType());
 		Bet bet = DozenMapper.toBet(dozenDTO);
 		if (validationChain.isEmpty())
 			betRepository.save(bet);

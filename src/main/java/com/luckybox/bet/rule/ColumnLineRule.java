@@ -50,7 +50,7 @@ public class ColumnLineRule implements RuleChain {
 				fourthColumn, fivethLine, fivethColumn).contains(0))
 			rules.add(buildRule(0, RuleType.FIRST_LINE, lotteryType, dozenDTO));
 		
-		this.chain.checkRule(dozens, rules, lotteryType);
+		//this.chain.checkRule(dozens, rules, lotteryType);
 	}
 
 }

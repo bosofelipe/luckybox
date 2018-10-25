@@ -41,5 +41,6 @@ public class FibonacciRule implements RuleChain {
 			rules.add(buildRule(dozensMatch, RuleType.FIBONACCI_LOW, lotteryType, dozenDTO));
 		if(dozensMatch > this.maxMatch)
 			rules.add(buildRule(dozensMatch,RuleType.FIBONACCI_HIGH, lotteryType, dozenDTO));
+		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 }

@@ -60,8 +60,8 @@ public class BetResource {
 	
 	@ApiOperation(value="Check if bets are inside rules", notes="")
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody List<DozenDTO> dozens) {
-		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozens), HttpStatus.OK);
+	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody List<DozenDTO> dozens, @PathVariable String type) {
+		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozens, LotteryType.valueOf(type.toUpperCase())), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value="Check if bets are inside rules by type of lottery", notes="")

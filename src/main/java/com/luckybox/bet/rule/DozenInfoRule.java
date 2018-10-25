@@ -37,8 +37,10 @@ public class DozenInfoRule implements RuleChain {
 	@Override
 	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
 		List<DozenInfo> dozenInfos = (List<DozenInfo>) dozenInfoRepository.findAll();
-		if (dozenInfos == null)
+		if (dozenInfos == null) {
+			this.chain.checkRule(numbers, rules, lotteryType);
 			return;
+		}
 		else {
 			List<DozenInfo> withCurrent = dozenInfos.stream().filter(dozen -> dozen.getCurrentSequenceDrawn() > 3).collect(toList());
 			int dozensMatch = withCurrent.stream().filter(el -> numbers.stream().anyMatch(el.getNumber()::equals)).collect(toList()).size();

@@ -19,6 +19,8 @@ import com.luckybox.repository.HistoricRepositoryImpl;
 @Component
 public class BetValidationChain {
 
+	private RuleChain chain;
+	
 	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
 	
@@ -28,20 +30,28 @@ public class BetValidationChain {
 	@Inject
 	private BetRuleSettingsRepository betRuleSettingsRepository;
 	
-	public List<RuleDTO> validationChain(List<DozenDTO> dozens) {
+	public List<RuleDTO> validationChain(List<DozenDTO> dozens, LotteryType type) {
 		
 		List<RuleDTO> rules = Lists.newArrayList();
 		
-		dozens.stream().forEach(e -> getRules(e.getType()).checkRule(toList(e), rules, e.getType()));
+		getRules(type);
+		
+		dozens.stream().forEach(e -> loadRules(rules, e));
 		
 		return rules;
 	}
 
-	private RuleChain getRules(LotteryType type) {
+	private void loadRules(List<RuleDTO> rules, DozenDTO e) {
+		chain.checkRule(toList(e), rules, e.getType());
+	}
+
+	private void getRules(LotteryType type) {
 		BetRuleSettings settings = betRuleSettingsRepository.findByType(type);
-		RuleChain prime = new PrimeRule(settings.getMinPrime(),settings.getMaxPrime());
-		RuleChain pair = new PairRule(settings.getMinPair(),settings.getMaxPair());
 		RuleChain columnLine = new ColumnLineRule();
+		
+		
+		this.chain = new PrimeRule(settings.getMinPrime(),settings.getMaxPrime());
+		RuleChain pair = new PairRule(settings.getMinPair(),settings.getMaxPair());
 		RuleChain sum = new SumRule(settings.getMinSum(),settings.getMaxSum());
 		RuleChain sequence = new SequenceRule(settings.getMaxGreatherSequence(),settings.getMaxQuantitySequence(),settings.getMinGreatherSequence(),settings.getMinQuantitySequence());
 		RuleChain dozenInfo = new DozenInfoRule(dozenInfoRepo);
@@ -49,14 +59,13 @@ public class BetValidationChain {
 		RuleChain alreadyDrawn = new AlreadyDrawnRule(historicRepositoryImpl);
 		RuleChain lastRaffle = new LastRaffleRule(historicRepositoryImpl, settings.getMinDozensLastRaffle() ,settings.getMaxDozensLastRaffle());
 
-		prime.setNextChain(pair);
+		chain.setNextChain(pair);
 		pair.setNextChain(sum);
 		sum.setNextChain(lastRaffle);
 		lastRaffle.setNextChain(dozenInfo);
-		dozenInfo.setNextChain(columnLine);
-		columnLine.setNextChain(alreadyDrawn);
+		dozenInfo.setNextChain(sequence);
+		sequence.setNextChain(alreadyDrawn);
 		alreadyDrawn.setNextChain(fibonacci);
-		fibonacci.setNextChain(pair);
-		return pair;
+		fibonacci.setNextChain(columnLine);
 	}
 }

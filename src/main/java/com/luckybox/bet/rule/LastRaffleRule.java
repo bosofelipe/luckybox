@@ -43,12 +43,12 @@ public class LastRaffleRule implements RuleChain {
 	@Override
 	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
 		List<Historic> lastRaffles = historicRepositoryImpl.getLastRaffles(1, lotteryType);
-		if (!lastRaffles.isEmpty())
-			checkLastDozens(dozens, rules, lastRaffles,lotteryType);
-		chain.checkRule(dozens, rules, lotteryType);
+		checkLastDozens(dozens, rules, lastRaffles,lotteryType);
+		this.chain.checkRule(dozens, rules, lotteryType);
 	}
 
 	private void checkLastDozens(List<Integer> dozens, List<RuleDTO> rules, List<Historic> lastRaffles, LotteryType lotteryType) {
+		if (!lastRaffles.isEmpty()) {
 		Historic historic = lastRaffles.get(0);
 		List<Integer> lastDozens = DozenMapper.toList(historic);
 		int dozensMatch = dozens.stream().filter(el -> lastDozens.stream().anyMatch(el::equals)).collect(toList())
@@ -58,6 +58,7 @@ public class LastRaffleRule implements RuleChain {
 			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType, dozenDTO));
 		if(dozensMatch > this.maxMatch)
 			rules.add(buildRule(dozensMatch, RuleType.LAST_RAFFLE_LOW, lotteryType, dozenDTO));
+		}
 	}
 
 }
