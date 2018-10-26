@@ -1,6 +1,9 @@
 package com.luckybox.bet.rule;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.luckybox.domain.LotteryType.LOTOFACIL;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -24,6 +27,7 @@ import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
+import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
 import com.luckybox.service.HistoricService;
 
@@ -40,6 +44,9 @@ public class BetValidationChainTest {
 
 	@Mock
 	private HistoricService historicService;
+	
+	@Mock
+	private HistoricRepository historicRepository;
 
 	@Mock
 	private BetRuleSettingsRepository betRuleSettingsRepository;
@@ -66,12 +73,12 @@ public class BetValidationChainTest {
 				.maxDozensLastRaffle(10)//
 				.minDozensLastRaffle(6)//
 				.maxGreatherSequence(10)//
-				.minGreatherSequence(5)//
-				.minQuantitySequence(1)//
-				.maxQuantitySequence(6)//
+				.minGreatherSequence(2)//
+				.minQuantitySequence(3)//
+				.maxQuantitySequence(5)//
 				.minSum(156)//
 				.maxSum(256)//
-				.type(LotteryType.LOTOFACIL).minPair(0)//
+				.type(LotteryType.LOTOFACIL)//
 				.build();
 		return settings;
 	}
@@ -118,7 +125,7 @@ public class BetValidationChainTest {
 	public void catchRulePairLow() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25))),
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 4, 6, 5, 9, 10, 11, 13, 15, 17, 19, 21, 23, 25))),
 				LotteryType.LOTOFACIL);
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_LOW));
 	}
@@ -127,7 +134,7 @@ public class BetValidationChainTest {
 	public void catchRulePairHigh() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 25))),
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24))),
 				LotteryType.LOTOFACIL);
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.PAIR_HIGH));
 	}
@@ -172,21 +179,24 @@ public class BetValidationChainTest {
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.SUM_HIGH));
 	}
 
-	@Test//2, 3, 5, 7, 11, 13, 17, 19, 23
+	@Test
 	public void catchRuleAlreadyDrawn() throws Exception {
+		DozenDTO createDozenDTO = createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23));
+		Historic createHistoric = createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23));
+		when(historicDatasetRepositoryImpl.findHistoricByDozens(Mockito.any())).thenReturn(Lists.newArrayList(createHistoric));
+		
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(
 				newArrayList(createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23))));
-		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23))),
-				LotteryType.LOTOFACIL);
-		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.ALREADY_DRAWN));
+		List<RuleDTO> validationChain = chainValidation.validationChain( asList(createDozenDTO), LOTOFACIL);
+		assertThat(validationChain.get(1).getType(), CoreMatchers.equalTo(RuleType.ALREADY_DRAWN));
 	}
 
 	@Test
 	public void catchRuleGreatherSequenceLow() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))),
+				Arrays.asList(
+						createDozenDTO(Lists.newArrayList(1, 3, 5, 7, 9, 10, 12, 13, 15, 16, 19, 20, 22, 24, 25))),
 				LotteryType.LOTOFACIL);
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.GREATER_SEQUENCE_LOW));
 	}
@@ -195,16 +205,16 @@ public class BetValidationChainTest {
 	public void catchRuleGreatherSequenceHigh() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))),
+				asList(createDozenDTO(Lists.newArrayList(1, 2, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25))),
 				LotteryType.LOTOFACIL);
-		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.GREATER_SEQUENCE_HIGH));
+		assertThat(validationChain.get(0).getType(), equalTo(RuleType.GREATER_SEQUENCE_HIGH));
 	}
 
 	@Test
 	public void catchRuleQtdSequenceHigh() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))),
+				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 4, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 25))),
 				LotteryType.LOTOFACIL);
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_HIGH));
 	}
@@ -213,7 +223,8 @@ public class BetValidationChainTest {
 	public void catchRuleQtdSequenceLow() throws Exception {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<RuleDTO> validationChain = chainValidation.validationChain(
-				Arrays.asList(createDozenDTO(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23))),
+				Arrays.asList(
+						createDozenDTO(Lists.newArrayList(1, 4, 6, 9, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 25))),
 				LotteryType.LOTOFACIL);
 		assertThat(validationChain.get(0).getType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_LOW));
 	}

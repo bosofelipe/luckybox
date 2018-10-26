@@ -48,7 +48,7 @@ public class SequenceRule implements RuleChain {
 			rules.add(buildRule(0, RuleType.GREATER_SEQUENCE_HIGH, lotteryType, dozenDTO));
 		if (qtdSequences > this.countMatchMax)
 			rules.add(buildRule(0, RuleType.QTD_SEQUENCE_HIGH, lotteryType, dozenDTO));
-		if (greater < this.minMatch)
+		if (greater <= this.minMatch)
 			rules.add(buildRule(0, RuleType.GREATER_SEQUENCE_LOW, lotteryType, dozenDTO));
 		if (qtdSequences < this.countMatchMin)
 			rules.add(buildRule(0, RuleType.QTD_SEQUENCE_LOW, lotteryType, dozenDTO));

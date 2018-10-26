@@ -18,13 +18,13 @@ public class AlreadyDrawnRule implements RuleChain {
 	private RuleChain chain;
 	
 	@Inject
-	private HistoricRepositoryImpl historicRepository;
+	private HistoricRepositoryImpl historicRepositoryImpl;
 	
 	public AlreadyDrawnRule(){
 	}
 	
 	public AlreadyDrawnRule(HistoricRepositoryImpl historicRepository) {
-		this.historicRepository = historicRepository;
+		this.historicRepositoryImpl = historicRepository;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class AlreadyDrawnRule implements RuleChain {
 		
 		DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
 				
-		List<Historic> historic = historicRepository.findHistoricByDozens(dozenDTO);
+		List<Historic> historic = historicRepositoryImpl.findHistoricByDozens(dozenDTO);
 		boolean isAlreadyDown = historic.isEmpty() ? false : true;
 		
 		if(isAlreadyDown)
