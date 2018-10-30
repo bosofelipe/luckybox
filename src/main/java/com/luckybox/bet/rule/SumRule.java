@@ -4,21 +4,22 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class SumRule implements RuleChain {
 
 	private RuleChain chain;
-	
+
 	private Integer minMatch;
 
 	private Integer maxMatch;
 
-	public SumRule() {}
-	
+	public SumRule() {
+	}
+
 	public SumRule(Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;
@@ -30,16 +31,16 @@ public class SumRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
-		int sum = numbers.stream().mapToInt(Number::intValue).sum();
-		
-		DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
-		
+	public void checkRule(Bet bet, List<BetRule> rules) {
+		List<Integer> dozens = DozenMapper.toList(bet);
+
+		int sum = dozens.stream().mapToInt(Number::intValue).sum();
+
 		if (sum < this.minMatch)
-			rules.add(buildRule(sum, RuleType.SUM_LOW, lotteryType, dozenDTO));
+			rules.add(BetRule.builder().ruleType(RuleType.SUM_LOW).value(sum).historicValue(this.minMatch).build());
 		if (sum > this.maxMatch)
-			rules.add(buildRule(sum, RuleType.SUM_HIGH, lotteryType, dozenDTO));
-		
-		this.chain.checkRule(numbers, rules, lotteryType);
+			rules.add(BetRule.builder().ruleType(RuleType.SUM_HIGH).value(sum).historicValue(this.maxMatch).build());
+
+		this.chain.checkRule(bet, rules);
 	}
 }

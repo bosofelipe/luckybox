@@ -7,39 +7,43 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class PrimeRule implements RuleChain {
 
 	private RuleChain chain;
-	
+
 	private Integer minMatch;
-	
+
 	private Integer maxMatch;
-	
-	public PrimeRule() {}
-	
+
+	public PrimeRule() {
+	}
+
 	public PrimeRule(Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;
 	}
-	
+
 	@Override
 	public void setNextChain(RuleChain chain) {
 		this.chain = chain;
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
+	public void checkRule(Bet bet, List<BetRule> rules) {
+		List<Integer> dozens = DozenMapper.toList(bet);
+
 		int dozensMatch = dozens.stream().filter(el -> PRIME.stream().anyMatch(el::equals)).collect(toList()).size();
-		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		if (dozensMatch < this.minMatch)
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_LOW, lotteryType, dozenDTO));
-		if(dozensMatch > this.maxMatch )
-			rules.add(buildRule(dozensMatch, RuleType.PRIME_HIGH, lotteryType, dozenDTO));
-		this.chain.checkRule(dozens, rules, lotteryType);
+			rules.add(BetRule.builder().ruleType(RuleType.PRIME_LOW).value(dozensMatch).historicValue(this.minMatch)
+					.build());
+		if (dozensMatch > this.maxMatch)
+			rules.add(BetRule.builder().ruleType(RuleType.PRIME_HIGH).value(dozensMatch).historicValue(this.maxMatch)
+					.build());
+		this.chain.checkRule(bet, rules);
 	}
 }

@@ -5,7 +5,6 @@ import static com.luckybox.mapper.DozenMapper.toBet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.luckybox.bet.rule.BetValidationChain;
-import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.BetInfoDTO;
@@ -77,8 +76,8 @@ public class BetService {
 		return dozens;
 	}
 
-	public List<RuleDTO> checkRules(List<DozenDTO> dozens, LotteryType type) {
-		return chainOfRules.validationChain(dozens, type);
+	public List<BetRule> checkRules(DozenDTO dozens) {
+		return chainOfRules.validationChain(DozenMapper.toBet(dozens));
 	}
 
 	public GroupBetMessageDTO saveBetsByFile(File file) throws IOException {
@@ -100,7 +99,7 @@ public class BetService {
 	}
 
 	private void checkRulesAndSave(List<BetMessageDTO> message, DozenDTO dozenDTO) {
-		List<RuleDTO> validationChain = checkRules(Arrays.asList(dozenDTO), dozenDTO.getType());
+		List<BetRule> validationChain = checkRules(dozenDTO);
 		Bet bet = DozenMapper.toBet(dozenDTO);
 		if (validationChain.isEmpty())
 			betRepository.save(bet);

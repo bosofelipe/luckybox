@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.ApiPageable;
-import com.luckybox.bet.rule.RuleDTO;
 import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.BetInfoDTO;
 import com.luckybox.dto.DozenDTO;
@@ -60,8 +60,8 @@ public class BetResource {
 	
 	@ApiOperation(value="Check if bets are inside rules", notes="")
 	@PostMapping(path = "/checkRules", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<RuleDTO>> checkRules(@RequestBody List<DozenDTO> dozens, @PathVariable String type) {
-		return new ResponseEntity<List<RuleDTO>>(betService.checkRules(dozens, LotteryType.valueOf(type.toUpperCase())), HttpStatus.OK);
+	public ResponseEntity<List<BetRule>> checkRules(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<List<BetRule>>(betService.checkRules(dozenDTO), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value="Check if bets are inside rules by type of lottery", notes="")

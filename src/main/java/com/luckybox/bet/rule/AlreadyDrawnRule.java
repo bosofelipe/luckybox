@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.Historic;
-import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
@@ -33,20 +33,17 @@ public class AlreadyDrawnRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
+	public void checkRule(Bet bet, List<BetRule> rules) {
 		
-		DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
-				
-		List<Historic> historic = historicRepositoryImpl.findHistoricByDozens(dozenDTO);
+		List<Historic> historic = historicRepositoryImpl.findHistoricByDozens(DozenMapper.toDTO(bet));
 		boolean isAlreadyDown = historic.isEmpty() ? false : true;
 		
 		if(isAlreadyDown)
 			rules.add(
-					RuleDTO.builder()//
-							.dozens(dozenDTO)
-						    .type(RuleType.ALREADY_DRAWN)//
+					BetRule.builder().bet(bet)
+					.ruleType(RuleType.ALREADY_DRAWN)
 							.build());
-		this.chain.checkRule(numbers, rules, lotteryType);
+		this.chain.checkRule(bet, rules);
 	}
 
 }

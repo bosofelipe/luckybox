@@ -28,7 +28,7 @@ public class DozenMapper {
 				.dozen46(dto.getDozen46()).dozen47(dto.getDozen47()).dozen48(dto.getDozen48()).dozen49(dto.getDozen49())
 				.dozen50(dto.getDozen50()).build();
 	}
-
+	
 	public static Historic toHistoric(DozenDTO dto) {
 		return Historic.builder().type(dto.getType()).concurse(dto.getConcurse()).concurseDate(dto.getConcurseDate())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())

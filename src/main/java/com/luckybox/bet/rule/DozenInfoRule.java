@@ -8,9 +8,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.DozenInfo;
-import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.DozenInfoRepository;
 
@@ -35,21 +35,22 @@ public class DozenInfoRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> numbers, List<RuleDTO> rules, LotteryType lotteryType) {
+	public void checkRule(Bet bet, List<BetRule> rules) {
 		List<DozenInfo> dozenInfos = (List<DozenInfo>) dozenInfoRepository.findAll();
 		if (dozenInfos == null) {
-			this.chain.checkRule(numbers, rules, lotteryType);
+			this.chain.checkRule(bet, rules);
 			return;
 		}
 		else {
+			List<Integer> numbers = DozenMapper.toList(bet);
 			List<DozenInfo> withCurrent = dozenInfos.stream().filter(dozen -> dozen.getCurrentSequenceDrawn() > 3).collect(toList());
 			int dozensMatch = withCurrent.stream().filter(el -> numbers.stream().anyMatch(el.getNumber()::equals)).collect(toList()).size();
 			if(dozensMatch == 0){
-				DozenDTO dozenDTO = DozenMapper.toDTO(numbers, lotteryType);
-				rules.add(buildRule(dozensMatch, RuleType.CURRENT_SEQUENCE, lotteryType, dozenDTO) );
+				rules.add(
+						BetRule.builder().bet(bet).ruleType(RuleType.CURRENT_SEQUENCE).value(dozensMatch).build());
 			}
 		}
-		this.chain.checkRule(numbers, rules, lotteryType);
+		this.chain.checkRule(bet, rules);
 	}
 
 }

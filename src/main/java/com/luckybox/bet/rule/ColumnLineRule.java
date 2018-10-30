@@ -1,24 +1,14 @@
 package com.luckybox.bet.rule;
 
-import static com.luckybox.constants.ConstantsLoto.FIRST_COLUMN;
-import static com.luckybox.constants.ConstantsLoto.FIRST_LINE;
-import static com.luckybox.constants.ConstantsLoto.FIVETH_COLUMN;
-import static com.luckybox.constants.ConstantsLoto.FIVETH_LINE;
-import static com.luckybox.constants.ConstantsLoto.FOURTH_COLUMN;
-import static com.luckybox.constants.ConstantsLoto.FOURTH_LINE;
-import static com.luckybox.constants.ConstantsLoto.SECOND_COLUMN;
-import static com.luckybox.constants.ConstantsLoto.SECOND_LINE;
-import static com.luckybox.constants.ConstantsLoto.THIRD_COLUMN;
-import static com.luckybox.constants.ConstantsLoto.THIRD_LINE;
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
+import com.luckybox.constants.ConstantsLoto;
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.mapper.DozenMapper;
 
 @Component
@@ -32,20 +22,20 @@ public class ColumnLineRule implements RuleChain {
 	}
 
 	@Override
-	public void checkRule(List<Integer> dozens, List<RuleDTO> rules, LotteryType lotteryType) {
-		int firstLine = dozens.stream().filter(el -> FIRST_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
-		int secondLine = dozens.stream().filter(el -> SECOND_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
-		int thirdLine = dozens.stream().filter(el -> THIRD_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
-		int fourthLine = dozens.stream().filter(el -> FOURTH_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
-		int fivethLine = dozens.stream().filter(el -> FIVETH_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
+	public void checkRule(Bet bet, List<BetRule> rules) {
+		List<Integer> dozens = DozenMapper.toList(bet);
+		int firstLine = dozens.stream().filter(el -> ConstantsLoto.FIRST_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
+		int secondLine = dozens.stream().filter(el -> ConstantsLoto.SECOND_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
+		int thirdLine = dozens.stream().filter(el -> ConstantsLoto.THIRD_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
+		int fourthLine = dozens.stream().filter(el -> ConstantsLoto.FOURTH_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
+		int fivethLine = dozens.stream().filter(el -> ConstantsLoto.FIVETH_LINE.stream().anyMatch(el::equals)).collect(toList()).size();
 		
-		int firstColumn = dozens.stream().filter(el -> FIRST_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
-		int secondColumn = dozens.stream().filter(el -> SECOND_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
-		int thirdColumn = dozens.stream().filter(el -> THIRD_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
-		int fourthColumn = dozens.stream().filter(el -> FOURTH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
-		int fivethColumn = dozens.stream().filter(el -> FIVETH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
+		int firstColumn = dozens.stream().filter(el -> ConstantsLoto.FIRST_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
+		int secondColumn = dozens.stream().filter(el -> ConstantsLoto.SECOND_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
+		int thirdColumn = dozens.stream().filter(el -> ConstantsLoto.THIRD_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
+		int fourthColumn = dozens.stream().filter(el -> ConstantsLoto.FOURTH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
+		int fivethColumn = dozens.stream().filter(el -> ConstantsLoto.FIVETH_COLUMN.stream().anyMatch(el::equals)).collect(toList()).size();
 
-		DozenDTO dozenDTO = DozenMapper.toDTO(dozens, lotteryType);
 		/*if (asList(firstLine, firstColumn, secondLine, secondColumn, thirdLine, thirdColumn, fourthLine,
 				fourthColumn, fivethLine, fivethColumn).contains(0))
 			rules.add(buildRule(0, RuleType.FIRST_LINE, lotteryType, dozenDTO));*/

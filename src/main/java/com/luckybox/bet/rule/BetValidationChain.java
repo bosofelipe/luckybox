@@ -1,7 +1,5 @@
 package com.luckybox.bet.rule;
 
-import static com.luckybox.mapper.DozenMapper.toList;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,9 +7,10 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
+import com.luckybox.domain.Bet;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.BetRuleSettings;
 import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
@@ -30,19 +29,15 @@ public class BetValidationChain {
 	@Inject
 	private BetRuleSettingsRepository betRuleSettingsRepository;
 	
-	public List<RuleDTO> validationChain(List<DozenDTO> dozens, LotteryType type) {
+	public List<BetRule> validationChain(Bet bet) {
 		
-		List<RuleDTO> rules = Lists.newArrayList();
+		List<BetRule> rules = Lists.newArrayList();
 		
-		getRules(type);
+		getRules(bet.getType());
 		
-		dozens.stream().forEach(e -> loadRules(rules, e));
+		chain.checkRule(bet, rules);
 		
 		return rules;
-	}
-
-	private void loadRules(List<RuleDTO> rules, DozenDTO e) {
-		chain.checkRule(toList(e), rules, e.getType());
 	}
 
 	private void getRules(LotteryType type) {
