@@ -1,12 +1,13 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ca35b1b2384440a1a793c51f25303310)](https://www.codacy.com/app/felipethiagoboso/newkoala-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bosofelipe/newkoala-api&amp;utm_campaign=Badge_Grade)
-
-[![Stories in Ready](https://badge.waffle.io/bosofelipe/luckybox.svg?label=ready&title=Ready)](http://waffle.io/bosofelipe/luckybox)
-
-[![Build Status](https://travis-ci.org/bosofelipe/luckybox.svg?branch=master)](https://travis-ci.org/bosofelipe/luckybox)
+[![Heroku](http://heroku-shields.herokuapp.com/luckybox)](https://luckybox-prod.herokuapp.com/luckybox/swagger-ui.html)
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=bosofelipe_luckybox)](https://sonarcloud.io/dashboard?id=bosofelipe_luckybox)
 
-[![Heroku](http://heroku-shields.herokuapp.com/luckybox)](https://luckybox-prod.herokuapp.com/luckybox/swagger-ui.html)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ca35b1b2384440a1a793c51f25303310)](https://www.codacy.com/app/felipethiagoboso/newkoala-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bosofelipe/newkoala-api&amp;utm_campaign=Badge_Grade)
+
+[![Build Status](https://travis-ci.org/bosofelipe/luckybox.svg?branch=master)](https://travis-ci.org/bosofelipe/luckybox)
+
+[![Stories in Ready](https://badge.waffle.io/bosofelipe/luckybox.svg?label=ready&title=Ready)](http://waffle.io/bosofelipe/luckybox)
+
 
 # Luckybox
 
