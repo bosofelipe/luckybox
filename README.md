@@ -4,11 +4,7 @@
 
 [![Build Status](https://travis-ci.org/bosofelipe/luckybox.svg?branch=master)](https://travis-ci.org/bosofelipe/luckybox)
 
-[![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=bosofelipe_luckybox&metric=alert_status)](https://sonarcloud.io/dashboard?id=bosofelipe_luckybox)
-
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=bosofelipe_luckybox)](https://sonarcloud.io/dashboard?id=bosofelipe_luckybox)
-
-[![Scanned by sonar](https://sonarcloud.io/api/project_badges/measure?project=bosofelipe_luckybox&metric=alert_status)](https://sonarcloud.io/dashboard?id=bosofelipe_luckybox)
 
 # Luckybox
 
