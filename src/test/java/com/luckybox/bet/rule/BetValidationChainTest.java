@@ -23,7 +23,6 @@ import com.luckybox.domain.BetRuleSettings;
 import com.luckybox.domain.DozenInfo;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
-import com.luckybox.dto.DozenDTO;
 import com.luckybox.repository.BetRuleSettingsRepository;
 import com.luckybox.repository.DozenInfoRepository;
 import com.luckybox.repository.HistoricRepository;
@@ -145,7 +144,7 @@ public class BetValidationChainTest {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(
 				newArrayList(createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 18, 19, 20, 25))));
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
-		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_LOW));
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.LAST_RAFFLE_HIGH));
 	}
 
 	@Test
@@ -179,7 +178,7 @@ public class BetValidationChainTest {
 
 	@Test
 	public void catchRuleGreatherSequenceLow() throws Exception {
-		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23));
+		Bet bet = createBet(Lists.newArrayList(1, 3, 5, 7, 9, 10, 12, 13, 15, 16, 19, 20, 22, 24, 25));
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.GREATER_SEQUENCE_LOW));
@@ -187,7 +186,7 @@ public class BetValidationChainTest {
 
 	@Test
 	public void catchRuleGreatherSequenceHigh() throws Exception {
-		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23));
+		Bet bet = createBet(Lists.newArrayList(1, 2, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25));
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), equalTo(RuleType.GREATER_SEQUENCE_HIGH));
@@ -195,7 +194,7 @@ public class BetValidationChainTest {
 
 	@Test
 	public void catchRuleQtdSequenceHigh() throws Exception {
-		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23));
+		Bet bet = createBet(Lists.newArrayList(1, 2, 4, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 25));
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_HIGH));
@@ -203,7 +202,7 @@ public class BetValidationChainTest {
 
 	@Test
 	public void catchRuleQtdSequenceLow() throws Exception {
-		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23));
+		Bet bet = createBet(Lists.newArrayList(1, 4, 6, 9, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 25));
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_LOW));
