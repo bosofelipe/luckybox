@@ -15,4 +15,4 @@
 
 # Sonnar runner
 
-mvn sonar:sonar   -Dsonar.projectKey=bosofelipe_luckybox   -Dsonar.organization=bosofelipe-github   -Dsonar.host.url=https://sonarcloud.io   -Dsonar.login=9fa95782aea30931b84cd302b7bafa9331a810d0
+mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar   -Dsonar.projectKey=bosofelipe_luckybox   -Dsonar.organization=bosofelipe-github   -Dsonar.host.url=https://sonarcloud.io   -Dsonar.login=9fa95782aea30931b84cd302b7bafa9331a810d0
