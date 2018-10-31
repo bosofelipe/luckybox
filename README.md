@@ -6,6 +6,8 @@
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=bosofelipe_luckybox)](https://sonarcloud.io/dashboard?id=bosofelipe_luckybox)
 
+[![Heroku](http://heroku-shields.herokuapp.com/luckybox)](https://luckybox-prod.herokuapp.com/luckybox/swagger-ui.html)
+
 # Luckybox
 
 # A simple api to brazillian lotteries
