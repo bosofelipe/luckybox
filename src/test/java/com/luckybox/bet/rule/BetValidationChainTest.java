@@ -42,7 +42,7 @@ public class BetValidationChainTest {
 
 	@Mock
 	private HistoricService historicService;
-	
+
 	@Mock
 	private HistoricRepository historicRepository;
 
@@ -85,7 +85,7 @@ public class BetValidationChainTest {
 	public void catchRulePrimeHigh() throws Exception {
 		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 17, 19, 23));
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
-		List<BetRule> validationChain = chainValidation.validationChain( bet);
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.PRIME_HIGH));
 	}
 
@@ -166,10 +166,12 @@ public class BetValidationChainTest {
 	@Test
 	public void catchRuleAlreadyDrawn() throws Exception {
 		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23));
-		
-		Historic createHistoric = createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23));
-		when(historicDatasetRepositoryImpl.findHistoricByDozens(Mockito.any())).thenReturn(Lists.newArrayList(createHistoric));
-		
+
+		Historic createHistoric = createHistoric(
+				Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23));
+		when(historicDatasetRepositoryImpl.findHistoricByDozens(Mockito.any()))
+				.thenReturn(Lists.newArrayList(createHistoric));
+
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(
 				newArrayList(createHistoric(Lists.newArrayList(1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 14, 18, 20, 21, 23))));
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
@@ -206,6 +208,86 @@ public class BetValidationChainTest {
 		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
 		List<BetRule> validationChain = chainValidation.validationChain(bet);
 		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.QTD_SEQUENCE_LOW));
+	}
+
+	@Test
+	public void catchRuleEmptyFirstLine() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(6, 7, 8, 9, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(1).getRuleType(), CoreMatchers.equalTo(RuleType.FIRST_LINE));
+	}
+
+	@Test
+	public void catchRuleEmptySecondLine() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(1).getRuleType(), CoreMatchers.equalTo(RuleType.SECOND_LINE));
+	}
+
+	@Test
+	public void catchRuleEmptyThirdLine() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 6, 7, 8, 9, 16, 17, 18, 19, 20, 21, 22, 23, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.THIRD_LINE));
+	}
+
+	@Test
+	public void catchRuleEmptyFourthLine() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 14, 21, 22, 23, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(2).getRuleType(), CoreMatchers.equalTo(RuleType.FOURTH_LINE));
+	}
+
+	@Test
+	public void catchRuleEmptyFivethLine() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 4, 6, 7, 8, 9, 12, 14, 16, 17, 18, 19, 20));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.FIVETH_LINE));
+	}
+
+	@Test
+	public void catchRuleEmptyFirstColumn() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(5, 7, 8, 9, 12, 14, 15, 17, 18, 19, 20, 22, 23, 24, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.FIRST_COLUMN));
+	}
+
+	@Test
+	public void catchRuleEmptySecondColumn() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 3, 6, 8, 9, 10, 11, 14, 16, 18, 19, 20, 21, 23, 24));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.SECOND_COLUMN));
+	}
+
+	@Test
+	public void catchRuleEmptyThirdColumn() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 6, 7, 9, 10, 12, 14, 16, 17, 19, 20, 21, 22, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.THIRD_COLUMN));
+	}
+
+	@Test
+	public void catchRuleEmptyFourthColumn() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(1, 2, 3, 6, 7, 8, 12, 13, 16, 17, 18, 20, 21, 23, 25));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(1).getRuleType(), CoreMatchers.equalTo(RuleType.FOURTH_COLUMN));
+	}
+
+	@Test
+	public void catchRuleEmptyFivethColumn() throws Exception {
+		Bet bet = createBet(Lists.newArrayList(2, 6, 7, 8, 11, 12, 13, 16, 17, 18, 19, 21, 22, 23, 24));
+		when(historicDatasetRepositoryImpl.getLastRaffles(anyInt(), Mockito.any())).thenReturn(newArrayList());
+		List<BetRule> validationChain = chainValidation.validationChain(bet);
+		assertThat(validationChain.get(0).getRuleType(), CoreMatchers.equalTo(RuleType.FIVETH_COLUMN));
 	}
 
 	private Iterable<DozenInfo> createDozenInfo() {
