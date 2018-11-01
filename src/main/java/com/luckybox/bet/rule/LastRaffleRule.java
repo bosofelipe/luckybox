@@ -15,7 +15,10 @@ import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
+import lombok.NoArgsConstructor;
+
 @Component
+@NoArgsConstructor
 public class LastRaffleRule implements RuleChain {
 
 	private RuleChain chain;
