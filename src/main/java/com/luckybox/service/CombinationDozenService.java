@@ -1,6 +1,5 @@
 package com.luckybox.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,8 +28,7 @@ public class CombinationDozenService {
 	@Inject
 	private CombinationDozenRepository combinationDozenRepository;
 
-	public List<CombinationDozen> generateCombination(Integer combinations, String type)
-			throws InterruptedException, IOException {
+	public List<CombinationDozen> generateCombination(Integer combinations, String type){
 		LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
 		List<CombinationDozen> combinationDozen = Lists.newArrayList();
 
@@ -44,7 +42,7 @@ public class CombinationDozenService {
 
 	private void saveCombination(Historic historic, Integer combinations, LotteryType lotteryType) {
 		for (int i = 2; i < combinations; i++) {
-			load(historic, new Integer(i), lotteryType);
+			load(historic, Integer.valueOf(i), lotteryType);
 		}
 	}
 
@@ -55,11 +53,11 @@ public class CombinationDozenService {
 		Combination comb1 = new Combination(finalResult, keyLength);
 		while (comb1.hasNext()) {
 			saida = comb1.next();
-			StringBuilder b = new StringBuilder();
+			StringBuilder value = new StringBuilder();
 			for (int i = 0; i < saida.length; i++) {
-				b.append(saida[i]).append(SEPARATOR);
+				value.append(saida[i]).append(SEPARATOR);
 			}
-			String key = b.substring(0, b.length() - 1).toString();
+			String key = value.substring(0, value.length() - 1);
 			save(type, key, keyLength, e.getConcurse());
 		}
 		return e;

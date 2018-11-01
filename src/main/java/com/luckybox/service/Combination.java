@@ -1,25 +1,25 @@
 package com.luckybox.service;
 
 public class Combination {
-	private int r;
+	private int value;
 	private Integer[] entrada;
-	private int MAX;
-	private int N;
+	private int max;
+	private int items;
 
 	public Combination(Integer[] entrada, int r) {
-		this.r = r;
+		this.value = r;
 		this.entrada = entrada;
-		this.MAX = ~(1 << entrada.length);
-		this.N = 1;
+		this.max = ~(1 << entrada.length);
+		this.items = 1;
 	}
 
 	public boolean hasNext() {
-		if (r != 0) {
-			while (((this.N & this.MAX) != 0) && (countbits() != r))
-				N += 1;
+		if (value != 0) {
+			while (((this.items & this.max) != 0) && (countbits() != value))
+				items += 1;
 		}
 
-		return (this.N & this.MAX) != 0;
+		return (this.items & this.max) != 0;
 	}
 
 	private int countbits() {
@@ -28,8 +28,8 @@ public class Combination {
 
 		i = 1;
 		c = 0;
-		while ((this.MAX & i) != 0) {
-			if ((this.N & i) != 0) {
+		while ((this.max & i) != 0) {
+			if ((this.items & i) != 0) {
 				c++;
 			}
 			i = i << 1;
@@ -39,32 +39,34 @@ public class Combination {
 	}
 
 	public int getSaidaLength() {
-		if (r != 0) {
-			return r;
+		if (value != 0) {
+			return value;
 		}
 
 		return this.countbits();
 	}
 
 	public Integer[] next() {
-		int saida_index, entrada_index, i;
+		int exitIndex;
+		int enterIndex; 
+		int i;
 
 		Integer[] saida = new Integer[this.getSaidaLength()];
 
-		entrada_index = 0;
-		saida_index = 0;
+		enterIndex = 0;
+		exitIndex = 0;
 		i = 1;
 
-		while ((this.MAX & i) != 0) {
-			if ((this.N & i) != 0) {
-				saida[saida_index] = entrada[entrada_index];
-				saida_index += 1;
+		while ((this.max & i) != 0) {
+			if ((this.items & i) != 0) {
+				saida[exitIndex] = entrada[enterIndex];
+				exitIndex += 1;
 			}
-			entrada_index += 1;
+			enterIndex += 1;
 			i = i << 1;
 		}
 
-		N += 1;
+		items += 1;
 
 		return saida;
 	}

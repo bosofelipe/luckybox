@@ -7,6 +7,7 @@ import static com.luckybox.constants.ConstantsLoto.PRIME;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,11 @@ public class DatasetCreator {
 	}
 
 	private Integer countDozens(List<Integer> values) {
-		return (int) dozens.stream().filter(c -> values.contains(c)).count();
+		return (int) dozens.stream().filter(contains(values)).count();
+	}
+
+	private Predicate<? super Integer> contains(List<Integer> values) {
+		return c -> values.contains(c);
 	}
 
 	private Integer sumDozens() {
@@ -46,7 +51,7 @@ public class DatasetCreator {
 	}
 
 	public Integer sumNumbers(List<Integer> numbers) {
-		return (int) numbers.stream().mapToInt(c -> c).sum();
+		return numbers.stream().mapToInt(c -> c).sum();
 	}
 
 	private Integer countPairs() {
@@ -54,15 +59,27 @@ public class DatasetCreator {
 	}
 
 	private Integer countFibonacciNumbers() {
-		return (int) dozens.stream().filter(c -> FIBONACCI_SEQUENCE.contains(c)).mapToInt(c -> c).count();
+		return (int) dozens.stream().filter(containsFibonacciSequenceNumber()).mapToInt(c -> c).count();
+	}
+
+	private Predicate<? super Integer> containsFibonacciSequenceNumber() {
+		return c -> FIBONACCI_SEQUENCE.contains(c);
 	}
 
 	private Integer countPrimeNumbers() {
-		return (int) dozens.stream().filter(c -> PRIME.contains(c)).mapToInt(c -> c).count();
+		return (int) dozens.stream().filter(containsPrimeNumber()).mapToInt(c -> c).count();
+	}
+
+	private Predicate<? super Integer> containsPrimeNumber() {
+		return c -> PRIME.contains(c);
 	}
 
 	private Integer countFibonacciPrimeNumbers() {
-		return (int) dozens.stream().filter(c -> FIBONACCI_PRIME_SEQUENCE.contains(c)).mapToInt(c -> c).count();
+		return (int) dozens.stream().filter(containsFibonacciPrimeNumber()).mapToInt(c -> c).count();
+	}
+
+	private Predicate<? super Integer> containsFibonacciPrimeNumber() {
+		return c -> FIBONACCI_PRIME_SEQUENCE.contains(c);
 	}
 
 	private List<Integer> getGreaterSequence() {

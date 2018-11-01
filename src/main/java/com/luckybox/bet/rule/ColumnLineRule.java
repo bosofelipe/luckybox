@@ -14,8 +14,12 @@ import com.luckybox.mapper.DozenMapper;
 @Component
 public class ColumnLineRule implements RuleChain {
 
+	@SuppressWarnings("unused")
+	private RuleChain chain;
+	
 	@Override
 	public void setNextChain(RuleChain chain) {
+		this.chain = chain;
 	}
 
 	@Override

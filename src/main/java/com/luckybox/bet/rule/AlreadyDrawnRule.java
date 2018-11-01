@@ -20,9 +20,6 @@ public class AlreadyDrawnRule implements RuleChain {
 	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
 	
-	public AlreadyDrawnRule(){
-	}
-	
 	public AlreadyDrawnRule(HistoricRepositoryImpl historicRepository) {
 		this.historicRepositoryImpl = historicRepository;
 	}

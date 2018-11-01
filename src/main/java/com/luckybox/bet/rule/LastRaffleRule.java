@@ -27,9 +27,6 @@ public class LastRaffleRule implements RuleChain {
 	@Inject
 	private HistoricRepositoryImpl historicRepositoryImpl;
 
-	public LastRaffleRule() {
-	}
-
 	public LastRaffleRule(HistoricRepositoryImpl historicRepositoryImpl, Integer minMatch, Integer maxMatch) {
 		this.minMatch = minMatch;
 		this.maxMatch = maxMatch;
