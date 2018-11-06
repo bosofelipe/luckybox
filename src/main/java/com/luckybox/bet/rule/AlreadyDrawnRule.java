@@ -33,7 +33,7 @@ public class AlreadyDrawnRule implements RuleChain {
 	public void checkRule(Bet bet, List<BetRule> rules) {
 		
 		List<Historic> historic = historicRepositoryImpl.findHistoricByDozens(DozenMapper.toDTO(bet));
-		boolean isAlreadyDown = historic.isEmpty() ? false : true;
+		boolean isAlreadyDown = !historic.isEmpty();
 		
 		if(isAlreadyDown)
 			rules.add(

@@ -66,7 +66,7 @@ public class BetService {
 
 	public boolean isAlreadyDrawn(DozenDTO dozenDTO) {
 		List<Historic> historic = historicRepository.findHistoricByDozens(dozenDTO);
-		boolean isAlreadyDown = historic.isEmpty() ? false : true;
+		boolean isAlreadyDown = historic.isEmpty();
 		dozenDTO.setAlreadyDrawn(isAlreadyDown);
 		return isAlreadyDown;
 	}

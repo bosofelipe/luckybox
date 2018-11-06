@@ -1,6 +1,6 @@
 package com.luckybox.bet.rule;
 
-import static com.luckybox.constants.ConstantsLoto.PRIME;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -13,7 +13,9 @@ import com.luckybox.mapper.DozenMapper;
 
 @Component
 public class PrimeRule implements RuleChain {
-
+	protected static final List<Integer> PRIME = asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+			67, 71, 73, 79, 83, 89, 97);
+	
 	private RuleChain chain;
 
 	private Integer minMatch;

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.BetRule;
 import com.luckybox.domain.Historic;
-import com.luckybox.domain.LotteryType;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepositoryImpl;
 
@@ -45,12 +44,11 @@ public class LastRaffleRule implements RuleChain {
 	public void checkRule(Bet bet, List<BetRule> rules) {
 		List<Historic> lastRaffles = historicRepositoryImpl.getLastRaffles(1, bet.getType());
 		List<Integer> dozens = DozenMapper.toList(bet);
-		checkLastDozens(dozens, rules, lastRaffles, bet.getType());
+		checkLastDozens(dozens, rules, lastRaffles);
 		this.chain.checkRule(bet, rules);
 	}
 
-	private void checkLastDozens(List<Integer> dozens, List<BetRule> rules, List<Historic> lastRaffles,
-			LotteryType lotteryType) {
+	private void checkLastDozens(List<Integer> dozens, List<BetRule> rules, List<Historic> lastRaffles) {
 		if (!lastRaffles.isEmpty()) {
 			Historic historic = lastRaffles.get(0);
 			List<Integer> lastDozens = DozenMapper.toList(historic);

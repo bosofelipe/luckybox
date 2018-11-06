@@ -9,8 +9,10 @@ import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 
-
 public class DozenMapper {
+	
+	private DozenMapper() {
+	}
 
 	public static Bet toBet(DozenDTO dto) {
 		return Bet.builder().concurse(dto.getConcurse()).type(dto.getType()).betId(dto.getId()).dozen1(dto.getDozen1())

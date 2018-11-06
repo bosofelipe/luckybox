@@ -16,15 +16,15 @@ public class SequenceAnalyser {
 
 	public List<Integer> getGreaterSequence(List<Integer> numbers) {
 		int count = 0;
-		List<Integer> diffs = new ArrayList<Integer>();
+		List<Integer> diffs = new ArrayList<>();
 		for (int i = 0; i < numbers.size() - 1; i++)
 			count = countSequence(i, count, diffs, numbers);
 		if (count != 0)
 			diffs.add(count + 1);
 		Collections.sort(diffs);
 		Collections.reverse(diffs);
-		List<Integer> values = new ArrayList<Integer>();
-		values.add(diffs.size() >0 ? diffs.get(0) : 0);
+		List<Integer> values = new ArrayList<>();
+		values.add(diffs.isEmpty() ? 0 : diffs.get(0));
 		values.add(diffs.size());
 		return values;
 	}

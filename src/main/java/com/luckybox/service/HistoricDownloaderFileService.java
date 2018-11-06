@@ -21,14 +21,13 @@ import net.lingala.zip4j.exception.ZipException;
 @Service
 @Transactional
 public class HistoricDownloaderFileService {
-	private static String PATH_LOCAL = System.getProperty("java.io.tmpdir");
-	private static String FILE_ZIP_PATH = System.getProperty("java.io.tmpdir") + "/";
+	private static final String PATH_LOCAL = System.getProperty("java.io.tmpdir");
+	private static final String FILE_ZIP_PATH = System.getProperty("java.io.tmpdir") + "/";
 	private static final String URL = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/";
 
-	public ZipFile downloadHtmlZippedFileAtCaixa(String zipName) throws IOException, ZipException {
+	public ZipFile downloadHtmlZippedFileAtCaixa(String zipName) throws IOException {
 		downloadZipFile(URL+ zipName, zipName);
-		ZipFile zippedFile = extractZipFile(zipName);
-		return zippedFile;
+		return extractZipFile(zipName);
 	}
 
 	private File downloadZipFile(String caixaURL, String zipName) throws IOException {

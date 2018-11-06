@@ -2,7 +2,6 @@ package com.luckybox.reader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class CSVBetReader {
 		return readFile(file);
 	}
 
-	private List<DozenDTO> readFile(File file) throws IOException, FileNotFoundException {
+	private List<DozenDTO> readFile(File file) throws IOException {
 		List<DozenDTO> bets = new ArrayList<>();
 		String line = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {

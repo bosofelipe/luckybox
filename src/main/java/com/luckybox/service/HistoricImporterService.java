@@ -29,7 +29,7 @@ import net.lingala.zip4j.exception.ZipException;
 @Service
 @Transactional
 public class HistoricImporterService {
-	private static Logger LOGGER = LogManager.getLogger(HistoricImporterService.class);
+	private static Logger log = LogManager.getLogger(HistoricImporterService.class);
 	
 	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
@@ -106,9 +106,9 @@ public class HistoricImporterService {
 					dataset.setConcurse(dto.getConcurse());
 					saveHistoricDataset(historicEntity, dataset);
 					repository.save(historicEntity);
-					LOGGER.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
+					log.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
 				}else {
-					LOGGER.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(), dto.getType().getName()));
+					log.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(), dto.getType().getName()));
 				}
 			}
 		}
@@ -119,7 +119,7 @@ public class HistoricImporterService {
 				.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
 		if (histDataset != null) {
 			dataset.setId(histDataset.getId());
-			dataset = historicRepository.save(dataset);
+			historicRepository.save(dataset);
 		} else {
 			dataset = historicRepository.save(dataset);
 			historicEntity.setDataset(dataset);

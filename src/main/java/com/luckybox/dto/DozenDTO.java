@@ -2,7 +2,6 @@ package com.luckybox.dto;
 
 import java.util.Date;
 
-import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 
@@ -84,9 +83,4 @@ public class DozenDTO {
 	public DozenDTO(Historic dozen) {
 		this();
 	}
-	
-	public DozenDTO(Bet bet) {
-		this();
-	}
-
 }

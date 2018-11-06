@@ -1,6 +1,5 @@
 package com.luckybox.web.rest;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,7 +14,6 @@ import com.luckybox.domain.DozenInfo;
 import com.luckybox.service.DozenInfoService;
 
 import io.swagger.annotations.ApiOperation;
-import net.lingala.zip4j.exception.ZipException;
 
 @RestController
 @RequestMapping("/dozeninfo")
@@ -27,7 +25,7 @@ public class DozenInfoResource {
 
 	@ApiOperation(value="Generate info to dozens of lottery types", notes="")
 	@GetMapping(path = "/generate/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public List<DozenInfo> generate(@PathVariable String type) throws IOException, ZipException {
+	public List<DozenInfo> generate(@PathVariable String type)  {
 		return dozenInfoService.generateDozenInfo(type);
 	}
 }

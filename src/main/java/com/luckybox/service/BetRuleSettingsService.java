@@ -13,7 +13,7 @@ import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 
 @Service
 public class BetRuleSettingsService {
-	private static Logger LOGGER = LogManager.getLogger(BetRuleSettingsService.class);
+	private static Logger log = LogManager.getLogger(BetRuleSettingsService.class);
 	
 	@Inject
 	private BetRuleSettingsRepository betRuleSettingsRepository;
@@ -64,7 +64,7 @@ public class BetRuleSettingsService {
 					.minSum(minSum)//
 					.type(type)
 					.build();
-		    LOGGER.info(String.format("Saved bet rule settings, type: %s", type.getName()));
+		    log.info(String.format("Saved bet rule settings, type: %s", type.getName()));
 			return betRuleSettingsRepository.save(settings);
 		}
 		savedSettings.setMaxDozensLastRaffle(maxDozensLastRaffle);
@@ -83,7 +83,7 @@ public class BetRuleSettingsService {
 		savedSettings.setMinPrime(minPrime);
 		savedSettings.setMinSequence(minQTDSequence);
 		
-		LOGGER.info(String.format("Updated bet rule settings, type: %s", type.getName()));
+		log.info(String.format("Updated bet rule settings, type: %s", type.getName()));
 		return betRuleSettingsRepository.save(savedSettings);
 	}
 }

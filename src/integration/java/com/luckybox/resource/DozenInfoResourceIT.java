@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ public class DozenInfoResourceIT {
 	@Inject
 	private TestRestTemplate restTemplate;
 	
+	@Ignore
 	@Test
 	public void generateInfoLotoFacil() throws Exception {
 		ParameterizedTypeReference<List<DozenInfo>> historic = new ParameterizedTypeReference<List<DozenInfo>>() {};

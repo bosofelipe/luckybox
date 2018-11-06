@@ -43,7 +43,7 @@ public class ImporterDataService {
 		checkAlreadyDrawn(LotteryType.LOTOMANIA);
 	}
 	
-	public void fillDatasetFields() throws IOException, ZipException {
+	public void fillDatasetFields() {
 		historicDatasetFiller.fillDataSet(LotteryType.LOTOFACIL);
 		historicDatasetFiller.fillDataSet(LotteryType.QUINA);
 		historicDatasetFiller.fillDataSet(LotteryType.LOTOMANIA);
@@ -63,8 +63,7 @@ public class ImporterDataService {
 		dozenInfoService.generateDozenInfo(type);
 	}
 
-	// TODO ajustar para pegar pelo tipo
-	private void checkAlreadyDrawn(LotteryType type) throws IOException, ZipException {
+	private void checkAlreadyDrawn(LotteryType type){
 		historicDatasetFiller.fillAlreadyDrawnField(type);
 	}
 	

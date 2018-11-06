@@ -53,26 +53,26 @@ public class HistoricResource {
 	@ApiPageable
 	@ApiOperation(value="List paginated concurses", notes="")
 	@GetMapping(path = "/list", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public Page<Historic> list(Pageable pageable) throws IOException, ZipException {
+	public Page<Historic> list(Pageable pageable) {
 		return historicRepository.findAll(pageable);
 	}
 	
 	@ApiPageable
 	@ApiOperation(value="List paginated concurses by type of lottery", notes="")
 	@GetMapping(path = "/list/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public Page<Historic> listByType(@PathVariable String type,Pageable pageable) throws IOException, ZipException {
+	public Page<Historic> listByType(@PathVariable String type,Pageable pageable) {
 		return historicRepository.findAllByType(LotteryType.valueOf(type.toUpperCase()),pageable);
 	}
 	
 	@ApiOperation(value="Save a historic of lottery", notes="")
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) throws IOException, ZipException {
-		return new ResponseEntity<Historic>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
+	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) {
+		return new ResponseEntity<>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
 	}
 	
 	@ApiIgnore
 	@GetMapping(path = "/clear", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public String clear() throws IOException, ZipException {
+	public String clear() {
 		historicRepository.deleteAll();
 		historicDatasetRepository.deleteAll();
 		return "OK";

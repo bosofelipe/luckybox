@@ -21,7 +21,7 @@ import com.luckybox.repository.HistoricRepositoryImpl;
 
 @Component
 public class DozenInfoService {
-	private static Logger LOGGER = LogManager.getLogger(DozenInfoService.class);
+	private static Logger log = LogManager.getLogger(DozenInfoService.class);
 
 	@Inject
 	private HistoricRepositoryImpl historicService;
@@ -63,7 +63,7 @@ public class DozenInfoService {
 			List<DozenInfoSequence> sequences = new SequenceAnalyser().sequence(listConcursesWithDozen);
 			
 			DozenInfo dozenInfo = dozenInfoRepository.save(createDozenInfo);
-			LOGGER.info(String.format("Saved sequence to dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
+			log.info(String.format("Saved sequence to dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
 			
 			sequences.forEach(e-> saveSequence(dozenInfo, e));
 			
@@ -75,7 +75,7 @@ public class DozenInfoService {
 
 	private void saveSequence(DozenInfo dozenInfo, DozenInfoSequence sequence) {
 		sequence.setDozenInfo(dozenInfo);
-		LOGGER.info(String.format("Save sequence of dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
+		log.info(String.format("Save sequence of dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
 		dozenInfoSequenceRepository.save(sequence);
 	}
 

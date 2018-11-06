@@ -1,8 +1,6 @@
 package com.luckybox.service;
 
-import static com.luckybox.constants.ConstantsLoto.FIBONACCI_PRIME_SEQUENCE;
-import static com.luckybox.constants.ConstantsLoto.FIBONACCI_SEQUENCE;
-import static com.luckybox.constants.ConstantsLoto.PRIME;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,13 +9,27 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
-import com.luckybox.constants.ConstantsLoto;
 import com.luckybox.domain.HistoricDataset;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 
 @Service
 public class DatasetCreator {
+	private static final List<Integer> FIBONACCI_SEQUENCE = asList(1, 2, 3, 5, 8, 13, 21, 34, 55, 89);
+	private static final List<Integer> PRIME = asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
+			61, 67, 71, 73, 79, 83, 89, 97);
+	private static final List<Integer> FIBONACCI_PRIME_SEQUENCE = asList(2, 3, 5, 13, 89);
+	private static final List<Integer> FIRST_COLUMN = asList(1, 6, 11, 16, 21);
+	private static final List<Integer> SECOND_COLUMN = asList(2, 7, 12, 17, 22);
+	private static final List<Integer> THIRD_COLUMN = asList(3, 8, 13, 18, 23);
+	private static final List<Integer> FOURTH_COLUMN = asList(4, 9, 14, 19, 24);
+	private static final List<Integer> FIVETH_COLUMN = asList(5, 10, 15, 20, 25);
+	private static final List<Integer> FIRST_LINE = asList(1, 2, 3, 4, 5);
+	private static final List<Integer> SECOND_LINE = asList(6, 7, 8, 9, 10);
+	private static final List<Integer> THIRD_LINE = asList(11, 12, 13, 14, 15);
+	private static final List<Integer> FOURTH_LINE = asList(16, 17, 18, 19, 20);
+	private static final List<Integer> FIVETH_LINE = asList(21, 22, 23, 24, 25);
+
 	private List<Integer> dozens = new ArrayList<>();
 
 	public HistoricDataset createHistoricDataSet(DozenDTO dozenDTO, Integer quantityOfDozens) {
@@ -28,14 +40,12 @@ public class DatasetCreator {
 				.average(sumDozens / quantityOfDozens).pair(countPairs()).fibonacci(countFibonacciNumbers())
 				.prime(countPrimeNumbers()).fibonacciPrime(countFibonacciPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
-				.concurse(dozenDTO.getConcurse()).firstColumn(countDozens(ConstantsLoto.FIRST_COLUMN))
-				.secondColumn(countDozens(ConstantsLoto.SECOND_COLUMN))
-				.thirdColumn(countDozens(ConstantsLoto.THIRD_COLUMN))
-				.fourthColumn(countDozens(ConstantsLoto.FOURTH_COLUMN))
-				.fivethColumn(countDozens(ConstantsLoto.FIVETH_COLUMN)).firstLine(countDozens(ConstantsLoto.FIRST_LINE))
-				.secondLine(countDozens(ConstantsLoto.SECOND_LINE)).thirdLine(countDozens(ConstantsLoto.THIRD_LINE))
-				.fourthLine(countDozens(ConstantsLoto.FOURTH_LINE)).fivethLine(countDozens(ConstantsLoto.FIVETH_LINE))
-				.build();
+				.concurse(dozenDTO.getConcurse()).firstColumn(countDozens(FIRST_COLUMN))
+				.secondColumn(countDozens(SECOND_COLUMN)).thirdColumn(countDozens(THIRD_COLUMN))
+				.fourthColumn(countDozens(FOURTH_COLUMN)).fivethColumn(countDozens(FIVETH_COLUMN))
+				.firstLine(countDozens(FIRST_LINE)).secondLine(countDozens(SECOND_LINE))
+				.thirdLine(countDozens(THIRD_LINE)).fourthLine(countDozens(FOURTH_LINE))
+				.fivethLine(countDozens(FIVETH_LINE)).build();
 	}
 
 	private Integer countDozens(List<Integer> values) {
@@ -84,14 +94,14 @@ public class DatasetCreator {
 
 	private List<Integer> getGreaterSequence() {
 		int count = 0;
-		List<Integer> diffs = new ArrayList<Integer>();
+		List<Integer> diffs = new ArrayList<>();
 		for (int i = 0; i < dozens.size() - 1; i++)
 			count = countSequence(count, diffs, i);
 		if (count != 0)
 			diffs.add(count + 1);
 		Collections.sort(diffs);
 		Collections.reverse(diffs);
-		List<Integer> values = new ArrayList<Integer>();
+		List<Integer> values = new ArrayList<>();
 		values.add(!diffs.isEmpty() ? diffs.get(0) : 0);
 		values.add(diffs.size());
 		return values;

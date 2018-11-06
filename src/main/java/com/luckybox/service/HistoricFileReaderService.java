@@ -42,12 +42,11 @@ public class HistoricFileReaderService {
 	}
 
 	private List<DozenDTO> readDocumentBody(Elements allLines, LotteryType type) {
-		List<String> columnValues = new ArrayList<>();
-		allLines.stream().forEach(element -> catchElement(columnValues, element, type));
+		allLines.stream().forEach(element -> catchElement(element, type));
 		return historicData;
 	}
 
-	private void catchElement(List<String> columnValues, Element element, LotteryType type) {
+	private void catchElement(Element element, LotteryType type) {
 		String nodeValue = element.text();
 		if (!nodeValue.isEmpty()) {
 			String[] values = element.text().split(SPLIT_SEPARATOR);
@@ -62,7 +61,6 @@ public class HistoricFileReaderService {
 
 	private DozenDTO buildHistoricDTO(String[] values, LotteryType type) {
 		Long concurse = Long.valueOf(values[0]);
-		System.out.println(concurse + " " + type);
 		Date dateOfConcurse = convertStringToDate(values[1]);
 		List<Integer> dozens = createOrdenedListOfIntegers(values, type);
 		return buildDozenDTO(type, concurse, dateOfConcurse, dozens);
