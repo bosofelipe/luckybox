@@ -30,7 +30,7 @@ import net.lingala.zip4j.exception.ZipException;
 @Transactional
 public class HistoricImporterService {
 	private static Logger log = LogManager.getLogger(HistoricImporterService.class);
-	
+
 	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
 	@Inject
@@ -72,7 +72,7 @@ public class HistoricImporterService {
 			List<DozenDTO> importConcurses = importConcurses(type);
 			combinedIterables = Iterables.unmodifiableIterable(Iterables.concat(values, importConcurses));
 		}
-		if(combinedIterables != null)
+		if (combinedIterables != null)
 			combinedIterables.forEach(values::add);
 		return values;
 	}
@@ -81,8 +81,7 @@ public class HistoricImporterService {
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(lotteryType.getZipName());
 		List<DozenDTO> historicDTO = historicFileReaderService
 				.readHTML(TEMP_DIR + File.separator + lotteryType.getHtmlName(), lotteryType);
-		Long lastSavedConcurse = repositoryImpl.getLastIndexRaffle(lotteryType);
-		historicDTO.stream().forEach(dto -> persist(dto, lotteryType, lastSavedConcurse));
+		historicDTO.stream().forEach(dto -> persist(dto, lotteryType));
 		return historicDTO;
 	}
 
@@ -90,26 +89,25 @@ public class HistoricImporterService {
 		return repository.findAll(pageable).map(DozenDTO::new).getContent();
 	}
 
-	private void persist(DozenDTO dto, LotteryType type, Long lastSavedConcurse) {
-		if (lastSavedConcurse == null || dto.getConcurse() > lastSavedConcurse) {
-			Historic historic = repositoryImpl.getHistoryByConcurseAndType(dto.getConcurse(), type);
-			if (historic == null) {
-				Historic historicEntity = DozenMapper.toHistoric(dto);
-				HistoricDataset dataset = null;
+	private void persist(DozenDTO dto, LotteryType type) {
+		Historic historic = repositoryImpl.getHistoryByConcurseAndType(dto.getConcurse(), type);
+		if (historic == null) {
+			Historic historicEntity = DozenMapper.toHistoric(dto);
+			HistoricDataset dataset = null;
 
-				dto.setType(type);
-				dataset = datasetCreator.createHistoricDataSet(dto, type.getDozens());
+			dto.setType(type);
+			dataset = datasetCreator.createHistoricDataSet(dto, type.getDozens());
 
-				Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
-						historicEntity.getType());
-				if (hist == null) {
-					dataset.setConcurse(dto.getConcurse());
-					saveHistoricDataset(historicEntity, dataset);
-					repository.save(historicEntity);
-					log.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
-				}else {
-					log.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(), dto.getType().getName()));
-				}
+			Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
+					historicEntity.getType());
+			if (hist == null) {
+				dataset.setConcurse(dto.getConcurse());
+				saveHistoricDataset(historicEntity, dataset);
+				repository.save(historicEntity);
+				log.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
+			} else {
+				log.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(),
+						dto.getType().getName()));
 			}
 		}
 	}
