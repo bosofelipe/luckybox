@@ -21,10 +21,12 @@ import com.luckybox.ApiPageable;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
+import com.luckybox.dto.HistoricDataSetDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
+import com.luckybox.service.HistoricService;
 
 import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
@@ -35,7 +37,10 @@ import springfox.documentation.annotations.ApiIgnore;
 public class HistoricResource {
 
 	@Inject
-	private HistoricImporterService historicService;
+	private HistoricService historicService;
+
+	@Inject
+	private HistoricImporterService historicImporterService;
 	
 	@Inject
 	private HistoricRepository historicRepository;
@@ -47,7 +52,7 @@ public class HistoricResource {
 	@ApiOperation(value="Import historic of concurses", notes="")
 	@GetMapping(path = "/import/{type}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public List<DozenDTO> importHistoric(@PathVariable String type) throws IOException, ZipException {
-		return historicService.importConcurses(type);
+		return historicImporterService.importConcurses(type);
 	}
 
 	@ApiPageable
@@ -68,6 +73,12 @@ public class HistoricResource {
 	@PostMapping(path = "/save", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<Historic> saveHistoric(@RequestBody DozenDTO historicDTO) {
 		return new ResponseEntity<>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
+	}
+	
+	@ApiOperation(value="Group pair field by lottery type", notes="")
+	@GetMapping(path = "/countFieldByType/{type}/{field}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<List<HistoricDataSetDTO>> countFieldByType(@PathVariable String type, @PathVariable String field) {
+		return new ResponseEntity<>(historicService.findFieldByType(LotteryType.valueOf(type.toUpperCase()), field), HttpStatus.ACCEPTED);
 	}
 	
 	@ApiIgnore
