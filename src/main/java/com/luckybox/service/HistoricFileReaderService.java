@@ -42,6 +42,7 @@ public class HistoricFileReaderService {
 	}
 
 	private List<DozenDTO> readDocumentBody(Elements allLines, LotteryType type) {
+		historicData = new ArrayList<>();
 		allLines.stream().forEach(element -> catchElement(element, type));
 		return historicData;
 	}

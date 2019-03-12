@@ -90,8 +90,6 @@ public class HistoricImporterService {
 	}
 
 	private void persist(DozenDTO dto, LotteryType type) {
-		Long lastIndexRaffle = repositoryImpl.getLastIndexRaffle(type);
-		if (dto.getConcurse() > lastIndexRaffle) {
 			Historic historicEntity = DozenMapper.toHistoric(dto);
 			HistoricDataset dataset = null;
 
@@ -108,10 +106,6 @@ public class HistoricImporterService {
 			} else {
 				log.info(String.format("Concurse %s saved, type: %s", dto.getConcurse(), dto.getType().getName()));
 			}
-		} else {
-			log.info(String.format("Concurse %s already imported, type: %s", dto.getConcurse(),
-					dto.getType().getName()));
-		}
 	}
 
 	private void saveHistoricDataset(Historic historicEntity, HistoricDataset dataset) {

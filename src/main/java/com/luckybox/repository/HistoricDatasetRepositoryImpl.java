@@ -108,14 +108,14 @@ public class HistoricDatasetRepositoryImpl extends QuerydslRepositorySupport {
 
 	private void setLastConcurseAndDiff(LotteryType lotteryType, HistoricDataSetDTO dataSetDTO, NumberPath<Integer> field) {
 		dataSetDTO.setLastConcurse(from(qHistoricDataset).select(qHistoricDataset.concurse.max())
-				.where(field.eq(dataSetDTO.getValue()), qHistoricDataset.type.eq(lotteryType)).fetchOne());
+				.where(field.eq(dataSetDTO.getValue().intValue()), qHistoricDataset.type.eq(lotteryType)).fetchOne());
 		setMaxDiff(lotteryType, dataSetDTO, field);
 	}
 
 	private void setMaxDiff(LotteryType lotteryType, HistoricDataSetDTO dataSetDTO, NumberPath<Integer> field) {
 		List<HistoricDataSetDTO> results = from(qHistoricDataset)
 				.select(Projections.constructor(HistoricDataSetDTO.class, field, qHistoricDataset.concurse))
-				.where(field.eq(dataSetDTO.getValue()), qHistoricDataset.type.eq(lotteryType)).orderBy(qHistoricDataset.concurse.asc()).fetch();
+				.where(field.eq(dataSetDTO.getValue().intValue()), qHistoricDataset.type.eq(lotteryType)).orderBy(qHistoricDataset.concurse.asc()).fetch();
 		Long diff = 0L;
 		for (int i = 0; i < results.size(); i++) {
 			if (i != 0 && results.size() > i + 2) {

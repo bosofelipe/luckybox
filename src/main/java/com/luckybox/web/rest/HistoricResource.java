@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.ApiPageable;
+import com.luckybox.domain.BetRule;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.HistoricDataSetDTO;
+import com.luckybox.dto.HitsDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
@@ -87,5 +89,11 @@ public class HistoricResource {
 		historicRepository.deleteAll();
 		historicDatasetRepository.deleteAll();
 		return "OK";
+	}
+	
+	@ApiOperation(value="Check if bets are inside rules", notes="")
+	@PostMapping(path = "/listHistByConcurse", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<List<HitsDTO>> checkRules(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<List<HitsDTO>>(historicService.listHistByConcurse(dozenDTO), HttpStatus.OK);
 	}
 }

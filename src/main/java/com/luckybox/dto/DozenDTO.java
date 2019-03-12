@@ -80,6 +80,8 @@ public class DozenDTO {
 	private Date concurseDate;
 	private Boolean alreadyDrawn;
 	
+	private Integer foundByHits;
+	
 	public DozenDTO(Historic dozen) {
 		this();
 	}
