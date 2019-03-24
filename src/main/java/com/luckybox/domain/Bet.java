@@ -2,16 +2,13 @@ package com.luckybox.domain;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -90,10 +87,6 @@ public class Bet {
 	private Date creationDate;
 	@Enumerated(EnumType.STRING)
 	private LotteryType type;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-	private BetDataset dataset;
 	
 	@PrePersist
 	public void prePersist(){

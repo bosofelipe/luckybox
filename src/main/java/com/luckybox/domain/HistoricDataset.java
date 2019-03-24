@@ -31,46 +31,22 @@ public class HistoricDataset {
 	@OneToOne(mappedBy = "dataset")
 	private Historic historic;
 	
-	private Integer dozensLastRaffle;
-	
 	private Integer dozenSum;
 
 	private Integer variationSum;
 
-	private Integer average;
+	private Integer dozensLastRaffle;
 
 	private Integer pair;
 	
-	private Integer fibonacci;
-
 	private Integer prime;
 	
-	private Integer fibonacciPrime;
-
-	private Integer greatherSequence;
+	private Integer fibonacci;
 	
 	private Integer qtdSequences;
-
-	private Integer firstLine;
-
-	private Integer secondLine;
-
-	private Integer thirdLine;
-
-	private Integer fourthLine;
-
-	private Integer fivethLine;
-
-	private Integer firstColumn;
-
-	private Integer secondColumn;
-
-	private Integer thirdColumn;
-
-	private Integer fourthColumn;
-
-	private Integer fivethColumn;
 	
+	private Integer greatherSequence;
+
 	@Enumerated(EnumType.STRING)
 	private LotteryType type;
 }

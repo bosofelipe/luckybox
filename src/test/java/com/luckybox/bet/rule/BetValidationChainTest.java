@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.assertj.core.util.Lists;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.google.common.collect.Lists;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.BetRule;
 import com.luckybox.domain.BetRuleSettings;

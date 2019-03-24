@@ -34,49 +34,55 @@ public class DozenInfoService {
 
 	@Inject
 	private SequenceAnalyser sequenceAnalyser;
-	
+
 	@Inject
 	private DozenInfoSequenceRepository dozenInfoSequenceRepository;
 
 	public List<DozenInfo> generateDozenInfo(String type) {
 		LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
 		List<DozenInfo> dozenInfo = new ArrayList<>();
-		int maxDozens = 100;
-		if (LotteryType.LOTOFACIL.equals(lotteryType))
-			maxDozens = 25;
-		if (LotteryType.QUINA.equals(lotteryType))
-			maxDozens = 80;
-		for (int i = 1; i <= maxDozens; i++) {
-			int dozen = i;
-			if (i == 100)
-				dozen = 0;
-			dozenInfo.add(persistDozenInfo(dozen, lotteryType));
+		if (LotteryType.LOTOFACIL.equals(lotteryType)) {
+			for (int i = 1; i <= 25; i++) {
+				dozenInfo.add(persistDozenInfo(i, lotteryType));
+			}
+		}
+		if (LotteryType.QUINA.equals(lotteryType)) {
+			for (int i = 1; i <= 80; i++) {
+				dozenInfo.add(persistDozenInfo(i, lotteryType));
+			}
+		}
+		if (LotteryType.LOTOMANIA.equals(lotteryType)) {
+			for (int i = 0; i <= 99; i++) {
+				dozenInfo.add(persistDozenInfo(i, lotteryType));
+			}
 		}
 		return dozenInfo;
 	}
 
 	private DozenInfo persistDozenInfo(int dozen, LotteryType lotteryType) {
-		if (lotteryType != null){
+		if (lotteryType != null) {
 			List<Integer> listConcursesWithDozen = historicService.listConcursesWithDozen(dozen, lotteryType);
-			
-			DozenInfo createDozenInfo = createDozenInfo(dozen, lotteryType,listConcursesWithDozen);
+
+			DozenInfo createDozenInfo = createDozenInfo(dozen, lotteryType, listConcursesWithDozen);
 			List<DozenInfoSequence> sequences = new SequenceAnalyser().sequence(listConcursesWithDozen);
-			
+
 			DozenInfo dozenInfo = dozenInfoRepository.save(createDozenInfo);
-			log.info(String.format("Saved sequence to dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
-			
-			sequences.forEach(e-> saveSequence(dozenInfo, e));
-			
+			log.info(String.format("Saved sequence to dozen: %s, type: %s", dozenInfo.getNumber(),
+					dozenInfo.getType().getName()));
+
+			sequences.forEach(e -> saveSequence(dozenInfo, e));
+
 			return dozenInfo;
-			
+
 		}
 		return DozenInfo.builder().build();
 	}
 
 	private void saveSequence(DozenInfo dozenInfo, DozenInfoSequence sequence) {
 		sequence.setDozenInfo(dozenInfo);
-		log.info(String.format("Save sequence of dozen: %s, type: %s", dozenInfo.getNumber(), dozenInfo.getType().getName()));
-		dozenInfoSequenceRepository.save(sequence);
+		log.info(String.format("Save sequence of dozen: %s, type: %s", dozenInfo.getNumber(),
+				dozenInfo.getType().getName()));
+		//dozenInfoSequenceRepository.save(sequence);
 	}
 
 	private DozenInfo createDozenInfo(int dozen, LotteryType lotteryType, List<Integer> listConcursesWithDozen) {

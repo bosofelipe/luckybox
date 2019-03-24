@@ -66,12 +66,6 @@ public class HistoricDatasetRepositoryImpl extends QuerydslRepositorySupport {
 				.where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
 	}
 
-	public Integer getMaxFibonacciPrime(LotteryType lotteryType, Boolean max) {
-		return from(qHistoricDataset)
-				.select(max ? qHistoricDataset.fibonacciPrime.max() : qHistoricDataset.fibonacciPrime.min())
-				.where(qHistoricDataset.type.eq(lotteryType)).fetchOne();
-	}
-
 	public Integer getMaxDozensLastRaffle(LotteryType lotteryType, Boolean max) {
 		return from(qHistoricDataset)
 				.select(max ? qHistoricDataset.dozensLastRaffle.max() : qHistoricDataset.dozensLastRaffle.min())

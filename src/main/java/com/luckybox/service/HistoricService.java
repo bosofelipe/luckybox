@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;

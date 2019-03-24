@@ -28,7 +28,6 @@ public class BetRuleSettingsService {
 		Integer maxDozensLastRaffle = historicDatasetRepositoryImpl.getMaxDozensLastRaffle(type, true);
 		Integer maxFibonacci = historicDatasetRepositoryImpl.getMaxFibonacci(type, true);
 		Integer maxPrime = historicDatasetRepositoryImpl.getMaxPrime(type, true);
-		Integer maxFibonacciPrime = historicDatasetRepositoryImpl.getMaxFibonacciPrime(type, true);
 		Integer maxQTDSequence = historicDatasetRepositoryImpl.getMaxSequence(type, true);
 		Integer maxGreatherSequence = historicDatasetRepositoryImpl.getMaxGreatherSequence(type, true);
 		Integer maxSum = historicDatasetRepositoryImpl.getMaxSum(type, true);
@@ -38,7 +37,6 @@ public class BetRuleSettingsService {
 		Integer minDozensLastRaffle = historicDatasetRepositoryImpl.getMaxDozensLastRaffle(type, false);
 		Integer minFibonacci = historicDatasetRepositoryImpl.getMaxFibonacci(type, false);
 		Integer minPrime = historicDatasetRepositoryImpl.getMaxPrime(type, false);
-		Integer minFibonacciPrime = historicDatasetRepositoryImpl.getMaxFibonacciPrime(type, false);
 		Integer minQTDSequence = historicDatasetRepositoryImpl.getMaxSequence(type, false);
 		Integer minGreatherSequence = historicDatasetRepositoryImpl.getMaxGreatherSequence(type, false);
 		Integer minSum = historicDatasetRepositoryImpl.getMaxSum(type, false);
@@ -49,7 +47,6 @@ public class BetRuleSettingsService {
 					.maxDozensLastRaffle(maxDozensLastRaffle)//
 					.maxFibonacci(maxFibonacci)//
 					.maxPrime(maxPrime)//
-					.maxFibonacciPrime(maxFibonacciPrime)//
 					.maxSequence(maxQTDSequence)//
 					.maxPair(maxPair)//
 					.maxSum(maxSum)//
@@ -59,7 +56,6 @@ public class BetRuleSettingsService {
 					.minFibonacci(minFibonacci)//
 					.minPrime(minPrime)//
 					.minSequence(minQTDSequence)
-					.minFibonacciPrime(minFibonacciPrime)//
 					.minGreatherSequence(minGreatherSequence)//
 					.minSum(minSum)//
 					.type(type)
@@ -68,16 +64,12 @@ public class BetRuleSettingsService {
 			return betRuleSettingsRepository.save(settings);
 		}
 		savedSettings.setMaxDozensLastRaffle(maxDozensLastRaffle);
-		savedSettings.setMaxFibonacci(maxFibonacciPrime);
-		savedSettings.setMaxFibonacciPrime(maxFibonacciPrime);
 		savedSettings.setMaxGreatherSequence(maxGreatherSequence);
 		savedSettings.setMaxPair(maxPair);
 		savedSettings.setMaxPrime(maxPrime);
 		savedSettings.setMaxSequence(maxQTDSequence);
 		
 		savedSettings.setMinDozensLastRaffle(minDozensLastRaffle);
-		savedSettings.setMinFibonacci(minFibonacciPrime);
-		savedSettings.setMinFibonacciPrime(minFibonacciPrime);
 		savedSettings.setMinGreatherSequence(minGreatherSequence);
 		savedSettings.setMinPair(minPair);
 		savedSettings.setMinPrime(minPrime);

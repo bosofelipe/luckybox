@@ -19,16 +19,6 @@ public class DatasetCreator {
 	private static final List<Integer> PRIME = asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
 			61, 67, 71, 73, 79, 83, 89, 97);
 	private static final List<Integer> FIBONACCI_PRIME_SEQUENCE = asList(2, 3, 5, 13, 89);
-	private static final List<Integer> FIRST_COLUMN = asList(1, 6, 11, 16, 21);
-	private static final List<Integer> SECOND_COLUMN = asList(2, 7, 12, 17, 22);
-	private static final List<Integer> THIRD_COLUMN = asList(3, 8, 13, 18, 23);
-	private static final List<Integer> FOURTH_COLUMN = asList(4, 9, 14, 19, 24);
-	private static final List<Integer> FIVETH_COLUMN = asList(5, 10, 15, 20, 25);
-	private static final List<Integer> FIRST_LINE = asList(1, 2, 3, 4, 5);
-	private static final List<Integer> SECOND_LINE = asList(6, 7, 8, 9, 10);
-	private static final List<Integer> THIRD_LINE = asList(11, 12, 13, 14, 15);
-	private static final List<Integer> FOURTH_LINE = asList(16, 17, 18, 19, 20);
-	private static final List<Integer> FIVETH_LINE = asList(21, 22, 23, 24, 25);
 
 	private List<Integer> dozens = new ArrayList<>();
 
@@ -36,18 +26,12 @@ public class DatasetCreator {
 		dozens = DozenMapper.toList(dozenDTO);
 		Collections.sort(dozens);
 		Integer sumDozens = sumDozens();
-		return HistoricDataset.builder().type(dozenDTO.getType()).dozenSum(sumDozens)
-				.average(sumDozens / quantityOfDozens).pair(countPairs()).fibonacci(countFibonacciNumbers())
-				.prime(countPrimeNumbers()).fibonacciPrime(countFibonacciPrimeNumbers())
+		return HistoricDataset.builder().type(dozenDTO.getType()).dozenSum(sumDozens).pair(countPairs()).fibonacci(countFibonacciNumbers())
+				.prime(countPrimeNumbers())
 				.greatherSequence(getGreaterSequence().get(0)).qtdSequences(getGreaterSequence().get(1))
-				.concurse(dozenDTO.getConcurse()).firstColumn(countDozens(FIRST_COLUMN))
-				.secondColumn(countDozens(SECOND_COLUMN)).thirdColumn(countDozens(THIRD_COLUMN))
-				.fourthColumn(countDozens(FOURTH_COLUMN)).fivethColumn(countDozens(FIVETH_COLUMN))
-				.firstLine(countDozens(FIRST_LINE)).secondLine(countDozens(SECOND_LINE))
-				.thirdLine(countDozens(THIRD_LINE)).fourthLine(countDozens(FOURTH_LINE))
-				.fivethLine(countDozens(FIVETH_LINE)).build();
+				.concurse(dozenDTO.getConcurse()).build();
 	}
-
+	
 	private Integer countDozens(List<Integer> values) {
 		return (int) dozens.stream().filter(contains(values)).count();
 	}
