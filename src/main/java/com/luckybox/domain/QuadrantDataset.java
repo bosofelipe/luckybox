@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Builder;
@@ -18,7 +22,7 @@ import lombok.Setter;
 @Table(name = "QuadrantDataset")
 public class QuadrantDataset {
 
-	private static final Map<Integer, Integer[]> LOTOMANIA_MINI_QUADRANTS = Collections
+	public static final Map<Integer, Integer[]> LOTOMANIA_MINI_QUADRANTS = Collections
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 2, 11, 12 });
@@ -49,34 +53,45 @@ public class QuadrantDataset {
 				}
 			});
 
-	private Long quadrant1;
-	private Long quadrant2;
-	private Long quadrant3;
-	private Long quadrant4;
+	private Integer quadrant1;
+	private Integer quadrant2;
+	private Integer quadrant3;
+	private Integer quadrant4;
 
-	private Long miniQuadrant1;
-	private Long miniQuadrant2;
-	private Long miniQuadrant3;
-	private Long miniQuadrant4;
-	private Long miniQuadrant5;
-	private Long miniQuadrant6;
-	private Long miniQuadrant7;
-	private Long miniQuadrant8;
-	private Long miniQuadrant9;
-	private Long miniQuadrant10;
-	private Long miniQuadrant11;
-	private Long miniQuadrant12;
-	private Long miniQuadrant13;
-	private Long miniQuadrant14;
-	private Long miniQuadrant15;
-	private Long miniQuadrant16;
-	private Long miniQuadrant17;
-	private Long miniQuadrant18;
-	private Long miniQuadrant19;
-	private Long miniQuadrant20;
-	private Long miniQuadrant21;
-	private Long miniQuadrant22;
-	private Long miniQuadrant23;
-	private Long miniQuadrant24;
-	private Long miniQuadrant25;
+	private Integer miniQuadrant1;
+	private Integer miniQuadrant2;
+	private Integer miniQuadrant3;
+	private Integer miniQuadrant4;
+	private Integer miniQuadrant5;
+	private Integer miniQuadrant6;
+	private Integer miniQuadrant7;
+	private Integer miniQuadrant8;
+	private Integer miniQuadrant9;
+	private Integer miniQuadrant10;
+	private Integer miniQuadrant11;
+	private Integer miniQuadrant12;
+	private Integer miniQuadrant13;
+	private Integer miniQuadrant14;
+	private Integer miniQuadrant15;
+	private Integer miniQuadrant16;
+	private Integer miniQuadrant17;
+	private Integer miniQuadrant18;
+	private Integer miniQuadrant19;
+	private Integer miniQuadrant20;
+	private Integer miniQuadrant21;
+	private Integer miniQuadrant22;
+	private Integer miniQuadrant23;
+	private Integer miniQuadrant24;
+	private Integer miniQuadrant25;
+	
+	private LotteryType type;
+	
+	@OneToOne(mappedBy = "dataset")
+	private Historic historic;
+	
+	private Long concurse;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 }

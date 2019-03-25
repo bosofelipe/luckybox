@@ -2,9 +2,9 @@ package com.luckybox.domain;
 
 public enum LotteryType {
 
-	LOTOFACIL("lotofacil", 15, "D_lotfac.zip", "D_LOTFAC.HTM"), 
-	LOTOMANIA("lotomania", 20, "D_lotoma.zip","D_LOTMAN.HTM"), 
-	QUINA("quina", 5, "D_quina.zip", "D_QUINA.HTM");
+	LOTOFACIL("lotofacil", 15, "D_lotfac.zip", "d_lotfac.htm"), 
+	LOTOMANIA("lotomania", 20, "D_lotoma.zip","d_lotman.htm"), 
+	QUINA("quina", 5, "D_quina.zip", "d_quina.htm");
 
 	private String name;
 	private Integer dozens;

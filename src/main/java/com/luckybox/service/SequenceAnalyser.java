@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.luckybox.domain.CombinationDozen;
 import com.luckybox.domain.DozenInfoSequence;
 
 
@@ -43,19 +42,6 @@ public class SequenceAnalyser {
         return sequences;   
 	}
 	
-	public List<CombinationDozen> sequenceByCombinationDozen(List<Integer> concurses, String key){
-		List<CombinationDozen> sequences = Lists.newArrayList();
-		int cont = 0;   
-        StringBuilder str = extractSequences(concurses, cont);   
-        String finalSequences = str.toString();
-        String values[] = finalSequences.split(",");
-        
-        for(int i =0;i< values.length;i++){
-        	addCombinationDozenSequences(sequences, values, i, key);
-        }
-        
-        return sequences;   
-	}
 
 	private void addSequences(List<DozenInfoSequence> sequences, String[] values, int i) {
 		String value = values[i];
@@ -66,13 +52,6 @@ public class SequenceAnalyser {
 			sequences.add(DozenInfoSequence.builder().quantity(finalConcurse - initialConcurse)
 				.initialConcurse(initialConcurse.longValue())
 				.finalConcurse(finalConcurse.longValue()).build());
-		}
-	}
-	
-	private void addCombinationDozenSequences(List<CombinationDozen> sequences, String[] values, int i, String key) {
-		String value = values[i];
-		if(value.contains("-")){
-			sequences.add(CombinationDozen.builder().key(key).build());
 		}
 	}
 

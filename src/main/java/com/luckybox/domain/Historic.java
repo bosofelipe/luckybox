@@ -29,9 +29,9 @@ import lombok.NoArgsConstructor;
 public class Historic {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private Long concurse;
 	private Date concurseDate;
 	private Integer dozen1;
@@ -57,10 +57,20 @@ public class Historic {
 	private Boolean alreadyDrawn;
 	@Enumerated(EnumType.STRING)
 	private LotteryType type;
-	
+
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "dataset_id")
 	private HistoricDataset dataset;
-	
+
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "linecolumn_dataset_id")
+	private LineColumnDataset lineColumndataset;
+
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "quadrant_dataset_id")
+	private QuadrantDataset quadrantDataset;
+
 }

@@ -16,13 +16,19 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.HistoricDataset;
+import com.luckybox.domain.LineColumnDataset;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.domain.QuadrantDataset;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricDatasetRepositoryImpl;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
+import com.luckybox.repository.LineColumnDatasetRepository;
+import com.luckybox.repository.LineColumnDatasetRepositoryImpl;
+import com.luckybox.repository.QuadrantDatasetRepository;
+import com.luckybox.repository.QuadrantDatasetRepositoryImpl;
 
 import net.lingala.zip4j.exception.ZipException;
 
@@ -51,6 +57,18 @@ public class HistoricImporterService {
 	@Inject
 	private HistoricDatasetRepositoryImpl historicDatasetRepositoryImpl;
 
+	@Inject
+	private LineColumnDatasetRepositoryImpl lineColumnRepositoryImpl;
+
+	@Inject
+	private LineColumnDatasetRepository lineColumnDatasetRepository;
+
+	@Inject
+	private QuadrantDatasetRepository quadrantDatasetRepository;
+
+	@Inject
+	private QuadrantDatasetRepositoryImpl quadrantDatasetRepositoryImpl;
+	
 	@Inject
 	private DatasetCreator datasetCreator;
 
@@ -90,22 +108,26 @@ public class HistoricImporterService {
 	}
 
 	private void persist(DozenDTO dto, LotteryType type) {
-			Historic historicEntity = DozenMapper.toHistoric(dto);
-			HistoricDataset dataset = null;
+		Historic historicEntity = DozenMapper.toHistoric(dto);
 
-			dto.setType(type);
-			dataset = datasetCreator.createHistoricDataSet(dto, type.getDozens());
+		dto.setType(type);
+		HistoricDataset dataset = datasetCreator.createHistoricDataSet(dto);
+		LineColumnDataset lineColumnDataset = datasetCreator.createLineColumnDataSet(dto);
+		QuadrantDataset quadrantDataset = datasetCreator.createQuadrantDataSet(dto);
+		
 
-			Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
-					historicEntity.getType());
-			if (hist == null) {
-				dataset.setConcurse(dto.getConcurse());
-				saveHistoricDataset(historicEntity, dataset);
-				repository.save(historicEntity);
-				log.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
-			} else {
-				log.info(String.format("Concurse %s saved, type: %s", dto.getConcurse(), dto.getType().getName()));
-			}
+		Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
+				historicEntity.getType());
+		if (hist == null) {
+			dataset.setConcurse(dto.getConcurse());
+			saveHistoricDataset(historicEntity, dataset);
+			saveLineColumnDataset(historicEntity, lineColumnDataset);
+			saveQuadrantDataset(historicEntity, quadrantDataset);
+			repository.save(historicEntity);
+			log.info(String.format("Saved new concurse %s, type: %s", dto.getConcurse(), dto.getType().getName()));
+		} else {
+			log.info(String.format("Concurse %s saved, type: %s", dto.getConcurse(), dto.getType().getName()));
+		}
 	}
 
 	private void saveHistoricDataset(Historic historicEntity, HistoricDataset dataset) {
@@ -117,6 +139,30 @@ public class HistoricImporterService {
 		} else {
 			dataset = historicRepository.save(dataset);
 			historicEntity.setDataset(dataset);
+		}
+	}
+
+	private void saveLineColumnDataset(Historic historicEntity, LineColumnDataset dataset) {
+		LineColumnDataset lineColumnDataset = lineColumnRepositoryImpl
+				.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
+		if (lineColumnDataset != null) {
+			dataset.setId(lineColumnDataset.getId());
+			lineColumnDatasetRepository.save(dataset);
+		} else {
+			dataset = lineColumnDatasetRepository.save(dataset);
+			historicEntity.setLineColumndataset(dataset);
+		}
+	}
+	
+	private void saveQuadrantDataset(Historic historicEntity, QuadrantDataset dataset) {
+		QuadrantDataset lineColumnDataset = quadrantDatasetRepositoryImpl
+				.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
+		if (lineColumnDataset != null) {
+			dataset.setId(lineColumnDataset.getId());
+			quadrantDatasetRepository.save(dataset);
+		} else {
+			dataset = quadrantDatasetRepository.save(dataset);
+			historicEntity.setQuadrantDataset(dataset);
 		}
 	}
 }

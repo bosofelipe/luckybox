@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Builder;
@@ -18,7 +22,7 @@ import lombok.Setter;
 @Table(name = "LineColumnDataset")
 public class LineColumnDataset {
 
-	private static final Map<Integer, Integer[]> LOTOFACIL_LINES = Collections
+	public static final Map<Integer, Integer[]> LOTOFACIL_LINES = Collections
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 2, 3, 4, 5 });
@@ -29,7 +33,7 @@ public class LineColumnDataset {
 				}
 			});
 
-	private static final Map<Integer, Integer[]> LOTOFACIL_COLUMNS = Collections
+	public static final Map<Integer, Integer[]> LOTOFACIL_COLUMNS = Collections
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 6, 11, 16, 21 });
@@ -40,7 +44,7 @@ public class LineColumnDataset {
 				}
 			});
 
-	private static final Map<Integer, Integer[]> LOTOMANIA_LINES = Collections
+	public static final Map<Integer, Integer[]> LOTOMANIA_LINES = Collections
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
@@ -56,7 +60,7 @@ public class LineColumnDataset {
 				}
 			});
 
-	private static final Map<Integer, Integer[]> LOTOMANIA_COLUMNS = Collections
+	public static final Map<Integer, Integer[]> LOTOMANIA_COLUMNS = Collections
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91 });
@@ -72,25 +76,36 @@ public class LineColumnDataset {
 				}
 			});
 
-	private Long line1;
-	private Long line2;
-	private Long line3;
-	private Long line4;
-	private Long line5;
-	private Long line6;
-	private Long line7;
-	private Long line8;
-	private Long line9;
-	private Long line10;
+	private Integer line1;
+	private Integer line2;
+	private Integer line3;
+	private Integer line4;
+	private Integer line5;
+	private Integer line6;
+	private Integer line7;
+	private Integer line8;
+	private Integer line9;
+	private Integer line10;
 
-	private Long column1;
-	private Long column2;
-	private Long column3;
-	private Long column4;
-	private Long column5;
-	private Long column6;
-	private Long column7;
-	private Long column8;
-	private Long column9;
-	private Long column10;
+	private Integer column1;
+	private Integer column2;
+	private Integer column3;
+	private Integer column4;
+	private Integer column5;
+	private Integer column6;
+	private Integer column7;
+	private Integer column8;
+	private Integer column9;
+	private Integer column10;
+
+	private LotteryType type;
+	
+	@OneToOne(mappedBy = "dataset")
+	private Historic historic;
+	
+	private Long concurse;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 }
