@@ -42,6 +42,7 @@ public class DatasetCreator {
 			Map<Integer, Integer[]> lotofacilColumns = LineColumnDataset.LOTOFACIL_COLUMNS;
 			return LineColumnDataset.builder()
 					.type(dto.getType())
+					.concurse(dto.getConcurse())
 					.line1(countDozens(lotofacilLines.get(1)))
 					.line2(countDozens(lotofacilLines.get(2)))
 					.line3(countDozens(lotofacilLines.get(3)))
@@ -55,30 +56,31 @@ public class DatasetCreator {
 					.build();
 		}
 		if(dto.getType() == LotteryType.LOTOMANIA) {
-			Map<Integer, Integer[]> lotofacilLines = LineColumnDataset.LOTOMANIA_LINES;
-			Map<Integer, Integer[]> lotofacilColumns = LineColumnDataset.LOTOMANIA_COLUMNS;
+			Map<Integer, Integer[]> lines = LineColumnDataset.LOTOMANIA_LINES;
+			Map<Integer, Integer[]> columns = LineColumnDataset.LOTOMANIA_COLUMNS;
 			return LineColumnDataset.builder()
 					.type(dto.getType())
-					.line1(countDozens(lotofacilLines.get(1)))
-					.line2(countDozens(lotofacilLines.get(2)))
-					.line3(countDozens(lotofacilLines.get(3)))
-					.line4(countDozens(lotofacilLines.get(4)))
-					.line5(countDozens(lotofacilLines.get(5)))
-					.line6(countDozens(lotofacilLines.get(6)))
-					.line7(countDozens(lotofacilLines.get(7)))
-					.line8(countDozens(lotofacilLines.get(8)))
-					.line9(countDozens(lotofacilLines.get(9)))
-					.line10(countDozens(lotofacilLines.get(10)))
-					.column1(countDozens(lotofacilColumns.get(1)))
-					.column2(countDozens(lotofacilColumns.get(2)))
-					.column3(countDozens(lotofacilColumns.get(3)))
-					.column4(countDozens(lotofacilColumns.get(4)))
-					.column5(countDozens(lotofacilColumns.get(5)))
-					.column6(countDozens(lotofacilColumns.get(6)))
-					.column7(countDozens(lotofacilColumns.get(7)))
-					.column8(countDozens(lotofacilColumns.get(8)))
-					.column9(countDozens(lotofacilColumns.get(9)))
-					.column10(countDozens(lotofacilColumns.get(10)))
+					.concurse(dto.getConcurse())
+					.line1(countDozens(lines.get(1)))
+					.line2(countDozens(lines.get(2)))
+					.line3(countDozens(lines.get(3)))
+					.line4(countDozens(lines.get(4)))
+					.line5(countDozens(lines.get(5)))
+					.line6(countDozens(lines.get(6)))
+					.line7(countDozens(lines.get(7)))
+					.line8(countDozens(lines.get(8)))
+					.line9(countDozens(lines.get(9)))
+					.line10(countDozens(lines.get(10)))
+					.column1(countDozens(columns.get(1)))
+					.column2(countDozens(columns.get(2)))
+					.column3(countDozens(columns.get(3)))
+					.column4(countDozens(columns.get(4)))
+					.column5(countDozens(columns.get(5)))
+					.column6(countDozens(columns.get(6)))
+					.column7(countDozens(columns.get(7)))
+					.column8(countDozens(columns.get(8)))
+					.column9(countDozens(columns.get(9)))
+					.column10(countDozens(columns.get(10)))
 					.build();
 		}
 		return null;
@@ -111,6 +113,8 @@ public class DatasetCreator {
 				.miniQuadrant23(countDozens(QuadrantDataset.LOTOMANIA_MINI_QUADRANTS.get(23)))
 				.miniQuadrant24(countDozens(QuadrantDataset.LOTOMANIA_MINI_QUADRANTS.get(24)))
 				.miniQuadrant25(countDozens(QuadrantDataset.LOTOMANIA_MINI_QUADRANTS.get(25)))
+				.type(dto.getType())
+				.concurse(dto.getConcurse())
 				.build();
 	}
 	

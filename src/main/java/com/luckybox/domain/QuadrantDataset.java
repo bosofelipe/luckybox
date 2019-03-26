@@ -5,20 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "QuadrantDataset")
 public class QuadrantDataset {
 
@@ -84,6 +90,7 @@ public class QuadrantDataset {
 	private Integer miniQuadrant24;
 	private Integer miniQuadrant25;
 	
+	@Enumerated(EnumType.STRING)
 	private LotteryType type;
 	
 	@OneToOne(mappedBy = "dataset")

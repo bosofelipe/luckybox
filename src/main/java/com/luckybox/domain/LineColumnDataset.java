@@ -5,20 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "LineColumnDataset")
 public class LineColumnDataset {
 
@@ -64,15 +70,15 @@ public class LineColumnDataset {
 			.unmodifiableMap(new HashMap<Integer, Integer[]>() {
 				{
 					put(1, new Integer[] { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91 });
-					put(1, new Integer[] { 2, 12, 22, 32, 42, 52, 62, 72, 82, 92 });
-					put(1, new Integer[] { 3, 13, 23, 33, 43, 53, 63, 73, 83, 93 });
-					put(1, new Integer[] { 4, 14, 24, 34, 44, 54, 64, 74, 84, 94 });
-					put(1, new Integer[] { 5, 15, 25, 35, 45, 55, 65, 75, 85, 95 });
-					put(1, new Integer[] { 6, 16, 26, 36, 46, 56, 66, 76, 86, 96 });
-					put(1, new Integer[] { 7, 17, 27, 37, 47, 57, 67, 77, 87, 97 });
-					put(1, new Integer[] { 8, 18, 28, 38, 48, 58, 68, 78, 88, 98 });
-					put(1, new Integer[] { 9, 19, 29, 39, 49, 59, 69, 79, 89, 99 });
-					put(1, new Integer[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 0 });
+					put(2, new Integer[] { 2, 12, 22, 32, 42, 52, 62, 72, 82, 92 });
+					put(3, new Integer[] { 3, 13, 23, 33, 43, 53, 63, 73, 83, 93 });
+					put(4, new Integer[] { 4, 14, 24, 34, 44, 54, 64, 74, 84, 94 });
+					put(5, new Integer[] { 5, 15, 25, 35, 45, 55, 65, 75, 85, 95 });
+					put(6, new Integer[] { 6, 16, 26, 36, 46, 56, 66, 76, 86, 96 });
+					put(7, new Integer[] { 7, 17, 27, 37, 47, 57, 67, 77, 87, 97 });
+					put(8, new Integer[] { 8, 18, 28, 38, 48, 58, 68, 78, 88, 98 });
+					put(9, new Integer[] { 9, 19, 29, 39, 49, 59, 69, 79, 89, 99 });
+					put(10, new Integer[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 0 });
 				}
 			});
 
@@ -98,6 +104,7 @@ public class LineColumnDataset {
 	private Integer column9;
 	private Integer column10;
 
+	@Enumerated(EnumType.STRING)
 	private LotteryType type;
 	
 	@OneToOne(mappedBy = "dataset")

@@ -137,8 +137,10 @@ public class HistoricImporterService {
 			dataset.setId(histDataset.getId());
 			historicRepository.save(dataset);
 		} else {
-			dataset = historicRepository.save(dataset);
-			historicEntity.setDataset(dataset);
+			if(dataset != null) {
+				dataset = historicRepository.save(dataset);
+				historicEntity.setDataset(dataset);
+			}
 		}
 	}
 
@@ -149,8 +151,10 @@ public class HistoricImporterService {
 			dataset.setId(lineColumnDataset.getId());
 			lineColumnDatasetRepository.save(dataset);
 		} else {
-			dataset = lineColumnDatasetRepository.save(dataset);
-			historicEntity.setLineColumndataset(dataset);
+			if(dataset != null) {
+				dataset = lineColumnDatasetRepository.save(dataset);
+				historicEntity.setLineColumndataset(dataset);
+			}
 		}
 	}
 	
@@ -161,8 +165,10 @@ public class HistoricImporterService {
 			dataset.setId(lineColumnDataset.getId());
 			quadrantDatasetRepository.save(dataset);
 		} else {
-			dataset = quadrantDatasetRepository.save(dataset);
-			historicEntity.setQuadrantDataset(dataset);
+			if(dataset != null) {
+				dataset = quadrantDatasetRepository.save(dataset);
+				historicEntity.setQuadrantDataset(dataset);
+			}
 		}
 	}
 }

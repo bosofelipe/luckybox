@@ -116,6 +116,65 @@ historic h
 join historic_dataset ht on h.dataset_id = ht.id
 where h.type='LOTOFACIL' order by h.concurse desc
 
+==================================================
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 or
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+order by concurse desc
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 or
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 > 0 and line2>0 and line3>0 and line4>0 and line5>0 and line6>0 and line7>0 and line8>0 and line9 > 0 and line10>0 and
+column1 > 0 and column2>0 and column3>0 and column4>0 and column5>0 and column6>0 and column7>0 and column8>0 and column9 > 0 and column10>0
+)
+
+select concurse from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 > 0 and line2>0 and line3>0 and line4>0 and line5>0 and line6>0 and line7>0 and line8>0 and line9 > 0 and line10>0 and
+column1 > 0 and column2>0 and column3>0 and column4>0 and column5>0 and column6>0 and column7>0 and column8>0 and column9 > 0 and column10>0
+)
+order by concurse desc
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0
+)
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 and (
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+)
+
+
+
+
+
+==================================================
+
 
 -- DELETE DATA --
 
