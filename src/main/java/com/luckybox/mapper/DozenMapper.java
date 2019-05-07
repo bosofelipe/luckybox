@@ -10,7 +10,7 @@ import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
 
 public class DozenMapper {
-	
+
 	private DozenMapper() {
 	}
 
@@ -30,7 +30,7 @@ public class DozenMapper {
 				.dozen46(dto.getDozen46()).dozen47(dto.getDozen47()).dozen48(dto.getDozen48()).dozen49(dto.getDozen49())
 				.dozen50(dto.getDozen50()).build();
 	}
-	
+
 	public static Historic toHistoric(DozenDTO dto) {
 		return Historic.builder().type(dto.getType()).concurse(dto.getConcurse()).concurseDate(dto.getConcurseDate())
 				.dozen1(dto.getDozen1()).dozen2(dto.getDozen2()).dozen3(dto.getDozen3()).dozen4(dto.getDozen4())
@@ -94,8 +94,11 @@ public class DozenMapper {
 			return DozenDTO.builder().id(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
 					.dozen4(values.get(3)).dozen5(values.get(4)).dozen6(values.get(5)).dozen7(values.get(6))
 					.dozen8(values.get(7)).dozen9(values.get(8)).dozen10(values.get(9)).dozen11(values.get(10))
-					.dozen12(values.get(11)).dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14)).type(type)
-					.build();
+					.dozen12(values.get(11)).dozen13(values.get(12)).dozen14(values.get(13)).dozen15(values.get(14))
+					.type(type).build();
+		} else if (type == LotteryType.MEGASENA) {
+			return DozenDTO.builder().id(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
+					.dozen4(values.get(3)).dozen5(values.get(4)).dozen6(values.get(5)).type(type).build();
 		} else {
 			return DozenDTO.builder().id(-1L).dozen1(values.get(0)).dozen2(values.get(1)).dozen3(values.get(2))
 					.dozen4(values.get(3)).dozen5(values.get(4)).type(type).build();
@@ -119,7 +122,14 @@ public class DozenMapper {
 				combination.getDozen7(), combination.getDozen8(), combination.getDozen9(), combination.getDozen10(),
 				combination.getDozen11(), combination.getDozen12(), combination.getDozen13(), combination.getDozen14(),
 				combination.getDozen15(), combination.getDozen16(), combination.getDozen17(), combination.getDozen18(),
-				combination.getDozen19(), combination.getDozen20());
+				combination.getDozen19(), combination.getDozen20(), combination.getDozen21(), combination.getDozen22(),
+				combination.getDozen23(), combination.getDozen24(), combination.getDozen25(), combination.getDozen26(),
+				combination.getDozen27(), combination.getDozen28(), combination.getDozen29(), combination.getDozen30(),
+				combination.getDozen31(), combination.getDozen32(), combination.getDozen33(), combination.getDozen34(),
+				combination.getDozen35(), combination.getDozen36(), combination.getDozen37(), combination.getDozen38(),
+				combination.getDozen39(), combination.getDozen40(), combination.getDozen41(), combination.getDozen42(),
+				combination.getDozen43(), combination.getDozen44(), combination.getDozen45(), combination.getDozen46(),
+				combination.getDozen47(), combination.getDozen48(), combination.getDozen49(), combination.getDozen50());
 		dozens.removeIf(Objects::isNull);
 		return dozens;
 	}

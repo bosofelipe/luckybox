@@ -77,6 +77,10 @@ public class HistoricFileReaderService {
 		else if (type == LotteryType.QUINA)
 			return DozenDTO.builder().type(type).concurse(concurse).concurseDate(dateOfConcurse).dozen1(dozens.get(0))
 					.dozen2(dozens.get(1)).dozen3(dozens.get(2)).dozen4(dozens.get(3)).dozen5(dozens.get(4)).build();
+		else if (type == LotteryType.MEGASENA)
+			return DozenDTO.builder().type(type).concurse(concurse).concurseDate(dateOfConcurse).dozen1(dozens.get(0))
+					.dozen2(dozens.get(1)).dozen3(dozens.get(2)).dozen4(dozens.get(3)).dozen5(dozens.get(4))
+					.dozen6(dozens.get(5)).build();
 		else
 			return DozenDTO.builder().type(type).concurse(concurse).concurseDate(dateOfConcurse).dozen1(dozens.get(0))
 					.dozen2(dozens.get(1)).dozen3(dozens.get(2)).dozen4(dozens.get(3)).dozen5(dozens.get(4))
@@ -97,6 +101,11 @@ public class HistoricFileReaderService {
 		} else if (type == LotteryType.QUINA) {
 			List<Integer> dozens = asList(valueOf(values[2]), valueOf(values[3]), valueOf(values[4]),
 					valueOf(values[5]), valueOf(values[6]));
+			dozens.sort(naturalOrder());
+			return dozens;
+		} else if (type == LotteryType.MEGASENA) {
+			List<Integer> dozens = asList(valueOf(values[2]), valueOf(values[3]), valueOf(values[4]),
+					valueOf(values[5]), valueOf(values[6]),valueOf(values[7]));
 			dozens.sort(naturalOrder());
 			return dozens;
 		} else {

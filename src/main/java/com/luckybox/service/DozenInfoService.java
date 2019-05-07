@@ -46,6 +46,11 @@ public class DozenInfoService {
 				dozenInfo.add(persistDozenInfo(i, lotteryType));
 			}
 		}
+		if (LotteryType.MEGASENA.equals(lotteryType)) {
+			for (int i = 1; i <= 60; i++) {
+				dozenInfo.add(persistDozenInfo(i, lotteryType));
+			}
+		}
 		if (LotteryType.QUINA.equals(lotteryType)) {
 			for (int i = 1; i <= 80; i++) {
 				dozenInfo.add(persistDozenInfo(i, lotteryType));

@@ -43,6 +43,8 @@ public class CSVBetReader {
 		String[] values = line.split(CSV_DIVISOR);
 		if (values[0] == "LOTOFACIL" && values.length != LotteryType.LOTOFACIL.getDozens())
 			throw new FileReaderException("Faltando valores para aposta da lotofacil");
+		if (values[0] == "MEGASENA" && values.length != LotteryType.MEGASENA.getDozens())
+			throw new FileReaderException("Faltando valores para aposta da megasena");
 		if (values[0] == "QUINA" && values.length != LotteryType.QUINA.getDozens())
 			throw new FileReaderException("Faltando valores para aposta da quina");
 		if (values[0] == "LOTOMANIA" && values.length != LotteryType.LOTOMANIA.getDozens())
@@ -63,6 +65,18 @@ public class CSVBetReader {
 					.dozen3(dozensOrdered.get(2))//
 					.dozen4(dozensOrdered.get(3))//
 					.dozen5(dozensOrdered.get(4))//
+					.build();
+		}
+		if (LotteryType.MEGASENA.equals(type)) {
+			return DozenDTO.builder()
+					.type(type)//
+					.concurse(Long.valueOf(info[1]))//
+					.dozen1(dozensOrdered.get(0))//
+					.dozen2(dozensOrdered.get(1))//
+					.dozen3(dozensOrdered.get(2))//
+					.dozen4(dozensOrdered.get(3))//
+					.dozen5(dozensOrdered.get(4))//
+					.dozen6(dozensOrdered.get(5))//
 					.build();
 		}
 		if (LotteryType.LOTOFACIL.equals(type)) {

@@ -28,18 +28,21 @@ public class ImporterDataService {
 	public void importHistoric() throws IOException, ZipException {
 		importHistoric(LotteryType.LOTOFACIL.getName());
 		//importHistoric(LotteryType.QUINA.getName());
+		importHistoric(LotteryType.MEGASENA.getName());
 		importHistoric(LotteryType.LOTOMANIA.getName());
 	}
 	
 	public void generateDozenInfo() {
 		generateDozenInfo(LotteryType.LOTOFACIL.getName());
 		//generateDozenInfo(LotteryType.QUINA.getName());
+		generateDozenInfo(LotteryType.MEGASENA.getName());
 		generateDozenInfo(LotteryType.LOTOMANIA.getName());
 	}
 
 	public void checkAlreadyDrawn() throws IOException, ZipException {
 		checkAlreadyDrawn(LotteryType.LOTOFACIL);
 		//checkAlreadyDrawn(LotteryType.QUINA);
+		checkAlreadyDrawn(LotteryType.MEGASENA);
 		checkAlreadyDrawn(LotteryType.LOTOMANIA);
 	}
 	
@@ -47,12 +50,14 @@ public class ImporterDataService {
 		historicDatasetFiller.fillDataSet(LotteryType.LOTOFACIL);
 		//historicDatasetFiller.fillDataSet(LotteryType.QUINA);
 		historicDatasetFiller.fillDataSet(LotteryType.LOTOMANIA);
+		historicDatasetFiller.fillDataSet(LotteryType.MEGASENA);
 	}
 	
 	public void generateRules() {
 		betRuleSettingsService.generateBetRuleSettings(LotteryType.LOTOFACIL.getName());
 		//betRuleSettingsService.generateBetRuleSettings(LotteryType.QUINA.getName());
 		betRuleSettingsService.generateBetRuleSettings(LotteryType.LOTOMANIA.getName());
+		betRuleSettingsService.generateBetRuleSettings(LotteryType.MEGASENA.getName());
 	}
 
 	private void importHistoric(String type) throws IOException, ZipException {

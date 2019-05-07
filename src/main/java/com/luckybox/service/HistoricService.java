@@ -1,5 +1,6 @@
 package com.luckybox.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,23 @@ public class HistoricService {
 		return hits;
 	}
 
+	public Map<Integer, List<Long>> listGroupedHistByConcurse(DozenDTO dozenDTO) {
+		List<HitsDTO> hits = Lists.newArrayList();
+		List<Historic> concurses = repository.findAllByType(dozenDTO.getType());
+		concurses.forEach(e -> count(hits, e, dozenDTO));
+
+		Map<Integer, List<Long>> groupedHits = new HashMap<Integer, List<Long>>();
+		for (HitsDTO hitsDTO : hits) {
+			Integer key = hitsDTO.getHits();
+			if (groupedHits.get(key) == null) {
+				groupedHits.put(key, new ArrayList<Long>());
+			}
+			groupedHits.get(key).add(hitsDTO.getConcurse());
+		}
+
+		return groupedHits;
+	}
+
 	private Object count(List<HitsDTO> hits, Historic e, DozenDTO dozenDTO) {
 		List<Integer> dozensDTO = DozenMapper.toList(dozenDTO);
 		List<Integer> historicDozens = DozenMapper.toList(e);
@@ -78,7 +96,7 @@ public class HistoricService {
 		Collections.sort(historicDozens);
 		dozensDTO.retainAll(historicDozens);
 		if (dozenDTO.getFoundByHits() != null) {
-			if(dozensDTO.size() >= dozenDTO.getFoundByHits()) {
+			if (dozensDTO.size() >= dozenDTO.getFoundByHits()) {
 				hits.add(HitsDTO.builder().concurse(e.getConcurse()).hits(dozensDTO.size()).build());
 			}
 		} else {

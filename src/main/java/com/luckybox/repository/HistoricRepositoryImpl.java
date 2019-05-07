@@ -156,6 +156,14 @@ public class HistoricRepositoryImpl extends QuerydslRepositorySupport {
 					.and(qHistoric.dozen19.eq(dozenDTO.getDozen19()))//
 					.and(qHistoric.dozen20.eq(dozenDTO.getDozen20()))//
 					.and(qHistoric.type.eq(dozenDTO.getType()));
+		} else if (LotteryType.MEGASENA == dozenDTO.getType()) {
+			return qHistoric.dozen1.eq(dozenDTO.getDozen1())//
+					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//
+					.and(qHistoric.dozen3.eq(dozenDTO.getDozen3()))//
+					.and(qHistoric.dozen4.eq(dozenDTO.getDozen4()))//
+					.and(qHistoric.dozen5.eq(dozenDTO.getDozen5()))//
+					.and(qHistoric.dozen6.eq(dozenDTO.getDozen6()))//
+					.and(qHistoric.type.eq(dozenDTO.getType()));
 		} else {
 			return qHistoric.dozen1.eq(dozenDTO.getDozen1())//
 					.and(qHistoric.dozen2.eq(dozenDTO.getDozen2()))//

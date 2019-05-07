@@ -2,6 +2,7 @@ package com.luckybox.web.rest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luckybox.ApiPageable;
-import com.luckybox.domain.BetRule;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
@@ -93,7 +93,13 @@ public class HistoricResource {
 	
 	@ApiOperation(value="Check if bets are inside rules", notes="")
 	@PostMapping(path = "/listHistByConcurse", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<HitsDTO>> checkRules(@RequestBody DozenDTO dozenDTO) {
+	public ResponseEntity<List<HitsDTO>> listHistByConcurse(@RequestBody DozenDTO dozenDTO) {
 		return new ResponseEntity<List<HitsDTO>>(historicService.listHistByConcurse(dozenDTO), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value="Check if bets are inside rules", notes="")
+	@PostMapping(path = "/listHistByConcurse/grouped", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+	public ResponseEntity<Map<Integer, List<Long>>> listHistByConcurseGrouped(@RequestBody DozenDTO dozenDTO) {
+		return new ResponseEntity<Map<Integer, List<Long>>>(historicService.listGroupedHistByConcurse(dozenDTO), HttpStatus.OK);
 	}
 }
