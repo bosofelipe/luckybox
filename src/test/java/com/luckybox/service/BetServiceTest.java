@@ -50,7 +50,7 @@ public class BetServiceTest{
 	@Test
 	public void checkBet() throws Exception {
 		Mockito.when(historicRepository.getHistoryByConcurseAndType(1000L, LotteryType.LOTOMANIA)).thenReturn(getHistoryByConcurse(1000L));
-		Mockito.when(betRepositoryImpl.findAllNotChecked()).thenReturn(getBets());
+		Mockito.when(betRepositoryImpl.findAllNotChecked(LotteryType.LOTOMANIA)).thenReturn(getBets());
 		List<BetInfoDTO> checkedBets = betService.checkBets("LOTOMANIA");
 		MatcherAssert.assertThat(checkedBets.get(0).getHits(), CoreMatchers.equalTo(13));
 		MatcherAssert.assertThat(checkedBets.get(1).getHits(), CoreMatchers.equalTo(20));

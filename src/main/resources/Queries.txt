@@ -169,6 +169,21 @@ column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or 
 )
 )
 
+VIEWS
+
+create view "LTM_LINE_COLUMN" as( 
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+)
+
+
+create view "LTM_QUADRANT" as( 
+select * from quadrant_dataset where type = 'LOTOMANIA' order by concurse desc
+)
+
+select h.concurse, dozen1, dozen2, dozen3,dozen4, dozen5, dozen6, dozen_sum, ht.dozens_last_raffle, ht.fibonacci, ht.prime, ht.pair , ht.qtd_sequences,ht.greather_sequence from 
+historic h  
+join historic_dataset ht on h.dataset_id = ht.id
+where h.type='MEGASENA' order by h.concurse desc
 
 
 

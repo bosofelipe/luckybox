@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.domain.QBet;
 
 @Component
@@ -23,9 +24,9 @@ public class BetRepositoryImpl extends QuerydslRepositorySupport {
 		super(Historic.class);
 	}
 
-	public List<Bet> findAllNotChecked() {
+	public List<Bet> findAllNotChecked(LotteryType type) {
 		return from(qBet)
-				.where(qBet.alreadyChecked.isFalse().or(qBet.alreadyChecked.isNull())).fetch();
+				.where(qBet.alreadyChecked.isFalse().or(qBet.alreadyChecked.isNull()).and(qBet.type.eq(type))).fetch();
 	}
 
 }

@@ -22,7 +22,6 @@ import com.luckybox.dto.BetInfoDTO;
 import com.luckybox.dto.BetMessageDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.GroupBetMessageDTO;
-import com.luckybox.exception.BetException;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.reader.CSVBetReader;
 import com.luckybox.repository.BetRepository;
@@ -49,9 +48,6 @@ public class BetService {
 
 	public List<Bet> save(DozenDTO dozenDTO) {
 		List<Bet> bets = newArrayList();
-		if(dozenDTO.getConcurses() > 8) {
-			throw new BetException("Concurses should be less than 8 times");
-		}
 		if (dozenDTO.getConcurses() != null) {
 			for (int i = 0; i < dozenDTO.getConcurses(); i++) {
 				Bet bet = toBet(dozenDTO);
@@ -108,8 +104,9 @@ public class BetService {
 
 	public List<BetInfoDTO> checkBets(String type) {
 		List<BetInfoDTO> betsDTO = Lists.newArrayList();
-		betRepositoryImpl.findAllNotChecked()
-							.forEach(bet -> check(betsDTO, bet, LotteryType.valueOf(type.toUpperCase())));
+		LotteryType lotteryType = LotteryType.valueOf(type.toUpperCase());
+		betRepositoryImpl.findAllNotChecked(lotteryType)
+							.forEach(bet -> check(betsDTO, bet, lotteryType));
 		return betsDTO;
 	}
 
