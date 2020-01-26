@@ -68,7 +68,7 @@ public class HistoricImporterService {
 
 	@Inject
 	private QuadrantDatasetRepositoryImpl quadrantDatasetRepositoryImpl;
-	
+
 	@Inject
 	private DatasetCreator datasetCreator;
 
@@ -99,7 +99,10 @@ public class HistoricImporterService {
 		historicDownloaderFileService.downloadHtmlZippedFileAtCaixa(lotteryType.getZipName());
 		List<DozenDTO> historicDTO = historicFileReaderService
 				.readHTML(TEMP_DIR + File.separator + lotteryType.getHtmlName(), lotteryType);
-		historicDTO.stream().forEach(dto -> persist(dto, lotteryType));
+
+		Historic lastConcurse = repository.findTopByTypeOrderByConcurseDesc(lotteryType);
+
+		historicDTO.stream().forEach(dto -> persist(lastConcurse, dto, lotteryType));
 		return historicDTO;
 	}
 
@@ -107,14 +110,21 @@ public class HistoricImporterService {
 		return repository.findAll(pageable).map(DozenDTO::new).getContent();
 	}
 
-	private void persist(DozenDTO dto, LotteryType type) {
+	private void persist(Historic lastConcurse, DozenDTO dto, LotteryType type) {
+		if (type == lastConcurse.getType() &&  
+				(lastConcurse == null || 
+						lastConcurse.getConcurse() < dto.getConcurse())) {
+			saveHistoricItem(dto, type);
+		}
+	}
+
+	private void saveHistoricItem(DozenDTO dto, LotteryType type) {
 		Historic historicEntity = DozenMapper.toHistoric(dto);
 
 		dto.setType(type);
 		HistoricDataset dataset = datasetCreator.createHistoricDataSet(dto);
 		LineColumnDataset lineColumnDataset = datasetCreator.createLineColumnDataSet(dto);
 		QuadrantDataset quadrantDataset = datasetCreator.createQuadrantDataSet(dto);
-		
 
 		Historic hist = repositoryImpl.getHistoryByConcurseAndType(historicEntity.getConcurse(),
 				historicEntity.getType());
@@ -137,7 +147,7 @@ public class HistoricImporterService {
 			dataset.setId(histDataset.getId());
 			historicRepository.save(dataset);
 		} else {
-			if(dataset != null) {
+			if (dataset != null) {
 				dataset = historicRepository.save(dataset);
 				historicEntity.setDataset(dataset);
 			}
@@ -151,13 +161,13 @@ public class HistoricImporterService {
 			dataset.setId(lineColumnDataset.getId());
 			lineColumnDatasetRepository.save(dataset);
 		} else {
-			if(dataset != null) {
+			if (dataset != null) {
 				dataset = lineColumnDatasetRepository.save(dataset);
 				historicEntity.setLineColumndataset(dataset);
 			}
 		}
 	}
-	
+
 	private void saveQuadrantDataset(Historic historicEntity, QuadrantDataset dataset) {
 		QuadrantDataset lineColumnDataset = quadrantDatasetRepositoryImpl
 				.getHistoryByConcurseAndType(historicEntity.getConcurse(), historicEntity.getType());
@@ -165,7 +175,7 @@ public class HistoricImporterService {
 			dataset.setId(lineColumnDataset.getId());
 			quadrantDatasetRepository.save(dataset);
 		} else {
-			if(dataset != null) {
+			if (dataset != null) {
 				dataset = quadrantDatasetRepository.save(dataset);
 				historicEntity.setQuadrantDataset(dataset);
 			}
