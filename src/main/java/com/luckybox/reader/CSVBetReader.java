@@ -41,13 +41,13 @@ public class CSVBetReader {
 
 	private String[] getValues(String line) {
 		String[] values = line.split(CSV_DIVISOR);
-		if (values[0] == "LOTOFACIL" && values.length != LotteryType.LOTOFACIL.getDozens())
+		if (values[0] == "LOTOFACIL" && (values.length >= LotteryType.LOTOFACIL.getMinDozens() && values.length <= LotteryType.LOTOFACIL.getMaxDozens()))
 			throw new FileReaderException("Faltando valores para aposta da lotofacil");
-		if (values[0] == "MEGASENA" && values.length != LotteryType.MEGASENA.getDozens())
+		if (values[0] == "MEGASENA" && (values.length >= LotteryType.MEGASENA.getMinDozens() && values.length <= LotteryType.MEGASENA.getMaxDozens()))
 			throw new FileReaderException("Faltando valores para aposta da megasena");
-		if (values[0] == "QUINA" && values.length != LotteryType.QUINA.getDozens())
+		if (values[0] == "QUINA" && (values.length >= LotteryType.QUINA.getMinDozens() && values.length <= LotteryType.QUINA.getMaxDozens()))
 			throw new FileReaderException("Faltando valores para aposta da quina");
-		if (values[0] == "LOTOMANIA" && values.length != LotteryType.LOTOMANIA.getDozens())
+		if (values[0] == "LOTOMANIA" && (values.length >= LotteryType.LOTOMANIA.getMinDozens() && values.length <= LotteryType.LOTOMANIA.getMaxDozens()))
 			throw new FileReaderException("Faltando valores para aposta da lotomania");
 		return values;
 	}

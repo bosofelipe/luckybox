@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.luckybox.domain.Bet;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
+import com.luckybox.dto.BetDTO;
 import com.luckybox.dto.DozenDTO;
 
 public class DozenMapper {
@@ -144,7 +145,7 @@ public class DozenMapper {
 		dozens.removeIf(Objects::isNull);
 		return dozens;
 	}
-
+	
 	public static List<Integer> toList(Bet bet) {
 		List<Integer> dozens = Lists.newArrayList(bet.getDozen1(), bet.getDozen2(), bet.getDozen3(), bet.getDozen4(),
 				bet.getDozen5(), bet.getDozen6(), bet.getDozen7(), bet.getDozen8(), bet.getDozen9(), bet.getDozen10(),

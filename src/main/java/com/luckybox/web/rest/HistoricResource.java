@@ -2,7 +2,6 @@ package com.luckybox.web.rest;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,8 +21,6 @@ import com.luckybox.ApiPageable;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.DozenDTO;
-import com.luckybox.dto.HistoricDataSetDTO;
-import com.luckybox.dto.HitsDTO;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
@@ -77,29 +74,11 @@ public class HistoricResource {
 		return new ResponseEntity<>(historicRepository.save(DozenMapper.toHistoric(historicDTO)), HttpStatus.ACCEPTED);
 	}
 	
-	@ApiOperation(value="Group pair field by lottery type", notes="")
-	@GetMapping(path = "/countFieldByType/{type}/{field}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<HistoricDataSetDTO>> countFieldByType(@PathVariable String type, @PathVariable String field) {
-		return new ResponseEntity<>(historicService.findFieldByType(LotteryType.valueOf(type.toUpperCase()), field), HttpStatus.ACCEPTED);
-	}
-	
 	@ApiIgnore
 	@GetMapping(path = "/clear", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 	public String clear() {
 		historicRepository.deleteAll();
 		historicDatasetRepository.deleteAll();
 		return "OK";
-	}
-	
-	@ApiOperation(value="Check if bets are inside rules", notes="")
-	@PostMapping(path = "/listHistByConcurse", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<List<HitsDTO>> listHistByConcurse(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<List<HitsDTO>>(historicService.listHistByConcurse(dozenDTO), HttpStatus.OK);
-	}
-	
-	@ApiOperation(value="Check if bets are inside rules", notes="")
-	@PostMapping(path = "/listHistByConcurse/grouped", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<Map<Integer, List<Long>>> listHistByConcurseGrouped(@RequestBody DozenDTO dozenDTO) {
-		return new ResponseEntity<Map<Integer, List<Long>>>(historicService.listGroupedHistByConcurse(dozenDTO), HttpStatus.OK);
 	}
 }
