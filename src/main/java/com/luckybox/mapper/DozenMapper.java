@@ -145,7 +145,7 @@ public class DozenMapper {
 		dozens.removeIf(Objects::isNull);
 		return dozens;
 	}
-	
+
 	public static List<Integer> toList(Bet bet) {
 		List<Integer> dozens = Lists.newArrayList(bet.getDozen1(), bet.getDozen2(), bet.getDozen3(), bet.getDozen4(),
 				bet.getDozen5(), bet.getDozen6(), bet.getDozen7(), bet.getDozen8(), bet.getDozen9(), bet.getDozen10(),
@@ -158,6 +158,14 @@ public class DozenMapper {
 				bet.getDozen41(), bet.getDozen42(), bet.getDozen43(), bet.getDozen44(), bet.getDozen45(),
 				bet.getDozen46(), bet.getDozen47(), bet.getDozen48(), bet.getDozen49(), bet.getDozen50());
 		dozens.removeIf(Objects::isNull);
+		return dozens;
+	}
+
+	public static List<Integer> toList(BetDTO betDTO) {
+		List<Integer> dozens = Lists.newArrayList();
+		for (int i = 0; i < betDTO.getDozens().size(); i++) {
+			dozens.add(betDTO.getDozens().get(i));
+		}
 		return dozens;
 	}
 }

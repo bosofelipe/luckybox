@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.luckybox.domain.Historic;
+import com.luckybox.domain.LotteryType;
 import com.luckybox.domain.QHistoricDataset;
+import com.luckybox.dto.BetDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.HitsDTO;
+import com.luckybox.exception.DozensLimitExceeded;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.repository.HistoricRepositoryImpl;
@@ -37,17 +40,17 @@ public class HistoricService {
 		return repositoryImpl.findHistoricByDozensNEConcurse(dozenDTO);
 	}
 
-	public List<HitsDTO> listHistByConcurse(DozenDTO dozenDTO) {
+	public List<HitsDTO> listHistByConcurse(BetDTO betDTO) {
 		List<HitsDTO> hits = Lists.newArrayList();
-		List<Historic> concurses = repository.findAllByType(dozenDTO.getType());
-		concurses.forEach(e -> count(hits, e, dozenDTO));
+		List<Historic> concurses = repository.findAllByType(betDTO.getType());
+		concurses.forEach(e -> count(hits, e, betDTO));
 		return hits;
 	}
 
-	public Map<Integer, List<Long>> listGroupedHistByConcurse(DozenDTO dozenDTO) {
+	public Map<Integer, List<Long>> listGroupedHistByConcurse(BetDTO betDTO) {
 		List<HitsDTO> hits = Lists.newArrayList();
-		List<Historic> concurses = repository.findAllByType(dozenDTO.getType());
-		concurses.forEach(e -> count(hits, e, dozenDTO));
+		List<Historic> concurses = repository.findAllByType(betDTO.getType());
+		concurses.forEach(e -> count(hits, e, betDTO));
 
 		Map<Integer, List<Long>> groupedHits = new HashMap<Integer, List<Long>>();
 		for (HitsDTO hitsDTO : hits) {
@@ -61,14 +64,15 @@ public class HistoricService {
 		return groupedHits;
 	}
 
-	private Object count(List<HitsDTO> hits, Historic e, DozenDTO dozenDTO) {
-		List<Integer> dozensDTO = DozenMapper.toList(dozenDTO);
+	private Object count(List<HitsDTO> hits, Historic e, BetDTO betDTO) {
+		validateNumberOfDozens(betDTO);
+		List<Integer> dozensDTO = DozenMapper.toList(betDTO);
 		List<Integer> historicDozens = DozenMapper.toList(e);
 		Collections.sort(dozensDTO);
 		Collections.sort(historicDozens);
 		dozensDTO.retainAll(historicDozens);
-		if (dozenDTO.getFoundByHits() != null) {
-			if (dozensDTO.size() >= dozenDTO.getFoundByHits()) {
+		if (betDTO.getFoundByHits() != null) {
+			if (dozensDTO.size() >= betDTO.getFoundByHits()) {
 				hits.add(HitsDTO.builder().concurse(e.getConcurse()).hits(dozensDTO.size()).build());
 			}
 		} else {
@@ -76,5 +80,22 @@ public class HistoricService {
 		}
 
 		return hits;
+	}
+
+	private void validateNumberOfDozens(BetDTO betDTO) {
+		if (betDTO.getType() == LotteryType.LOTOFACIL && betDTO.getDozens().size() < 15
+				&& betDTO.getDozens().size() > 18) {
+			throw new DozensLimitExceeded("Number of dozens exceeded!!!");
+		}
+		if (betDTO.getType() == LotteryType.MEGASENA && betDTO.getDozens().size() < 6
+				&& betDTO.getDozens().size() > 15) {
+			throw new DozensLimitExceeded("Number of dozens exceeded!!!");
+		}
+		if (betDTO.getType() == LotteryType.QUINA && betDTO.getDozens().size() < 5 && betDTO.getDozens().size() > 15) {
+			throw new DozensLimitExceeded("Number of dozens exceeded!!!");
+		}
+		if (betDTO.getType() == LotteryType.LOTOMANIA && betDTO.getDozens().size() != 50) {
+			throw new DozensLimitExceeded("Number of dozens exceeded!!!");
+		}
 	}
 }

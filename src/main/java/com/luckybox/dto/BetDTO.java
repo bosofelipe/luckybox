@@ -15,4 +15,5 @@ public class BetDTO {
 
 	private LotteryType type;
 	private List<Integer> dozens;
+	private Integer foundByHits;
 }

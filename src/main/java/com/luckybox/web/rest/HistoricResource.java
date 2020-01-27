@@ -25,7 +25,6 @@ import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricDatasetRepository;
 import com.luckybox.repository.HistoricRepository;
 import com.luckybox.service.HistoricImporterService;
-import com.luckybox.service.HistoricService;
 
 import io.swagger.annotations.ApiOperation;
 import net.lingala.zip4j.exception.ZipException;
@@ -34,9 +33,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/historic")
 public class HistoricResource {
-
-	@Inject
-	private HistoricService historicService;
 
 	@Inject
 	private HistoricImporterService historicImporterService;
