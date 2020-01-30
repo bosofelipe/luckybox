@@ -2,9 +2,9 @@ package com.luckybox.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
@@ -17,6 +17,7 @@ import com.luckybox.domain.QHistoricDataset;
 import com.luckybox.dto.BetDTO;
 import com.luckybox.dto.DozenDTO;
 import com.luckybox.dto.HitsDTO;
+import com.luckybox.dto.HitsDTOComparator;
 import com.luckybox.exception.DozensLimitExceeded;
 import com.luckybox.mapper.DozenMapper;
 import com.luckybox.repository.HistoricRepository;
@@ -44,6 +45,7 @@ public class HistoricService {
 		List<HitsDTO> hits = Lists.newArrayList();
 		List<Historic> concurses = repository.findAllByType(betDTO.getType());
 		concurses.forEach(e -> count(hits, e, betDTO));
+		Collections.sort(hits, new HitsDTOComparator());
 		return hits;
 	}
 
@@ -52,7 +54,7 @@ public class HistoricService {
 		List<Historic> concurses = repository.findAllByType(betDTO.getType());
 		concurses.forEach(e -> count(hits, e, betDTO));
 
-		Map<Integer, List<Long>> groupedHits = new HashMap<Integer, List<Long>>();
+		Map<Integer, List<Long>> groupedHits = new TreeMap<Integer, List<Long>>(Collections.reverseOrder());
 		for (HitsDTO hitsDTO : hits) {
 			Integer key = hitsDTO.getHits();
 			if (groupedHits.get(key) == null) {
@@ -60,7 +62,7 @@ public class HistoricService {
 			}
 			groupedHits.get(key).add(hitsDTO.getConcurse());
 		}
-
+		
 		return groupedHits;
 	}
 
@@ -78,7 +80,6 @@ public class HistoricService {
 		} else {
 			hits.add(HitsDTO.builder().concurse(e.getConcurse()).hits(dozensDTO.size()).build());
 		}
-
 		return hits;
 	}
 
