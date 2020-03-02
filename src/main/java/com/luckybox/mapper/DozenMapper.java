@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.google.common.collect.Lists;
 import com.luckybox.domain.Bet;
+import com.luckybox.domain.Combination;
 import com.luckybox.domain.Historic;
 import com.luckybox.domain.LotteryType;
 import com.luckybox.dto.BetDTO;
@@ -166,6 +167,17 @@ public class DozenMapper {
 		for (int i = 0; i < betDTO.getDozens().size(); i++) {
 			dozens.add(betDTO.getDozens().get(i));
 		}
+		return dozens;
+	}
+	
+	public static List<Integer> toList(Combination combination) {
+		List<Integer> dozens = Lists.newArrayList(combination.getDozen1(), combination.getDozen2(), combination.getDozen3(),
+				combination.getDozen4(), combination.getDozen5(), combination.getDozen6(), combination.getDozen7(),
+				combination.getDozen8(), combination.getDozen9(), combination.getDozen10(), combination.getDozen11(),
+				combination.getDozen12(), combination.getDozen13(), combination.getDozen14(), combination.getDozen15(),
+				combination.getDozen16(), combination.getDozen17(), combination.getDozen18(), combination.getDozen19(),
+				combination.getDozen20());
+		dozens.removeIf(Objects::isNull);
 		return dozens;
 	}
 }

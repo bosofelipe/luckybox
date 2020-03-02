@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "7a1cff77-b2f8-46ff-9722-023795bb035c",
+		"name": "LUCKYBOX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Import",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/historic/import/lotomania",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"historic",
+						"import",
+						"lotomania"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet LOTOFACIL",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"type\":\"LOTOFACIL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet LOTOMANIA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"dozen16\":28,\n\"dozen17\":30,\n\"dozen18\":35,\n\"dozen19\":40,\n\"dozen20\":45,\n\"dozen21\":46,\n\"dozen22\":48,\n\"dozen23\":49,\n\"dozen24\":50,\n\"dozen25\":52,\n\"dozen26\":53,\n\"dozen27\":54,\n\"dozen28\":56,\n\"dozen29\":57,\n\"dozen30\":58,\n\"dozen31\":59,\n\"dozen32\":60,\n\"dozen33\":62,\n\"dozen34\":63,\n\"dozen35\":64,\n\"dozen36\":65,\n\"dozen37\":66,\n\"dozen38\":70,\n\"dozen39\":72,\n\"dozen40\":80,\n\"dozen41\":85,\n\"dozen42\":86,\n\"dozen43\":87,\n\"dozen44\":88,\n\"dozen45\":90,\n\"dozen46\":91,\n\"dozen47\":92,\n\"dozen48\":95,\n\"dozen49\":99,\n\"dozen50\":0,\n\"type\":\"LOTOMANIA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet QUINA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":10,\n\"dozen2\":20,\n\"dozen3\":44,\n\"dozen4\":51,\n\"dozen5\":67,\n\"type\":\"QUINA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet Check rules QUINA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":10,\n\"dozen2\":20,\n\"dozen3\":44,\n\"dozen4\":51,\n\"dozen5\":67,\n\"type\":\"QUINA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet Check rules LOTOFACIL",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"type\":\"LOTOFACIL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet Check rules LOTOMANIA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"dozen16\":28,\n\"dozen17\":30,\n\"dozen18\":35,\n\"dozen19\":40,\n\"dozen20\":45,\n\"dozen21\":46,\n\"dozen22\":48,\n\"dozen23\":49,\n\"dozen24\":50,\n\"dozen25\":52,\n\"dozen26\":53,\n\"dozen27\":54,\n\"dozen28\":56,\n\"dozen29\":57,\n\"dozen30\":58,\n\"dozen31\":59,\n\"dozen32\":60,\n\"dozen33\":62,\n\"dozen34\":63,\n\"dozen35\":64,\n\"dozen36\":65,\n\"dozen37\":66,\n\"dozen38\":70,\n\"dozen39\":72,\n\"dozen40\":80,\n\"dozen41\":85,\n\"dozen42\":86,\n\"dozen43\":87,\n\"dozen44\":88,\n\"dozen45\":90,\n\"dozen46\":91,\n\"dozen47\":92,\n\"dozen48\":95,\n\"dozen49\":99,\n\"dozen50\":0,\n\"type\":\"LOTOMANIA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet check bet LOTOFACIL",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"dozen16\":28,\n\"dozen17\":30,\n\"dozen18\":35,\n\"dozen19\":40,\n\"dozen20\":45,\n\"dozen21\":46,\n\"dozen22\":48,\n\"dozen23\":49,\n\"dozen24\":50,\n\"dozen25\":52,\n\"dozen26\":53,\n\"dozen27\":54,\n\"dozen28\":56,\n\"dozen29\":57,\n\"dozen30\":58,\n\"dozen31\":59,\n\"dozen32\":60,\n\"dozen33\":62,\n\"dozen34\":63,\n\"dozen35\":64,\n\"dozen36\":65,\n\"dozen37\":66,\n\"dozen38\":70,\n\"dozen39\":72,\n\"dozen40\":80,\n\"dozen41\":85,\n\"dozen42\":86,\n\"dozen43\":87,\n\"dozen44\":88,\n\"dozen45\":90,\n\"dozen46\":91,\n\"dozen47\":92,\n\"dozen48\":95,\n\"dozen49\":99,\n\"dozen50\":0,\n\"type\":\"LOTOMANIA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/check/LOTOFACIL",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"check",
+						"LOTOFACIL"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet check bet LOTOMANIA",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"dozen16\":28,\n\"dozen17\":30,\n\"dozen18\":35,\n\"dozen19\":40,\n\"dozen20\":45,\n\"dozen21\":46,\n\"dozen22\":48,\n\"dozen23\":49,\n\"dozen24\":50,\n\"dozen25\":52,\n\"dozen26\":53,\n\"dozen27\":54,\n\"dozen28\":56,\n\"dozen29\":57,\n\"dozen30\":58,\n\"dozen31\":59,\n\"dozen32\":60,\n\"dozen33\":62,\n\"dozen34\":63,\n\"dozen35\":64,\n\"dozen36\":65,\n\"dozen37\":66,\n\"dozen38\":70,\n\"dozen39\":72,\n\"dozen40\":80,\n\"dozen41\":85,\n\"dozen42\":86,\n\"dozen43\":87,\n\"dozen44\":88,\n\"dozen45\":90,\n\"dozen46\":91,\n\"dozen47\":92,\n\"dozen48\":95,\n\"dozen49\":99,\n\"dozen50\":0,\n\"type\":\"LOTOMANIA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/check/LOTOMANIA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"check",
+						"LOTOMANIA"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateBet check bet QUINA",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dozen1\":1,\n\"dozen2\":2,\n\"dozen3\":4,\n\"dozen4\":5,\n\"dozen5\":6,\n\"dozen6\":8,\n\"dozen7\":10,\n\"dozen8\":12,\n\"dozen9\":14,\n\"dozen10\":16,\n\"dozen11\":17,\n\"dozen12\":18,\n\"dozen13\":19,\n\"dozen14\":20,\n\"dozen15\":25,\n\"dozen16\":28,\n\"dozen17\":30,\n\"dozen18\":35,\n\"dozen19\":40,\n\"dozen20\":45,\n\"dozen21\":46,\n\"dozen22\":48,\n\"dozen23\":49,\n\"dozen24\":50,\n\"dozen25\":52,\n\"dozen26\":53,\n\"dozen27\":54,\n\"dozen28\":56,\n\"dozen29\":57,\n\"dozen30\":58,\n\"dozen31\":59,\n\"dozen32\":60,\n\"dozen33\":62,\n\"dozen34\":63,\n\"dozen35\":64,\n\"dozen36\":65,\n\"dozen37\":66,\n\"dozen38\":70,\n\"dozen39\":72,\n\"dozen40\":80,\n\"dozen41\":85,\n\"dozen42\":86,\n\"dozen43\":87,\n\"dozen44\":88,\n\"dozen45\":90,\n\"dozen46\":91,\n\"dozen47\":92,\n\"dozen48\":95,\n\"dozen49\":99,\n\"dozen50\":0,\n\"type\":\"LOTOMANIA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8089/luckybox/bet/check/QUINA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"luckybox",
+						"bet",
+						"check",
+						"QUINA"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

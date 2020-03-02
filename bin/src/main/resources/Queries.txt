@@ -1,0 +1,204 @@
+select count(dozen_sum) as co, dozen_sum from historic_dataset group by dozen_sum order by co desc limit 50
+
+
+select count(pair) as co, pair from historic_dataset group by pair order by co desc limit 5
+
+
+select count(prime) as co, prime from historic_dataset group by prime order by co desc limit 5
+
+
+select count(fibonacci) as co, fibonacci from historic_dataset group by fibonacci order by co desc limit 4
+
+
+select count(qtd_sequences) as co, qtd_sequences from historic_dataset group by qtd_sequences order by co desc limit 3
+
+// View
+
+select
+count(*)
+from combination_dataset
+where dozen_sum in
+(
+   select
+   dozen_sum
+   from
+   (
+      select
+      count(dozen_sum) as co,dozen_sum
+      from historic_dataset h2
+      group by dozen_sum
+      order by co desc limit 50
+   )
+   as t
+)
+and pair in
+(
+   select
+   pair
+   from
+   (
+      select
+      count(pair) as co,pair
+      from historic_dataset h2 
+      group by pair
+      order by co desc limit 5
+   ) as t2
+)
+and prime in
+(
+   select
+   prime
+   from
+   (
+      select
+      count(prime) as co,prime
+      from historic_dataset h2 
+      group by prime
+      order by co desc limit 5
+   ) as t2
+)
+and fibonacci in
+(
+   select
+   fibonacci
+   from
+   (
+      select
+      count(fibonacci) as co,fibonacci
+      from historic_dataset h2 
+      group by fibonacci
+      order by co desc limit 4
+   ) as t2
+)
+and qtd_sequences in
+(
+   select
+   qtd_sequences
+   from
+   (
+      select
+      count(qtd_sequences) as co,qtd_sequences
+      from historic_dataset h2 
+      group by qtd_sequences
+      order by co desc limit 3
+   ) as t2
+)
+
+
+==========================
+
+select count(*), pair from historic_dataset  where type='LOTOMANIA'
+group by pair
+
+select count(*), fibonacci from historic_dataset  where type='LOTOMANIA'
+group by fibonacci
+
+select count(*), dozen_sum from historic_dataset  where type='LOTOMANIA'
+group by dozen_sum
+
+select count(*), prime from historic_dataset  where type='LOTOMANIA'
+group by prime
+
+select count(*), qtd_sequences from historic_dataset  where type='LOTOMANIA'
+group by qtd_sequences
+
+select count(*), qtd_sequences from historic_dataset  where type='LOTOMANIA'
+group by qtd_sequences
+
+
+select concurse, fibonacci,prime,fibonacci_prime, dozen_sum,qtd_sequences from historic_dataset  where concurse >= ((select max(concurse) from historic_dataset  where type='LOTOMANIA')  - 10) order by concurse desc
+
+select dozen1,dozen2,dozen3,dozen4,dozen5,dozen6,dozen7,dozen8,dozen9,dozen10,dozen11,dozen12,dozen13,dozen14,dozen15,dozen16,dozen17,dozen18,dozen19,dozen20 from historic  where concurse >= ((select max(concurse) from historic  where type='LOTOMANIA')  - 20) order by concurse desc
+
+
+select h.concurse, dozen1, dozen2, dozen3,dozen4, dozen5, dozen6, dozen7 , dozen8, dozen9, dozen10,dozen11, dozen12, dozen13, dozen14, dozen15, dozen_sum from 
+historic h  
+join historic_dataset ht on h.dataset_id = ht.id
+where h.type='LOTOFACIL' order by h.concurse desc
+
+==================================================
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 or
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+order by concurse desc
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 or
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 > 0 and line2>0 and line3>0 and line4>0 and line5>0 and line6>0 and line7>0 and line8>0 and line9 > 0 and line10>0 and
+column1 > 0 and column2>0 and column3>0 and column4>0 and column5>0 and column6>0 and column7>0 and column8>0 and column9 > 0 and column10>0
+)
+
+select concurse from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 > 0 and line2>0 and line3>0 and line4>0 and line5>0 and line6>0 and line7>0 and line8>0 and line9 > 0 and line10>0 and
+column1 > 0 and column2>0 and column3>0 and column4>0 and column5>0 and column6>0 and column7>0 and column8>0 and column9 > 0 and column10>0
+)
+order by concurse desc
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0
+)
+
+select count(*) from line_column_dataset where type = 'LOTOMANIA' 
+and (
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' 
+and (
+line1 = 0 or line2=0 or line3=0 or line4=0 or line5=0 or line6=0 or line7=0 or line8=0 or line9 = 0 or line10=0 and (
+column1 = 0 or column2=0 or column3=0 or column4=0 or column5=0 or column6=0 or column7=0 or column8=0 or column9 = 0 or column10=0
+)
+)
+
+VIEWS
+
+create view "LTM_LINE_COLUMN" as( 
+select concurse, line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 from line_column_dataset where type = 'LOTOMANIA' order by concurse desc
+)
+
+
+create view "LTM_QUADRANT" as( 
+select * from quadrant_dataset where type = 'LOTOMANIA' order by concurse desc
+)
+
+select h.concurse, dozen1, dozen2, dozen3,dozen4, dozen5, dozen6, dozen_sum, ht.dozens_last_raffle, ht.fibonacci, ht.prime, ht.pair , ht.qtd_sequences,ht.greather_sequence from 
+historic h  
+join historic_dataset ht on h.dataset_id = ht.id
+where h.type='MEGASENA' order by h.concurse desc
+
+
+
+
+==================================================
+
+
+-- DELETE DATA --
+
+delete from historic;
+delete from historic_dataset;
+delete from combinationdozen;
+delete from combinationdozendata;
+delete from dozeninfosequence;
+delete from dozeninfo;
+delete from bet;
+delete from bet_dataset;
+delete from bet_rule_settings;
